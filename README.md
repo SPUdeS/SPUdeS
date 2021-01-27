@@ -1,2 +1,2 @@
 # SPUdeS
-An awesome Stewart Platform S4 project in robotics engineering at l'Université de Sherbrooke.
+SPUdeS is a six degrees of freedom Stewart Platform. This is an academic project by robotics engineering undergraduates at l'Université de Sherbrooke.
