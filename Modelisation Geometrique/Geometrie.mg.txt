@@ -11,12 +11,12 @@ RigidFrame      S5               % Servo Motor #5
 RigidFrame      S6               % Servo Motor #6
 
 % Hexagonal base corners
-Point           eA (B)         % e1 coins de l'hexagone
-Point           eB (B)         % e2 coins de l'hexagone
-Point           eC (B)         % e3 coins de l'hexagone
-Point           eD (B)         % e4 coins de l'hexagone
-Point           eE (B)         % e5 coins de l'hexagone
-Point           eF (B)         % e6 coins de l'hexagone
+Point           eA (B)         % e1 edge of the hexagon
+Point           eB (B)         % e2 edge of the hexagon
+Point           eC (B)         % e3 edge of the hexagon
+Point           eD (B)         % e4 edge of the hexagon
+Point           eE (B)         % e5 edge of the hexagon
+Point           eF (B)         % e6 edge of the hexagon
 
 % End of servo arm
 Point           sA ( S1 )        % Rod & servo #1 junction 
