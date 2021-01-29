@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <title>SPUdeS UI</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="This is the user interface used to control and view the SPUdeS. SPUdeS is a project started at the University of Sherbooke to make a Stewart Platform.">
     <meta name="author" content="SPUdeS">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
@@ -16,9 +16,28 @@
 
     <img id='cam-feed' src="{{ url_for('video_feed') }}" alt="">
 
-<!-- TESTING BUTTONS -->
-    <button type="button" onclick="alert('You pressed the button!')">Click me!</button>
-<!-- END OF TESTING BUTTONS -->
+    <!-- TESTING BUTTONS -->
+    <style>
+    .triangle-up {
+        width: 0;
+        height: 0;
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        border-bottom: 50px solid #555;
+    }
+    .triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-top: 50px solid #555;
+    }
+    </style>
+
+    <input type="button" onclick="alert('You pressed the up arrow')" class="triangle-up">
+    <h2>X axis</h2>
+    <input type="button" onclick="alert('You pressed the down arrow')" class="triangle-down">
+    <!-- END OF TESTING BUTTONS -->
 
     <p>
         <a href="https://github.com/SPUdeS/SPUdeS">This GitHub Page</a> shows our full project code and CAD models.
