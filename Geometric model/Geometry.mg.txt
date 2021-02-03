@@ -1,34 +1,34 @@
-% MotionGenesis file:  MGTemplateBasic.txt
+% MotionGenesis file:  Geometry.mg.txt
 % Copyright (c) 2009-2020 Motion Genesis LLC.  Only for use with MotionGenesis.
 %--------------------------------------------------------------------
 %   Physical objects.
-RigidBody       B                % Base
-RigidFrame      S1               % Servo Motor #1
-RigidFrame      S2               % Servo Motor #2
-RigidFrame      S3               % Servo Motor #3
-RigidFrame      S4               % Servo Motor #4
-RigidFrame      S5               % Servo Motor #5
-RigidFrame      S6               % Servo Motor #6
+RigidBody       B           % Base
+RigidFrame      S1          % Servo Motor #1
+RigidFrame      S2          % Servo Motor #2
+RigidFrame      S3          % Servo Motor #3
+RigidFrame      S4          % Servo Motor #4
+RigidFrame      S5          % Servo Motor #5
+RigidFrame      S6          % Servo Motor #6
 
 % Hexagonal base corners
-Point           eA (B)         % e1 edge of the hexagon
-Point           eB (B)         % e2 edge of the hexagon
-Point           eC (B)         % e3 edge of the hexagon
-Point           eD (B)         % e4 edge of the hexagon
-Point           eE (B)         % e5 edge of the hexagon
-Point           eF (B)         % e6 edge of the hexagon
+Point       eA (B)          % e1 edge of the hexagon
+Point       eB (B)          % e2 edge of the hexagon
+Point       eC (B)          % e3 edge of the hexagon
+Point       eD (B)          % e4 edge of the hexagon
+Point       eE (B)          % e5 edge of the hexagon
+Point       eF (B)          % e6 edge of the hexagon
 
 % End of servo arm
-Point           sA ( S1 )        % Rod & servo #1 junction 
-Point           sB ( S2 )        % Rod & servo #2 junction 
-Point           sC ( S3 )        % Rod & servo #3 junction 
-Point           sD ( S4 )        % Rod & servo #4 junction 
-Point           sE ( S5 )        % Rod & servo #5 junction 
-Point           sF ( S6 )        % Rod & servo #6 junction 
+Point       sA (S1)         % Rod & servo #1 junction 
+Point       sB (S2)         % Rod & servo #2 junction 
+Point       sC (S3)         % Rod & servo #3 junction 
+Point       sD (S4)         % Rod & servo #4 junction 
+Point       sE (S5)         % Rod & servo #5 junction 
+Point       sF (S6)         % Rod & servo #6 junction 
 
 %--------------------------------------------------------------------
 %   Mathematical declarations.
-Constant    d = 0.15 m                                      % leg fixed lenght
+Constant    leg = 0.15 m                                    % leg fixed length
 Constant    ServoArm = 0.02 m                               % length of servo arm
 Constant    ri = 0.50 m                                     % Inscribed circle radius of small triangle
 Constant    ro = 0.75 m                                     % Inscribed circle radius of large Triangle
