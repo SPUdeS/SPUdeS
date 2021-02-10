@@ -21,6 +21,7 @@ def setUpMotors():
 
 # Custom angle to set Servo motor angle
 def setServoAngle(angle):
+    setUpMotors()
     board.digital[pin1].write(angle)
     board.digital[pin2].write(angle)
     board.digital[pin3].write(angle)
@@ -40,7 +41,8 @@ def goToUpDownPosition():
     for k in range(0, homingAngle):
         setServoAngle(k)
 
-    # Testing the function by rotating motor in both direction
-    while True:
-        angle = input("Type angle")
-        goToHomePosition()
+# Testing the function by rotating motor in both direction
+while True:
+    # angle = input("Type angle")
+    # setServoAngle(angle)
+    goToHomePosition()
