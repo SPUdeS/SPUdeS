@@ -3,7 +3,9 @@ from time import sleep
 
 board = pyfirmata.Arduino('COM3')  # port = 'COM3'
 print("Communication Successfully started")
-homingAngle = 0
+homingAngle = 5
+max = 195
+min = 0
 pin1 = 7
 pin2 = 9
 pin3 = 11
@@ -33,16 +35,19 @@ def setServoAngle(angle):
 def goToHomePosition():
     setServoAngle(homingAngle)
 
-def goToUpDownPosition():
-    for i in range(homingAngle, 195):
+def goToUpDownPosition(max, min):
+    for i in range(homingAngle, max):
         setServoAngle(i)
-    for j in range(195, 0):
+        sleep(0.015)
+    for j in range(max, min):
         setServoAngle(j)
-    for k in range(0, homingAngle):
+        sleep(0.015)
+    for k in range(min, homingAngle):
         setServoAngle(k)
+        sleep(0.015)
 
 # Testing the function by rotating motor in both direction
-while True:
+# while True:
     # angle = input("Type angle")
     # setServoAngle(angle)
-    goToHomePosition()
+    # goToHomePosition()
