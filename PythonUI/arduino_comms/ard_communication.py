@@ -34,6 +34,7 @@ def setServoAngle(angle):
 
 def goToHomePosition():
     setServoAngle(homingAngle)
+    print("HOMING NOW")
 
 def goToUpDownPosition(max, min):
     for i in range(homingAngle, max):
