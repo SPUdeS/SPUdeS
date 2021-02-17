@@ -1,10 +1,10 @@
 
 
 /* 
- * GRO 400 - Agile conception of a Stewarts platform
+ * GRO 400 - Agile conception of a Stewart's platform
  * Version 1 of motor control through arduino with serial communication with raspberry pi
- * Auteurs: Alexis Nadeau
- * date: 25 janvier 2021
+ * Authors: Alexis Nadeau
+ * dDate: January 25th 2021
 */
 
 /*------------------------------ Libraries ---------------------------------*/
@@ -13,8 +13,8 @@
 #include <Servo.h>
 /*------------------------------ Constants ---------------------------------*/
 
-#define BAUD            115200      // Frequence de transmission serielle
-#define UPDATE_PERIODE  100         // Periode (ms) d'envoie d'etat general
+#define BAUD            115200      //Serial transmission frequency
+#define UPDATE_PERIOD  100         // Period of sending general state (ms)
 
 /*---------------------------- Global Variables  ---------------------------*/
 int angle_ = 0;                        // Variable for angle
@@ -30,22 +30,20 @@ Servo servoMotors [] = {servoMotor_1, servoMotor_2, servoMotor_3,
                         servoMotor_4, servoMotor_5, servoMotor_6};
 
 
-volatile bool shouldSend_ = false;    // drapeau prêt à envoyer un message
-volatile bool shouldRead_ = false;    // drapeau prêt à lire un message
+volatile bool shouldSend_ = false;    // Flags when ready to send a message
+volatile bool shouldRead_ = false;    // Flags when ready to read a message
 
-String error_;                        // message d'erreur pour le deverminage
-SoftTimer timerSendMsg_;              // chronometre d'envoie de messages
-SoftTimer timerPulse_;                // chronometre pour la duree d'un pulse
-/*------------------------- Prototypes de fonctions -------------------------*/
+String error_;                        // Error message for debugging
+SoftTimer timerSendMsg_;              // Message sending timer
+
+/*------------------------- Function Prototype -------------------------*/
 
 void serialEvent();
 void sendSerial();
 void readSerial();
-void endPulse();
-void startPulse();
 
 
-/*---------------------------- fonctions "Main" -----------------------------*/
+/*---------------------------- Main function -----------------------------*/
 void setup() {
   Serial.begin(BAUD);
   
@@ -57,11 +55,12 @@ void setup() {
   servoMotor_5.attach(9);
   servoMotor_6.attach(13);
 
-  // Chronometre envoie message
+  // Message sending timer
   timerSendMsg_.setDelay(UPDATE_PERIODE);
   timerSendMsg_.setCallback(sendSerial);
   timerSendMsg_.enable();
 
+  // Set servoMotors to home position
   servoMotor_1.write(45);
 
 }
@@ -76,7 +75,7 @@ void loop() {
   timerSendMsg_.update();
 }
 
-/*---------------------------Definition de fonctions ------------------------*/
+/*---------------------------Function definition ------------------------*/
 
 void moveServo(int servo_no, int  angle){
     servoMotors[servo_no].write(angle);
@@ -86,12 +85,12 @@ void serialEvent(){
   shouldRead_=true;
 }
 
-//Lire message du RPI
+//Read message coming from RPI
 void readSerial(){
     StaticJsonDocument<512> doc;
     DeserializationError err = deserializeJson(doc, Serial);
     if (err) {
-      error_ = "erreur deserialisation.";
+      error_ = "deserialization error0.";
       return;
     }else{
       error_ = "";
@@ -99,7 +98,6 @@ void readSerial(){
     int angle = doc["setGoal"][0];
     if(angle>=0){
       moveServo(0, angle);
-      servoMotor_1.write(doc["setGoal"][0]);
       }
     angle = doc["setGoal"][1];
     if(angle>=0){
@@ -125,7 +123,7 @@ void readSerial(){
     shouldRead_=false;
 }
 
-//Envoi d'un message au RPI
+//Send a message to RPI
 void sendSerial(){
   StaticJsonDocument<512> doc;
   // Construction du message a envoyer
@@ -137,9 +135,8 @@ void sendSerial(){
   doc["angle servo_4"] = servoMotor_5.read();
   doc["angle servo_5"] = servoMotor_6.read();
   doc["error"] = error_;
-  //doc["inPulse"] = isInPulse_;
-  // Serialisation
+  // Serialization
   serializeJson(doc, Serial);
-  // Envoit
+  // Sending
   Serial.println();
 }

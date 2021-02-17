@@ -4,27 +4,27 @@
 MainWindow::MainWindow(int updateRate, QWidget *parent):
     QMainWindow(parent)
 {
-    // Constructeur de la classe
-    // Initialisation du UI
+    // Class constructor
+    // UI initialization
     ui = new Ui::MainWindow;
     ui->setupUi(this);
 
-    // Fonctions de connections events/slots
+    // Events/slots connection functions
     connectTimers(updateRate);
     connectButtons();
     connectSpinBoxes();
     connectTextInputs();
     connectComboBox();
 
-    // Recensement des ports
+    // Port census
     portCensus();
 
-    // initialisation du timer
+    // Timer initialization
     updateTimer_.start();
 }
 
 MainWindow::~MainWindow(){
-    // Destructeur de la classe
+    // Class destructor
     updateTimer_.stop();
     if(serialCom_!=nullptr){
       delete serialCom_;
@@ -33,107 +33,96 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::closeEvent(QCloseEvent *event){
-    // Fonction appelee lorsque la fenetre est detruite
+    // Function called when window is destroyed
     event->accept();
 }
 
 void MainWindow::receiveFromSerial(QString msg){
-    // Fonction appelee lors de reception sur port serie
-    // Accumulation des morceaux de message
+    // Function called on reception of a message on serial port
+    // Accumulation of message bits
     msgBuffer_ += msg;
 
-    //Si un message est termine
+    //If message ends
     if(msgBuffer_.endsWith('\n')){
-        // Passage ASCII vers structure Json
+        // ASCII to JSon structure
         QJsonDocument jsonResponse = QJsonDocument::fromJson(msgBuffer_.toUtf8());
 
-        // Analyse du message Json
+        // JSon message analysis
         if(~jsonResponse.isEmpty()){
             QJsonObject jsonObj = jsonResponse.object();
             QString buff = jsonResponse.toJson(QJsonDocument::Indented);
 
-            // Affichage des messages Json
+            // Show Json messages
             ui->textBrowser->setText(buff.mid(2,buff.length()-4));
 
-            // Affichage des donnees dans le graph
+            // Show data in graph
             if(jsonObj.contains(JsonKey_)){
                 double time = jsonObj["time"].toDouble();
                 if(series_.points().size()>50){
                     series_.remove(0);
                 }
                 series_.append(time, jsonObj[JsonKey_].toDouble());
-                // Mise en forme du graphique (non optimal)
+                //Graph format(not optimal)
                 chart_.removeSeries(&series_);
                 chart_.addSeries(&series_);
                 chart_.createDefaultAxes();
             }
 
-            // Fonction de reception de message (vide pour l'instant)
+            // Message reception function
             msgReceived_ = msgBuffer_;
             onMessageReceived(msgReceived_);
 
-            // Si les donnees doivent etre enregistrees
+            // If data needs to be recorded
             if(record){
                 writer_->write(jsonObj);
             }
         }
-        // Reinitialisation du message tampon
+        // Reinitialization of message receiver
         msgBuffer_ = "";
     }
 }
 
 void MainWindow::connectTimers(int updateRate){
-    // Fonction de connection de timers
+    // Timer connection function
     connect(&updateTimer_, &QTimer::timeout, this, [this]{onPeriodicUpdate();});
     updateTimer_.start(updateRate);
 }
 
 void MainWindow::connectSerialPortRead(){
-    // Fonction de connection au message de la classe (serialProtocol)
+    // Class message connection function (serialProtocol)
     connect(serialCom_, SIGNAL(newMessage(QString)), this, SLOT(receiveFromSerial(QString)));
 }
 
 void MainWindow::connectButtons(){
-    // Fonction de connection du boutton Send
-    //Exemple:
+    // Send button connection function
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(sendAngles()));
-
 }
 
 void MainWindow::sendAngles(){
-    //Fonction qui envoie les angles au arduino
-    //double goal = ui->lineEdit_DesVal->text().toDouble();
-        int angle_1 = ui->lineEdit->text().toInt();
-        int angle_2 = ui->lineEdit_2->text().toInt();
-        int angle_3 = ui->lineEdit_3->text().toInt();
-        int angle_4 = ui->lineEdit_4->text().toInt();
-        int angle_5 = ui->lineEdit_5->text().toInt();
-        int angle_6 = ui->lineEdit_6->text().toInt();
-        //double thresh = ui->lineEdit_Thresh->text().toDouble();
-        // pour minimiser le nombre de decimales( QString::number)
+    //Function that sends messages to the Arduino
+    //***************Need to change the lineEdit names**********************
+    int angle_1 = ui->lineEdit->text().toInt();
+    int angle_2 = ui->lineEdit_2->text().toInt();
+    int angle_3 = ui->lineEdit_3->text().toInt();
+    int angle_4 = ui->lineEdit_4->text().toInt();
+    int angle_5 = ui->lineEdit_5->text().toInt();
+    int angle_6 = ui->lineEdit_6->text().toInt();
 
-        QJsonArray array = { QString::number(angle_1),
-                             QString::number(angle_2),
-                             QString::number(angle_3),
-                             QString::number(angle_4),
-                             QString::number(angle_5),
-                             QString::number(angle_6)
-                           };
-        QJsonObject jsonObject
-        {
-            {"setGoal", array}
-        };
-        QJsonDocument doc(jsonObject);
-        QString strJson(doc.toJson(QJsonDocument::Compact));
-        sendMessage(strJson);
+    QJsonArray array = { QString::number(angle_1),
+                         QString::number(angle_2),
+                         QString::number(angle_3),
+                         QString::number(angle_4),
+                         QString::number(angle_5),
+                         QString::number(angle_6)
+                         };
+    QJsonObject jsonObject
+    {
+        {"setGoal", array}
+    };
+    QJsonDocument doc(jsonObject);
+    QString strJson(doc.toJson(QJsonDocument::Compact));
+    sendMessage(strJson);
 }
-
-void MainWindow::connectSpinBoxes(){
-    // Fonction de connection des spin boxes
-    //Exemple
-    //connect(ui->PWMBox, SIGNAL(valueChanged(double)), this, SLOT(sendPulseSetting()));
-}
-
 void MainWindow::connectTextInputs(){
     // Fonction de connection des entrees de texte
     //Exemple
@@ -152,12 +141,12 @@ void MainWindow::connectTextInputs(){
 }
 
 void MainWindow::connectComboBox(){
-    // Fonction de connection des entrees deroulantes
+    // Function that connects combo boxes
     connect(ui->comboBoxPort, SIGNAL(activated(QString)), this, SLOT(startSerialCom(QString)));
 }
 
 void MainWindow::portCensus(){
-    // Fonction pour recenser les ports disponibles
+    // Function that makes a census of all available ports
     ui->comboBoxPort->clear();
     Q_FOREACH(QSerialPortInfo port, QSerialPortInfo::availablePorts()) {
         ui->comboBoxPort->addItem(port.portName());
@@ -165,8 +154,8 @@ void MainWindow::portCensus(){
 }
 
 void MainWindow::startSerialCom(QString portName){
-    // Fonction SLOT pour demarrer la communication serielle
-    qDebug().noquote() << "Connection au port"<< portName;
+    // SLOT function to start serial communication
+    qDebug().noquote() << "Connection to port"<< portName;
     if(serialCom_!=nullptr){
         delete serialCom_;
     }
@@ -174,33 +163,30 @@ void MainWindow::startSerialCom(QString portName){
     connectSerialPortRead();
 }
 
+// I'm not so sure what this does
 void MainWindow::changeJsonKeyValue(){
-    // Fonction SLOT pour changer la valeur de la cle Json
+    // SLOT function to change the JSonKeyValue
     series_.clear();
-    //exmeple
-    //JsonKey_ = ui->JsonKey->text();
     JsonKey_ = ui->lineEdit->text();
 }
 
-
-
 void MainWindow::sendMessage(QString msg){
-    // Fonction SLOT d'ecriture sur le port serie
+    // SLOT function to write on the serial port
     if(serialCom_==nullptr){
-        qDebug().noquote() <<"Erreur aucun port serie !!!";
+        qDebug().noquote() <<"Error no serial port!!!";
         return;
     }
     serialCom_->sendMessage(msg);
-    qDebug().noquote() <<"Message du RPI: "  <<msg;
+    qDebug().noquote() <<"Message from RPI: "  <<msg;
 }
 
 void MainWindow::setUpdateRate(int rateMs){
-    // Fonction d'initialisation du chronometre
+    // Timer initialization function
     updateTimer_.start(rateMs);
 }
 
 void MainWindow::manageRecording(int stateButton){
-    // Fonction SLOT pour determiner l'etat du bouton d'enregistrement
+    // SLOT function to find the record button's state and record or not according to it
     if(stateButton == 2){
         startRecording();
     }
@@ -210,24 +196,24 @@ void MainWindow::manageRecording(int stateButton){
 }
 
 void MainWindow::startRecording(){
-    // Fonction SLOT pour creation d'un nouveau fichier csv
+    // SLOT function to create a new cvs file
     record = true;
     writer_ = new CsvWriter("/home/pi/Desktop/");
     //ui->label_pathCSV->setText(writer_->folder+writer_->filename);
 }
 
 void MainWindow::stopRecording(){
-    // Fonction permettant d'arreter l'ecriture du CSV
+    // Function that lets us stop writing in a csv file
     record = false;
     delete writer_;
 }
 void MainWindow::onMessageReceived(QString msg){
-    // Fonction appelee lors de reception de message
-    // Decommenter la ligne suivante pour deverminage
-     qDebug().noquote() << "Message du Arduino: " << msg;
+    // Function called on message reception
+    // Decomment the following ligne for debugging
+     qDebug().noquote() << "Message from Arduino: " << msg;
 }
 
 void MainWindow::onPeriodicUpdate(){
-    // Fonction SLOT appelee a intervalle definie dans le constructeur
+    // Periodically called SLOT function as defined in the constructor
     qDebug().noquote() << "*";
 }
