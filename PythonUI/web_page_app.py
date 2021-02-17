@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response
 import cv2
+from PythonUI.arduino_comms.ard_communication import goToHomePosition
 
 app = Flask(__name__)
 
@@ -28,6 +29,11 @@ def video_feed():
 @app.route('/')
 def index():
     """Video Streaming Index Page"""
+    return render_template('index.html')
+
+@app.route('/sendAngle/')
+def sendAngleToArduino():
+    goToHomePosition()
     return render_template('index.html')
 
 if __name__ == '__main__':
