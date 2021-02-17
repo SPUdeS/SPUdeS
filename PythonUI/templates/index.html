@@ -8,7 +8,29 @@
     <meta name="description" content="This is the user interface used to control and view the SPUdeS. SPUdeS is a project started at the University of Sherbooke to make a Stewart Platform.">
     <meta name="author" content="SPUdeS">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-    <link rel='stylesheet' href='css/controller2.css'>
+    <link rel='stylesheet' href='css/index.css'>
+
+    <!-- Setting up some HTTP Requests -->
+    <script>
+        function requestNewAngle() {
+            var request = new XMLHttpRequest();
+            var result = document.getElementById('result');
+            request.onreadystatechange = function() {
+                if(this.readyState == 4 && this.status == 200) {
+                    result.innerHTML = this.responseText;
+                    alert(request.responseText);
+                } else {
+                    result.innerHTML = "There was an error in the request"
+                }
+            };
+            console.log('request.responseText:', request.responseText);
+            console.log('request.readyState:', request.readyState);
+            console.log('request.status:', request.status);
+            request.open('GET', '/sendAngle', true)
+            request.setRequestHeader('content-type', 'application/text;charset=UTF-8')
+            request.send("name=" + document.getElementById('angle').value);
+        };
+    </script>
 </head>
 <body>
     <img src="favicon.ico" alt="Image" width="100"/>
@@ -18,31 +40,12 @@
     <img id='cam-feed' src="{{ url_for('video_feed') }}" alt="">
 
     <!-- TESTING BUTTONS -->
-    <style>
-    .triangle-up {
-        width: 0;
-        height: 0;
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        border-bottom: 50px solid #555;
-    }
-    .triangle-down {
-    width: 0;
-    height: 0;
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
-    border-top: 50px solid #555;
-    }
-    </style>
-
-    <input type="button" onclick="myFunction()" class="triangle-up">
-    <h2>X axis</h2>
-    <input type="button" onclick="alert('You pressed the down arrow')" class="triangle-down">
 
     <form action="/sendAngle/" method="get">
-      <label for="points">Points:</label>
-      <input type="number" id="points" name="points">
-      <input type="submit" value="Submit">
+      <label>Angle Value:<input type="text" id="angle" value="" /></label>
+      <button type="button" id="btn-angle" onclick="requestNewAngle();">Click</button>
+      <div id="result"></div>
+
     </form>
     <!-- END OF TESTING BUTTONS -->
 
