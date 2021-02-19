@@ -25,10 +25,10 @@ def setUpMotors():
 def setServoAngle(angle):
     setUpMotors()
     board.digital[pin1].write(angle)
-    # board.digital[pin2].write(angle)
-    # board.digital[pin3].write(angle)
-    # board.digital[pin4].write(angle)
-    # board.digital[pin5].write(angle)
+    board.digital[pin2].write(angle)
+    board.digital[pin3].write(angle)
+    board.digital[pin4].write(angle)
+    board.digital[pin5].write(angle)
     board.digital[pin6].write(angle)
     sleep(0.015)
 
@@ -47,8 +47,8 @@ def goToUpDownPosition(max, min):
         setServoAngle(k)
         sleep(0.015)
 
-# Testing the function by rotating motor in both direction
+### FOR TESTING ONLY ###
 # while True:
-    # angle = input("Type angle")
-    # setServoAngle(angle)
+#     angle = input("Type angle")
+#     setServoAngle(angle)
     # goToHomePosition()
