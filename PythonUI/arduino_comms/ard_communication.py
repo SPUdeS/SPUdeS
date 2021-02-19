@@ -25,10 +25,10 @@ def setUpMotors():
 def setServoAngle(angle):
     setUpMotors()
     board.digital[pin1].write(angle)
-    board.digital[pin2].write(angle)
-    board.digital[pin3].write(angle)
-    board.digital[pin4].write(angle)
-    board.digital[pin5].write(angle)
+    # board.digital[pin2].write(angle)
+    # board.digital[pin3].write(angle)
+    # board.digital[pin4].write(angle)
+    # board.digital[pin5].write(angle)
     board.digital[pin6].write(angle)
     sleep(0.015)
 

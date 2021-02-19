@@ -26,9 +26,9 @@
             console.log('request.responseText:', request.responseText);
             console.log('request.readyState:', request.readyState);
             console.log('request.status:', request.status);
-            request.open('GET', '/sendAngle', true)
-            request.setRequestHeader('content-type', 'application/text;charset=UTF-8')
-            request.send("name=" + document.getElementById('angle').value);
+            request.open('POST', '/sendAngle', true)
+            request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+            request.send("angle=" + document.getElementById('angle').value);
         };
     </script>
 </head>
