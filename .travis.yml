@@ -2,7 +2,7 @@ language: python
 
 jobs:
   allow_failures:
-    - if: branch = develop
+    - if: branch != main
     - stage: test
       before_script:
         - pip install -r requirements.txt
