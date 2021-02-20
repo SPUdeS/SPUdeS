@@ -1,6 +1,7 @@
 language: python
 jobs:
   allow_failures:
+    - if: branch = develop
     - stage: test
       script: pytest
       
