@@ -1,9 +1,10 @@
 language: python
-before_install:
-  - pip freeze > requirements.txt
+
 jobs:
   allow_failures:
     - if: branch = develop
     - stage: test
+      before_script:
+        - pip install -r requirements.txt
       script: pytest
       
