@@ -47,8 +47,8 @@ def goToUpDownPosition(max, min):
         setServoAngle(k)
         sleep(0.015)
 
-# Testing the function by rotating motor in both direction
+### FOR TESTING ONLY ###
 # while True:
-    # angle = input("Type angle")
-    # setServoAngle(angle)
+#     angle = input("Type angle")
+#     setServoAngle(angle)
     # goToHomePosition()

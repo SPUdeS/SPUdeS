@@ -1,6 +1,6 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 import cv2
-from PythonUI.arduino_comms.ard_communication import goToHomePosition
+from arduino_comms.ard_communication import setServoAngle
 
 app = Flask(__name__)
 
@@ -31,10 +31,14 @@ def index():
     """Video Streaming Index Page"""
     return render_template('index.html')
 
-@app.route('/sendAngle/')
+@app.route('/sendAngle', methods=["POST","GET"])
 def sendAngleToArduino():
-    goToHomePosition()
+    if request.method == "POST":
+        angle_str = request.form["angle"]
+        angle_int = int(angle_str)
+        setServoAngle(angle_int)
+        return "Angle received: " + angle_str
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
