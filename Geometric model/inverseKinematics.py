@@ -9,6 +9,7 @@ class frame:
     """ Position : column vector describing position in Base Frame
         Unit vectors [[Nx],[Ny],[Nz]] where Nx,y,z are column vectors
         representing unitvectors of the frame in the Base reference frame"""
+
     def __init__(self, origin, vectorBase):
         self.origin = origin
         self.vectorBase = vectorBase
@@ -35,8 +36,9 @@ def initializePlatform():
         platformCorners.append(corner(i, config.platformInteriorRadius, config.platformExteriorRadius, "platform"))
 
     # Home position platform - computed from base/platform corners #1 but any would do by symmetry
-    platformHomeZPosition = sqrt(config.armLength ** 2 + config.legLength ** 2 - (baseCorners[0][0] - platformCorners[0][0]) ** 2 - (
-                baseCorners[0][1] - platformCorners[0][1]) ** 2)
+    platformHomeZPosition = sqrt(
+        config.armLength ** 2 + config.legLength ** 2 - (baseCorners[0][0] - platformCorners[0][0]) ** 2 - (
+            baseCorners[0][1] - platformCorners[0][1]) ** 2)
 
     # Angle of servos at home position
     L0 = 2 * config.armLength ** 2
@@ -44,7 +46,8 @@ def initializePlatform():
     N0 = 2 * config.armLength * (baseCorners[0][0] - platformCorners[0][0])
     alpha0 = arcsin(L0 / sqrt(M0 ** 2 + N0 ** 2)) - arctan2(N0, M0)
 
-    return [baseCorners, platformCorners, platformHomeZPosition, alpha0, config.armLength, config.legLength, config.baseInteriorRadius,
+    return [baseCorners, platformCorners, platformHomeZPosition, alpha0, config.armLength, config.legLength,
+            config.baseInteriorRadius,
             config.baseExteriorRadius, config.platformInteriorRadius, config.platformExteriorRadius, config.betas]
 
 
@@ -71,18 +74,21 @@ def pathSampling(platform, targetPosition):
     numberOfWaypoints = round(distance / config.pathSamplingPrecision)
 
     # Rotation angles
-    [psy, theta, phi] = np.subtract(getAngles(getRotationMatrix(base, targetPosition)), getAngles(getRotationMatrix(base, platform)))
+    [psy, theta, phi] = np.subtract(getAngles(getRotationMatrix(base, targetPosition)),
+                                    getAngles(getRotationMatrix(base, platform)))
 
     # Path Sampling
     waypoints = []
     for i in range(numberOfWaypoints):
         # Rotate platform's basis vectors
-        new_vectorBase = np.matmul(setRotationMatrix(i * psy / numberOfWaypoints, i * theta / numberOfWaypoints, i * phi / numberOfWaypoints), platform.getVectorBase()[0])
+        new_vectorBase = np.matmul(
+            setRotationMatrix(i * psy / numberOfWaypoints, i * theta / numberOfWaypoints, i * phi / numberOfWaypoints),
+            platform.getVectorBase()[0])
         waypoints.append(frame([
-                        actualPos[0] + (i * (target[0] - actualPos[0]) / numberOfWaypoints),
-                        actualPos[1] + (i * (target[1] - actualPos[1]) / numberOfWaypoints),
-                        actualPos[2] + (i * (target[2] - actualPos[2]) / numberOfWaypoints)],
-                             new_vectorBase))
+            actualPos[0] + (i * (target[0] - actualPos[0]) / numberOfWaypoints),
+            actualPos[1] + (i * (target[1] - actualPos[1]) / numberOfWaypoints),
+            actualPos[2] + (i * (target[2] - actualPos[2]) / numberOfWaypoints)],
+            new_vectorBase))
     return waypoints
 
 
@@ -90,7 +96,7 @@ def getAngles(b_R_p):
     """ Computes Yaw, pitch, roll from rotation matrix b_R_p. """
     # Get yaw pitch roll angles
     psy = arctan2(b_R_p[1][0], b_R_p[0][0])
-    theta = arctan2(-b_R_p[2][0], sqrt(b_R_p[0][0]**2 + b_R_p[1][0]**2))
+    theta = arctan2(-b_R_p[2][0], sqrt(b_R_p[0][0] ** 2 + b_R_p[1][0] ** 2))
     phi = arctan2(b_R_p[2][1], b_R_p[2][2])
     return [psy, theta, phi]
 
@@ -100,10 +106,11 @@ def getRotationMatrix(base, platform):
     # Get rotation matrix between base and platform
     b = base.getVectorBase()[0]
     p = platform.getVectorBase()[0]
-    b_R_p = [[np.dot(p[0], b[0]), np.dot(p[1], b[0]), np.dot(p[2], b[0])],
-             [np.dot(p[0], b[1]), np.dot(p[1], b[1]), np.dot(p[2], b[1])],
-             [np.dot(p[0], b[2]), np.dot(p[1], b[2]), np.dot(p[2], b[2])]]
-    return b_R_p
+    return [
+        [np.dot(p[0], b[0]), np.dot(p[1], b[0]), np.dot(p[2], b[0])],
+        [np.dot(p[0], b[1]), np.dot(p[1], b[1]), np.dot(p[2], b[1])],
+        [np.dot(p[0], b[2]), np.dot(p[1], b[2]), np.dot(p[2], b[2])]
+    ]
 
 
 def setRotationMatrix(psy, theta, phi):
@@ -118,23 +125,21 @@ def setRotationMatrix(psy, theta, phi):
     R_Z = np.array([[cos(psy), -sin(psy), 0], [sin(psy), cos(psy), 0], [0, 0, 1]])
     R_Y = np.array([[cos(theta), 0, sin(theta)], [0, 1, 0], [-sin(theta), 0, cos(theta)]])
     R_X = np.array([[1, 0, 0], [0, cos(phi), -sin(phi)], [0, sin(phi), cos(phi)]])
-    
+
     # Full rotation matrix
-    R = np.matmul(np.matmul(R_Z, R_Y), R_X)
-    return R
+    return np.matmul(np.matmul(R_Z, R_Y), R_X)
 
 
 def getAlpha(effectiveLegLength, beta, base, platform):
     """ Computes servo angle as a function of the platform orientation and position,
         the leg's effective length and it's angle beta (angle between servo arm and base x-axis. """
-    L = effectiveLegLength**2 - (legLength**2 - armLength**2)
+    L = effectiveLegLength ** 2 - (legLength ** 2 - armLength ** 2)
     # M = 2a*(zp - zb)
     M = 2 * armLength * (platform.getOrigin()[0][2] - base.getOrigin()[0][2])
     # N = 2a*(cos Beta * (xp-xb) + sin Beta * (yp-yb)))
-    N = 2 * armLength * (cos(beta * (platform.getOrigin()[0][0] - base.getOrigin()[0][0])) + sin(beta * (platform.getOrigin()[0][1] - base.getOrigin()[0][1])))
-    alpha = arcsin(L / sqrt(M**2 + N**2)) - arctan2(N, M)
-    # Return servo motor angle
-    return alpha
+    N = 2 * armLength * (cos(beta * (platform.getOrigin()[0][0] - base.getOrigin()[0][0])) + sin(
+        beta * (platform.getOrigin()[0][1] - base.getOrigin()[0][1])))
+    return arcsin(L / sqrt(M ** 2 + N ** 2)) - arctan2(N, M)
 
 
 def inverseKinematics(targetPosition):
@@ -147,7 +152,8 @@ def inverseKinematics(targetPosition):
     # Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi
     leg_lengths = []
     for leg in range(config.numberOfCorners):
-        leg_lengths.append(np.add(translation, np.subtract(np.matmul(base_R_platform, platformCorners[leg]), baseCorners[leg])))
+        leg_lengths.append(
+            np.add(translation, np.subtract(np.matmul(base_R_platform, platformCorners[leg]), baseCorners[leg])))
 
     # Compute servo angles to get effective leg lengths
     servoAngles = []
@@ -189,9 +195,9 @@ if __name__ == "__main__":
     for i in range(config.numberOfCorners):
         baseLines.append([(bx[i], by[i], bz[i]), (bx[(i + 1) % 6], by[(i + 1) % 6], bz[(i + 1) % 6])])
         platformLines.append([(px[i], py[i], pz[i]), (px[(i + 1) % 6], py[(i + 1) % 6], pz[(i + 1) % 6])])
-        legLines.append([(bx[i], by[i], bz[i]), (px[(i+1)%6], py[(i+1)%6], pz[(i+1)%6])])
+        legLines.append([(bx[i], by[i], bz[i]), (px[(i + 1) % 6], py[(i + 1) % 6], pz[(i + 1) % 6])])
     figure = plt.figure()
-    axis = plt.axes(projection = '3d')
+    axis = plt.axes(projection='3d')
     axis.scatter(bx, by, bz)
     axis.scatter(px, py, pz)
     plt.show()
