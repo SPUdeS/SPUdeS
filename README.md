@@ -1,6 +1,6 @@
 <div id="SPUdeS">
     <h1>SPUdeS</h1>
-    <h2>Stewart Platform Université de Sherbrooke</h2>
+    <h3>Stewart Platform Université de Sherbrooke</h3>
     <h3>UdeS-GRO | 65<sup>th</sup> Promotion | 2021</h3>
 </div>
 
