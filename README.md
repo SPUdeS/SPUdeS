@@ -57,18 +57,18 @@ This section specifies the external resources used in the project.
 - Model: Mega 2560 REV3
 - Quantity: 1
 
-#### <a id="Servo"></a>Servomotors
+<!--#### <a id="Servo"></a>Servomotors
 - Brand: [Hitec RCD](https://hitecrcd.com/products/servos/sport-servos/analog-sport-servos/hs-422/product)
 - Model: HS-422
 - Quantity: 6
-
-<!--#### <a id="Servo"></a>Servomotors
+-->
+#### <a id="Servo"></a>Servomotors
 - Brand: [Adafruit](https://www.amazon.ca/Adafruit-2201-Sub-micro-Servo-SG51R/dp/B0137LG0KW)
 - Model: SG51R
 - Quantity: 6
--->
+
 #### <a id="Power"></a>Power Supply: Motor/Arduino
-- Brand: CUI Inc.
+- Brand: [CUI Inc.](https://www.digikey.com/en/products/detail/cui-inc/SWI10-5-N-P5/6618696)
 - Model: SWI10-5-N
 - Quantity: 1
 
