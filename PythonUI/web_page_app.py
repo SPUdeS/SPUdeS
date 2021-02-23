@@ -43,7 +43,7 @@ def sendAngleToArduino():
 @app.route('/HomingAnglePage', methods=["POST"])
 def responseHomingAngle():
     if request.method == "POST":
-        homing = request.form["HomingAngle"]
+        homing = request.form["Homing"]
         if homing == "true":
             goToHomePosition()
             return "Homing Now"

@@ -31,7 +31,7 @@
         function requestHomingAngle() {
             var request = new XMLHttpRequest();
             var result = document.getElementById('Homing')
-            request.onreadystagechange = function() {
+            request.onreadystatechange = function() {
                 if(this.readyState == 4 && this.status == 200) {
                     result.innerHTML = this.responseText;
                 } else {
