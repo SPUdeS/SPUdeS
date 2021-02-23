@@ -8,7 +8,7 @@
 
 <div id="badges">
     
-[![build status](https://img.shields.io/travis/SPUdeS/SPUdes/master?logo=Travis&style=flat-square)](https://www.travis-ci.com/github/SPUdeS/SPUdeS)
+[![build status](https://img.shields.io/travis/SPUdeS/SPUdes/develop?logo=Travis&style=flat-square)](https://www.travis-ci.com/github/SPUdeS/SPUdeS)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](https://github.com/SPUdeS/SPUdeS/blob/main/LICENSE) 
 
 </div>
@@ -29,7 +29,8 @@
     - [Single-Board Computer](#Computer)
     - [Microcontroller](#Controller)
     - [Servomotors](#Servo)
-    - [Power Source](#Power)
+    - [Power Supply: Motor/Arduino](#Power)
+
 
     
 [//]: # (------------------------------------------------)
@@ -49,24 +50,27 @@ This section specifies the external resources used in the project.
 #### <a id="Computer"></a>Single-Board Computer
 - Brand: [Raspberry Pi](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
 - Model: Raspberry Pi 3 Model 3B+
-- ASIN: B00LPESRUK
 - Quantity: 1
 
 #### <a id="Controller"></a>Microcontroller
 - Brand: [Arduino](https://store.arduino.cc/mega-2560-r3)
 - Model: Mega 2560 REV3
-- ASIN: B0046AMGW0
 - Quantity: 1
 
-#### <a id="Servo"></a>Servomotors
+<!--#### <a id="Servo"></a>Servomotors
 - Brand: [Hitec RCD](https://hitecrcd.com/products/servos/sport-servos/analog-sport-servos/hs-422/product)
 - Model: HS-422
-- ASIN: B0006O3WWI
+- Quantity: 6
+-->
+#### <a id="Servo"></a>Servomotors
+- Brand: [Adafruit](https://www.amazon.ca/Adafruit-2201-Sub-micro-Servo-SG51R/dp/B0137LG0KW)
+- Model: SG51R
 - Quantity: 6
 
-#### <a id="Power"></a>Power Source
-- Brand: 
-- Model:
-- ASIN:
-- Quantity:
+#### <a id="Power"></a>Power Supply: Motor/Arduino
+- Brand: [CUI Inc.](https://www.digikey.com/en/products/detail/cui-inc/SWI10-5-N-P5/6618696)
+- Model: SWI10-5-N
+- Quantity: 1
 
+## <a id="License"></a>License
+This project is licenced under a  [![GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](https://github.com/SPUdeS/SPUdeS/blob/main/LICENSE) license.
