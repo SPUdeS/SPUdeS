@@ -72,3 +72,5 @@ This section specifies the external resources used in the project.
 - Model: SWI10-5-N
 - Quantity: 1
 
+## <a id="License"></a>License
+This project is licenced under a  [![GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](https://github.com/SPUdeS/SPUdeS/blob/main/LICENSE) license.
