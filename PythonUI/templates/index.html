@@ -14,7 +14,7 @@
     <script>
         function requestNewAngle() {
             var request = new XMLHttpRequest();
-            var result = document.getElementById('result');
+            var result = document.getElementById('newAngle');
             request.onreadystatechange = function() {
                 if(this.readyState == 4 && this.status == 200) {
                     result.innerHTML = this.responseText;
@@ -23,13 +23,25 @@
                     result.innerHTML = "There was an error in the request"
                 }
             };
-            {#console.log('request.responseText:', request.responseText);#}
-            {#console.log('request.readyState:', request.readyState);#}
-            {#console.log('request.status:', request.status);#}
             request.open('POST', '/sendAngle', true)
             request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
             request.send("angle=" + document.getElementById('angle').value);
         };
+
+        function requestHomingAngle() {
+            var request = new XMLHttpRequest();
+            var result = document.getElementById('Homing')
+            request.onreadystagechange = function() {
+                if(this.readyState == 4 && this.status == 200) {
+                    result.innerHTML = this.responseText;
+                } else {
+                    result.innerHTML = "There was an error in requesting the Homing Angle"
+                }
+            };
+            request.open('POST', '/HomingAnglePage', true)
+            request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+            request.send("Homing=" + document.getElementById('HomingAngle').value);
+        }
     </script>
 </head>
 <body>
@@ -40,13 +52,18 @@
     <img id='cam-feed' src="{{ url_for('video_feed') }}" alt="">
 
     <!-- TESTING BUTTONS -->
-
-    <form action="/sendAngle/" method="get">
+    <form action="/sendAngle/" method="post">
       <label>Angle Value:<input type="text" id="angle" value="" /></label>
       <button type="button" id="btn-angle" onclick="requestNewAngle();">Click</button>
-      <div id="result"></div>
-
+      <div id="newAngle"></div>
     </form>
+
+    <form action="/HomingAnglePage/" method="post">
+      <button type="button" id="HomingAngle" value="true" onclick="requestHomingAngle();">Homing Button</button>
+      <div id="Homing"></div>
+    </form>
+
+
     <!-- END OF TESTING BUTTONS -->
 
     <p>

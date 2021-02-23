@@ -1,6 +1,6 @@
 from flask import Flask, render_template, Response, request
 import cv2
-from arduino_comms.ard_communication import setServoAngle
+from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition
 
 app = Flask(__name__)
 
@@ -36,8 +36,18 @@ def sendAngleToArduino():
     if request.method == "POST":
         angle_str = request.form["angle"]
         angle_int = int(angle_str)
-        setServoAngle(angle_int)
+        goUPandDown(angle_int)
         return "Angle received: " + angle_str
+    return render_template('index.html')
+
+@app.route('/HomingAnglePage', methods=["POST"])
+def responseHomingAngle():
+    if request.method == "POST":
+        homing = request.form["HomingAngle"]
+        if homing == "true":
+            goToHomePosition()
+            return "Homing Now"
+        return 0
     return render_template('index.html')
 
 if __name__ == '__main__':
