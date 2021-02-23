@@ -49,6 +49,12 @@ def goToUpDownPosition():
         setServoAngle(k)
         sleep(0.5)
 
+def goUpPosition():
+    setServoAngle(homingAngle)
+    for i in range(homingAngle, max):
+        setServoAngle(i)
+        sleep(0.5)
+
 def goUPandDown(angle):
     setServoAngle(angle)
     sleep(0.015)

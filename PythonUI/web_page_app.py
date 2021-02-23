@@ -1,6 +1,6 @@
 from flask import Flask, render_template, Response, request
 import cv2
-from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition
+from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition, goUpPosition
 
 app = Flask(__name__)
 
@@ -46,7 +46,17 @@ def responseHomingAngle():
         homing = request.form["Homing"]
         if homing == "true":
             goToHomePosition()
-            return "Homing Now"
+            return homing
+        return 0
+    return render_template('index.html')
+
+@app.route('/MovingUpPage', methods=["POST"])
+def responseMovingUp():
+    if request.method == "POST":
+        moveUp = request.form["MovingUp"]
+        if moveUp == "true":
+            goUpPosition()
+            return moveUp
         return 0
     return render_template('index.html')
 
