@@ -53,7 +53,7 @@ This section specifies the external resources used in the project.
 - Quantity: 1
 
 #### <a id="Controller"></a>Microcontroller
-- Brand Name: [Arduino](https://store.arduino.cc/mega-2560-r3)
+- Brand: [Arduino](https://store.arduino.cc/mega-2560-r3)
 - Model: Mega 2560 REV3
 - ASIN: B0046AMGW0
 - Quantity: 1
