@@ -56,11 +56,11 @@ The camera feed can show the Stewart platform instantly. The platform can be con
     <img src="./Documentation/img/InterfaceButtons.png" alt="Platform Assembly" width="264"/>
 </div>
 
--It is possible to enter the angle value of all the motor (by default, all the motor should have the same angle).
+- It is possible to enter the angle value of all the motor (by default, all the motor should have the same angle).
 
--The Homing Button brings the stewart platform at its initial centered position.  
+- The Homing Button brings the stewart platform at its initial centered position.  
 
--The Move Up Button brings the stewart platform a bit over its actual position
+- The Move Up Button brings the stewart platform a bit over its actual position
 ## <a id="Resources"></a>External Resources
 This section specifies the external resources used in the project.
 
