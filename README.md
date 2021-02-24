@@ -17,7 +17,7 @@
 
 **SPUdeS is a six degrees of freedom Stewart Platform. This is an academic project by robotics engineering undergraduates at l'Université de Sherbrooke.**
 
-<div id="robot" align="center">
+<div id="platform" align="center">
     <img src="./img/Assembly.png" alt="Platform Assembly" width="703"/>
 </div>
 
@@ -45,17 +45,22 @@
 6. Build and transfer all the code to the arduino and raspberry
 7. Open the interface and look at the platform operation section
 ## <a id="Documentation"></a>Documentation
-The Cad with is dimension and all is part can be find in the folder CAD's. 
+The Cad with is dimension and all is part can be found in the folder CAD's. 
 
 Here is the electrical schematic to plug the motors with the good pins:
-![img.png](img.png)
+
+<div id="platform" align="center">
+    <img src="./img/Electrical schematics.png" alt="Platform Assembly" width="300"/>
+</div>
+
 The dynamic system is in the section Modelisation Geometrique folder
 ## <a id="Operation"></a>Platform Operation
-The global look of the interface is this:
-![img_1.png](img_1.png)
+
 The camera feed can show the robot instantly and if we zoom the section under the camera feed like this:
 
-![img_2.png](img_2.png)
+<div id="platform" align="center">
+    <img src="./img/InterfaceButtons.png" alt="Platform Assembly" width="264"/>
+</div>
 
 It is possible to enter the angle value of all the motor (all the motor should have the same angle) 
 and once the command is entered in the white space click on the button click to send the command.
@@ -94,5 +99,5 @@ This section specifies the external resources used in the project.
 ## <a id="License"></a>License
 This project is licenced under a  [![GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](https://github.com/SPUdeS/SPUdeS/blob/main/LICENSE) license.
 The license chose is a license open source, so it is open for company and public user, but if an accident occurs when
-users manipulate this project the owners of this project will not be responsible. Therefore be sure to have a bit of 
+users manipulate this project the owners of this project will not be responsible. Therefore, be sure to have a bit of 
 experimentation before trying this project. 
