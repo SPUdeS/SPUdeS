@@ -18,7 +18,7 @@
 **SPUdeS is a six degrees of freedom Stewart Platform. This is an academic project by robotics engineering undergraduates at l'Université de Sherbrooke.**
 
 <div id="platform" align="center">
-    <img src="./img/Assembly.png" alt="Platform Assembly" width="703"/>
+    <img src="./Documentation/img/Assembly.png" alt="Platform Assembly" width="703"/>
 </div>
 
 ## Table of Contents
@@ -39,7 +39,7 @@
 ## <a id="Setup"></a>Setup
 1. Buy the component in the [External Resources](#Resources) section.
 2. Use the [CAD models](https://github.com/SPUdeS/SPUdeS/tree/develop/CADs) to 3D print the [base](https://github.com/SPUdeS/SPUdeS/blob/develop/CADs/Base.SLDPRT), the [platform](https://github.com/SPUdeS/SPUdeS/blob/develop/CADs/Platform.SLDPRT) and the [servo arms](https://github.com/SPUdeS/SPUdeS/blob/develop/CADs/Legs.SLDASM).
-3. Do the electrical connections using the [electrical schematics](https://github.com/SPUdeS/SPUdeS/blob/develop/documentation/Electical_schematics.pdf) in the documentation section.
+3. Do the electrical connections using the [electrical schematics](https://github.com/SPUdeS/SPUdeS/blob/develop/Documentation/Electical%20schematics.pdf) in the documentation section.
 3. Set up the [Raspberry Pi](#Computer) by connecting it with the [Arduino](#Controller), your computer and the to a power source.
 4. Download or clone the repository in the Raspberry Pi.
 5. Verify your Python version (3.5 and above) and the port series.
@@ -52,15 +52,15 @@ The dynamic system can be found in the [Geometric model](https://github.com/SPUd
 
 The camera feed can show the Stewart platform instantly. The platform can be controlled using the following buttons on the interface:
 
-<div id="platform" align="center">
-    <img src="./img/InterfaceButtons.png" alt="Platform Assembly" width="264"/>
+<div id="Interface">
+    <img src="./Documentation/img/InterfaceButtons.png" alt="Platform Assembly" width="264"/>
 </div>
 
-It is possible to enter the angle value of all the motor (by default, all the motor should have the same angle).
+*It is possible to enter the angle value of all the motor (by default, all the motor should have the same angle).
 
-The Homing Button brings the stewart platform at its initial centered position.  
+*The Homing Button brings the stewart platform at its initial centered position.  
 
-The Move Up Button brings the stewart platform a bit over its actual position
+*The Move Up Button brings the stewart platform a bit over its actual position
 ## <a id="Resources"></a>External Resources
 This section specifies the external resources used in the project.
 
