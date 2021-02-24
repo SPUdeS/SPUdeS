@@ -1,0 +1,125 @@
+% MotionGenesis file:  Geometry.mg.txt
+% Copyright (c) 2009-2020 Motion Genesis LLC.  Only for use with MotionGenesis.
+%--------------------------------------------------------------------
+%   Physical objects.
+RigidBody       B           % Base
+RigidFrame      S1          % Servo Motor #1
+RigidFrame      S2          % Servo Motor #2
+RigidFrame      S3          % Servo Motor #3
+RigidFrame      S4          % Servo Motor #4
+RigidFrame      S5          % Servo Motor #5
+RigidFrame      S6          % Servo Motor #6
+
+% Hexagonal base corners
+Point       eA (B)          % e1 edge of the hexagon
+Point       eB (B)          % e2 edge of the hexagon
+Point       eC (B)          % e3 edge of the hexagon
+Point       eD (B)          % e4 edge of the hexagon
+Point       eE (B)          % e5 edge of the hexagon
+Point       eF (B)          % e6 edge of the hexagon
+
+% End of servo arm
+Point       sA (S1)         % Rod & servo #1 junction 
+Point       sB (S2)         % Rod & servo #2 junction 
+Point       sC (S3)         % Rod & servo #3 junction 
+Point       sD (S4)         % Rod & servo #4 junction 
+Point       sE (S5)         % Rod & servo #5 junction 
+Point       sF (S6)         % Rod & servo #6 junction 
+
+%--------------------------------------------------------------------
+%   Mathematical declarations.
+Constant    leg = 0.15 m                                    % leg fixed length
+Constant    ServoArm = 0.02 m                               % length of servo arm
+Constant    ri = 0.50 m                                     % Inscribed circle radius of small triangle
+Constant    ro = 0.75 m                                     % Inscribed circle radius of large Triangle
+Variable    q1 rad, q2 rad, q3 rad, q4 rad, q5 rad, q6 rad  % Angle between servo arm & horizontal (angle between : î & xy plane of Base)
+
+%--------------------------------------------------------------------
+%   Mass and inertia properties.
+%--------------------------------------------------------------------
+%   Translational & Rotational kinematics.
+% Position platform corners
+aDelta = 2 * (2*ri - ro) / sqrt(3)
+eA.SetPosition(Bo, (ro * cos(2*pi*floor(1/2)/3) + aDelta*((-1)^1)/2 * sin(2*pi*floor(1/2)/3)) * Bx> + (ro * sin(2*pi*floor(1/2)/3) - aDelta*((-1)^1)/2 * cos(2*pi*floor(1/2)/3)) *By>)
+eB.SetPosition(Bo, (ro * cos(2*pi*floor(2/2)/3) + aDelta*((-1)^2)/2 * sin(2*pi*floor(2/2)/3)) * Bx> + (ro * sin(2*pi*floor(2/2)/3) - aDelta*((-1)^2)/2 * cos(2*pi*floor(2/2)/3)) *By>)
+eC.SetPosition(Bo, (ro * cos(2*pi*floor(3/2)/3) + aDelta*((-1)^3)/2 * sin(2*pi*floor(3/2)/3)) * Bx> + (ro * sin(2*pi*floor(3/2)/3) - aDelta*((-1)^3)/2 * cos(2*pi*floor(3/2)/3)) *By>)
+eD.SetPosition(Bo, (ro * cos(2*pi*floor(4/2)/3) + aDelta*((-1)^4)/2 * sin(2*pi*floor(4/2)/3)) * Bx> + (ro * sin(2*pi*floor(4/2)/3) - aDelta*((-1)^4)/2 * cos(2*pi*floor(4/2)/3)) *By>)
+eE.SetPosition(Bo, (ro * cos(2*pi*floor(5/2)/3) + aDelta*((-1)^5)/2 * sin(2*pi*floor(5/2)/3)) * Bx> + (ro * sin(2*pi*floor(5/2)/3) - aDelta*((-1)^5)/2 * cos(2*pi*floor(5/2)/3)) *By>)
+eF.SetPosition(Bo, (ro * cos(2*pi*floor(6/2)/3) + aDelta*((-1)^6)/2 * sin(2*pi*floor(6/2)/3)) * Bx> + (ro * sin(2*pi*floor(6/2)/3) - aDelta*((-1)^6)/2 * cos(2*pi*floor(6/2)/3)) *By>)
+
+% Position servo axis on sides eA-eB ; eC-eD & eE-eF
+S1o.SetPosition(eA, (eB.GetUnitVector(eA) * GetMagnitude(eB.GetPosition(eA)) / 3))
+S1.RotateZ(B, GetAngleBetweenVectors(Bx>, S1o.GetPosition(Bo)) + pi/2)
+S1.RotateY(B, q1)
+S2o.SetPosition(eA, (2 * eB.GetUnitVector(eA) * GetMagnitude(eB.GetPosition(eA)) / 3))
+S2.RotateZ(B, GetAngleBetweenVectors(Bx>, S2o.GetPosition(Bo)) + pi/2)
+S2.RotateY(B, q2)
+
+S3o.SetPosition(eC, (eD.GetUnitVector(eC) * GetMagnitude(eD.GetPosition(eC)) / 3))
+S3.RotateZ(B, GetAngleBetweenVectors(Bx>, S3o.GetPosition(Bo)) + pi/2)
+S3.RotateY(B, q3)
+S4o.SetPosition(eC, (2 * eD.GetUnitVector(eC) * GetMagnitude(eD.GetPosition(eC)) / 3))
+S4.RotateZ(B, GetAngleBetweenVectors(Bx>, S4o.GetPosition(Bo)) + pi/2)
+S4.RotateY(B, q4)
+
+S5o.SetPosition(eE, (eF.GetUnitVector(eE) * GetMagnitude(eF.GetPosition(eE)) / 3))
+S5.RotateZ(B, GetAngleBetweenVectors(Bx>, S5o.GetPosition(Bo)) + pi/2)
+S5.RotateY(B, q5)
+S6o.SetPosition(eE, (2 * eF.GetUnitVector(eE) * GetMagnitude(eF.GetPosition(eE)) / 3))
+S6.RotateZ(B, GetAngleBetweenVectors(Bx>, S6o.GetPosition(Bo)) + pi/2)
+S6.RotateY(B, q6)
+
+% Position servo-rod junctions
+sA.SetPosition(S1o, ServoArm * S1x>)
+sB.SetPosition(S2o, ServoArm * S2x>)
+sC.SetPosition(S3o, ServoArm * S3x>)
+sD.SetPosition(S4o, ServoArm * S4x>)
+sE.SetPosition(S5o, ServoArm * S5x>)
+sF.SetPosition(S6o, ServoArm * S6x>)
+
+%--------------------------------------------------------------------
+%   Motion constraints (if any).
+MotionConstraint[1] = u2 - u1
+MotionConstraint[2] = Dot( Q.GetVelocity(N), Ax> )
+MotionConstraint[3] = Dot( Q.GetVelocity(N), Ay> )
+SolveDt( MotionConstraint = 0,  u3, u4, u5 )
+%--------------------------------------------------------------------
+%   Add relevant contact/distance forces.
+System.AddForceGravity( -g*Ny> )
+Q.AddForce( someVector> )                   % External force
+Q.AddForce( P, actionReactionForce> )       % Law of action/reaction
+%--------------------------------------------------------------------
+%   Add relevant torques.
+A.AddTorque( SomeVector> )                  % External torque
+B.AddTorque( A, actionReactionTorque> )     % Law of action/reaction
+%--------------------------------------------------------------------
+%   Dynamic equations of motion (F = m*a)
+%--------------------------------------------------------------------
+%   Dynamic equations of motion (M = DH/Dt + ...).
+%--------------------------------------------------------------------
+%   Solve algebraic equations for list of unknowns.
+Solve( Dynamics = 0,   x'', y'', Fx, Fy )
+%--------------------------------------------------------------------
+%   Initial values for variables (e.g., for ODE command).
+Input  qA = 30 deg,  qA' = 0 rad/sec
+Input  qB = 90 deg,  qB' = 0 rad/sec
+%--------------------------------------------------------------------
+%   Other calculations (distance, energy, momentum, etc.).
+xQ = Dot(  Q.GetPosition(No),  Nx>  )
+KE = System.GetKineticEnergy()
+PEgravity = System.GetForceGravityPotentialEnergy( -g*Ny>, No )
+MechanicalEnergy = KE + PEgravity
+H> = System.GetAngularMomentum( aboutPoint )
+L> = EvaluateToNumber( System.GetLinearMomentum() )
+%--------------------------------------------------------------------
+%   List output quantities (e.g., for ODE command).
+Output      t sec,  x m,  Fx Newton,  Fy Newton
+OutputPlot  t sec,  qA degrees  qB degrees
+%--------------------------------------------------------------------
+%   Solve ODEs (or auto-generate MATLAB, C, Fortran, ... code).
+Input  tFinal = 10 sec,  tStep = 0.02 sec,  absError = 1.0E-08
+ODE()  Filename    % or ODE( Zero = 0, listOfVariablesToSolve ) Filename.m
+%--------------------------------------------------------------------
+%   Record input together with responses.
+Save  someFileName.html
+Quit
