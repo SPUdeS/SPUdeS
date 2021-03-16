@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <title>SPUdeS UI</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1"> -->
     <meta name="description" content="This is the user interface used to control and view the SPUdeS. SPUdeS is a project started at the University of Sherbooke to make a Stewart Platform.">
     <meta name="author" content="SPUdeS">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
@@ -66,14 +66,17 @@
     <h1>SPUdeS User Interface</h1>
     <h3>This is a university project called SPUdeS. The goal is to make a working Stewart Platform. This web page will allow us to have a look at the actual model in motion while also controlling it.</h3>
 
-    <img id='cam-feed' src="{{ url_for('video_feed') }}" alt="">
-
+    <div id="cam-feed-wrapper" >
+        <img style="float:left; margin: 0px 0px 15px 15px;" id='cam-feed' src="{{ url_for('video_feed') }}" alt="">
+    </div>
     <!-- TESTING BUTTONS -->
+  <div id="angle-input-wrapper">
     <form action="/sendAngle/" method="post">
       <label>Angle Value:<input type="text" id="angle" value="" /></label>
       <button type="button" id="btn-angle" onclick="requestNewAngle();">Click</button>
       <div id="newAngle"></div>
     </form>
+  </div>
 
     <form action="/HomingAnglePage/" method="post">
       <button type="button" id="HomingAngle" value="true" onclick="requestHomingAngle();">Homing Button</button>
