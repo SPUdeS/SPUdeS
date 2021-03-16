@@ -1,53 +1,59 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <title>SPUdeS UI</title>
-    <meta charset="utf-8">
-    <meta name="description" content="This is the user interface used to control and view the SPUdeS. SPUdeS is a project started at the University of Sherbooke to make a Stewart Platform.">
-    <meta name="author" content="SPUdeS">
-    <link rel="shortcut icon" type="image/x-icon" href="../static/img/favicon.ico" />
-    <link rel='stylesheet' href='static/css/index.css'>
-</head>
-<body>
+    <head>
+        <!-- Required meta tags -->
+        <title>SPUdeS UI</title>
+        <!-- <style type="text/css">
+          body {
+            color: darkblue;
+            background-color: lightgreen }
+        </style> -->
+        <meta charset="utf-8">
+        <meta name="description" content="This is the user interface used to control and view the SPUdeS. SPUdeS is a project started at the University of Sherbrooke to make a Stewart Platform.">
+        <meta name="author" content="SPUdeS">
+        <link rel="shortcut icon" type="image/x-icon" href="../static/img/favicon.ico" />
+        <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}" />
 
-    <main id="ui-wrapper">
-        <div id="page-icon">
-            <img src="static/img/favicon.ico" alt="Image" width="100"/>
-        </div>
-        <div id="intro-wrapper">
-            <h1>SPUdeS User Interface</h1>
-            <h3>This is a university project called SPUdeS. The goal is to make a working Stewart Platform. This web page will allow us to have a look at the actual model in motion while also controlling it.</h3>
-        </div>
-        <div id="HUD">
-            <div id="angle-input-wrapper">
-                <form action="/sendAngle/" method="post">
-                  <label>Angle Value:<input type="text" id="angle" value="" /></label>
-                  <button type="button" id="btn-angle" onclick="requestNewAngle();">Click</button>
-                  <div id="newAngle"></div>
-                </form>
+    </head>
+    <body>
+
+        <main id="ui-wrapper">
+            <div id="page-icon">
+                <img src="../static/img/favicon.ico" alt="Image" width="100"/>
             </div>
-            <div id="homing-angle-wrapper">
-                <form action="/HomingAnglePage/" method="post">
-                  <button type="button" id="HomingAngle" value="true" onclick="requestHomingAngle();">Homing Button</button>
-                  <div id="Homing"></div>
-                </form>
+            <div id="intro-wrapper">
+                <h1>SPUdeS User Interface</h1>
+                <h3>This is a university project called SPUdeS. The goal is to make a working Stewart Platform. This web page will allow us to have a look at the actual model in motion while also controlling it.</h3>
             </div>
-            <div id="moving-up-wrapper">
-                <form action="/MovingUpPage/" method="post">
-                  <button type="button" id="MoveUp" value="true" onclick="requestMovingUp();">Move Up Button</button>
-                  <div id="MovingUp"></div>
-                </form>
+            <div id="HUD">
+                <div id="angle-input-wrapper">
+                    <form action="/sendAngle/" method="post">
+                      <label>Angle Value:<input type="text" id="angle" value="" /></label>
+                      <button type="button" id="btn-angle" onclick="requestNewAngle();">Click</button>
+                      <div id="newAngle"></div>
+                    </form>
+                </div>
+                <div id="homing-angle-wrapper">
+                    <form action="/HomingAnglePage/" method="post">
+                      <button type="button" id="HomingAngle" value="true" onclick="requestHomingAngle();">Homing Button</button>
+                      <div id="Homing"></div>
+                    </form>
+                </div>
+                <div id="moving-up-wrapper">
+                    <form action="/MovingUpPage/" method="post">
+                      <button type="button" id="MoveUp" value="true" onclick="requestMovingUp();">Move Up Button</button>
+                      <div id="MovingUp"></div>
+                    </form>
+                </div>
             </div>
-        </div>
-        <img id='cam-feed' src="{{ url_for('video_feed') }}" alt="">
-        <div id="project-link-wrapper">
-            <p>
-                <a href="https://github.com/SPUdeS/SPUdeS">This GitHub Page</a> shows our full project code and CAD models.
-            </p>
-        </div>
-    </main>
-    <script src="static/js/index.js"></script>
-</body>
+            <img id='cam-feed' src="{{ url_for('video_feed') }}" alt="">
+            <div id="project-link-wrapper">
+                <p>
+                    <a href="https://github.com/SPUdeS/SPUdeS">This GitHub Page</a> shows our full project code and CAD models.
+                </p>
+            </div>
+        </main>
+        <script src="../static/js/index.js"></script>
+    </body>
 </html>
 

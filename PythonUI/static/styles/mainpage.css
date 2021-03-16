@@ -1,8 +1,18 @@
+#title-wrapper{
+    color: darkblue;
+    background-color: lightgreen;
+}
 #ui-wrapper {
 
 }
-#HUD {
+#page-icon {
+    align-content: center;
+}
+#intro-wrapper {
 
+}
+#HUD {
+    border: 10px solid black;
 }
 #cam-feed {
     height:100%;
@@ -12,7 +22,8 @@
 
 }
 #intro-wrapper {
-    color:green;
+    color: darkblue;
+    background-color: lightgreen;
 }
 #angle-input-wrapper {
     text-align: left;
