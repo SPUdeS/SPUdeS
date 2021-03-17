@@ -1,3 +1,28 @@
+#ui-wrapper {
+
+}
+#HUD {
+
+}
+#cam-feed {
+    height:100%;
+    width:100%;
+}
+#angle-input-wrapper {
+
+}
+#intro-wrapper {
+    color:green;
+}
+#angle-input-wrapper {
+    text-align: left;
+}
+#btn-angle {
+    text-align: left;
+    color: blueviolet;
+}
+
+
 /* SHAPES */
 .triangle-up {
     width: 0;
@@ -14,3 +39,7 @@
     border-right: 25px solid transparent;
     border-bottom: 50px solid #555;
 }
+
+
+
+
