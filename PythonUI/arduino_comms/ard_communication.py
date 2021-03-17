@@ -1,7 +1,7 @@
 import pyfirmata
 from time import sleep
 
-class motorControl:
+class ard_communication:
     """ Class that lets us control the motors with Communication to an Arduino with pyfirmata"""
 
     def __init__(self):
