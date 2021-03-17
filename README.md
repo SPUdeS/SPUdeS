@@ -8,7 +8,7 @@
 
 <div id="badges">
     
-[![build status](https://img.shields.io/travis/SPUdeS/SPUdes/main?logo=Travis&style=flat-square)](https://www.travis-ci.com/github/SPUdeS/SPUdeS)
+[![build status](https://img.shields.io/travis/SPUdeS/SPUdes/develop?logo=Travis&style=flat-square)](https://www.travis-ci.com/github/SPUdeS/SPUdeS)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](https://github.com/SPUdeS/SPUdeS/blob/main/LICENSE) 
 
 </div>
@@ -38,8 +38,8 @@
 
 ## <a id="Setup"></a>Setup
 1. Buy the component in the [External Resources](#Resources) section.
-2. Use the [CAD models](https://github.com/SPUdeS/SPUdeS/tree/main/CADs) to 3D print the [base](https://github.com/SPUdeS/SPUdeS/blob/main/CADs/Base.SLDPRT), the [platform](https://github.com/SPUdeS/SPUdeS/blob/main/CADs/Platform.SLDPRT) and the [servo arms](https://github.com/SPUdeS/SPUdeS/blob/main/CADs/Legs.SLDASM).
-3. Do the electrical connections using the [electrical schematics](https://github.com/SPUdeS/SPUdeS/blob/main/Documentation/Electical%20schematics.pdf) in the documentation section.
+2. Use the [CAD models](https://github.com/SPUdeS/SPUdeS/tree/develop/CADs) to 3D print the [base](https://github.com/SPUdeS/SPUdeS/blob/develop/CADs/Base.SLDPRT), the [platform](https://github.com/SPUdeS/SPUdeS/blob/develop/CADs/Platform.SLDPRT) and the [servo arms](https://github.com/SPUdeS/SPUdeS/blob/develop/CADs/Legs.SLDASM).
+3. Do the electrical connections using the [electrical schematics](https://github.com/SPUdeS/SPUdeS/blob/develop/Documentation/Electical%20schematics.pdf) in the documentation section.
 3. Set up the [Raspberry Pi](#Computer) by connecting it with the [Arduino](#Controller), your computer and the to a power source.
 4. Download or clone the repository in the Raspberry Pi.
 5. Verify your Python version (3.5 and above) and the port series.
@@ -47,7 +47,7 @@
 7. Open the interface and look at the [platform operation](#Operation) section.
 ## <a id="Documentation"></a>Documentation
 
-The dynamic system can be found in the [Geometric model](https://github.com/SPUdeS/SPUdeS/tree/main/Geometric%20model) folder.
+The dynamic system can be found in the [Geometric model](https://github.com/SPUdeS/SPUdeS/tree/develop/Geometric%20model) folder.
 ## <a id="Operation"></a>Platform Operation
 
 The camera feed can show the Stewart platform instantly. The platform can be controlled using the following buttons on the interface:
