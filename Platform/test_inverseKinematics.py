@@ -1,5 +1,5 @@
 import unittest
-from stewartPlatform import stewartPlatform
+from Platform import stewartPlatform
 import configFile as config
 
 class TestStewartPlatformMethods(unittest.TestCase):

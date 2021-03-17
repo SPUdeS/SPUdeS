@@ -1,6 +1,6 @@
 import numpy as np
 from numpy import sqrt, cos, sin, arcsin, arctan2, pi, floor
-import configFile as config
+from Platform import configFile as config
 
 
 def getAnglesFromRotationMatrix(b_R_p):
@@ -23,7 +23,6 @@ def getAlpha(effectiveLegLength, beta, base, platform):
         beta * (platform.getOrigin()[0][1] - base.getOrigin()[0][1])))
     return arcsin((L / sqrt(M ** 2 + N ** 2)) % 1) - arctan2(N, M)
 
-# TODO: put general functions like this in another place/file (maybe?)
 def getRotationMatrix(frame1, frame2):
     """ Computes the rotation matrix between the base and the platform. """
     return [
