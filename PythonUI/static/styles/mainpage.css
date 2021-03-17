@@ -1,0 +1,56 @@
+#title-wrapper{
+    color: darkblue;
+    background-color: lightgreen;
+}
+#ui-wrapper {
+
+}
+#page-icon {
+    align-content: center;
+}
+#intro-wrapper {
+
+}
+#HUD {
+    border: 10px solid black;
+}
+#cam-feed {
+    height:100%;
+    width:100%;
+}
+#angle-input-wrapper {
+
+}
+#intro-wrapper {
+    color: darkblue;
+    background-color: lightgreen;
+}
+#angle-input-wrapper {
+    text-align: left;
+}
+#btn-angle {
+    text-align: left;
+    color: blueviolet;
+}
+
+
+/* SHAPES */
+.triangle-up {
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 50px solid #555;
+}
+
+.triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 50px solid #555;
+}
+
+
+
+
