@@ -15,7 +15,7 @@ class stewartPlatform:
         self.homeServoAngles = None
         self.homeServoAngles = self.getHomeServoAngle()
         self.legPointsToJoin = []
-        self.servoAngles = []
+        self.servoAngles = self.homeServoAngles
 
     def getHomeServoAngle(self):
         if self.homeServoAngles is not None: return self.homeServoAngles
