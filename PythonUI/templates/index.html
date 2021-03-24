@@ -14,53 +14,79 @@
         <meta name="description" content="This is the user interface used to control and view the SPUdeS. SPUdeS is a project started at the University of Sherbrooke to make a Stewart Platform.">
         <meta name="author" content="SPUdeS">
         <link rel="shortcut icon" type="image/x-icon" href="../static/img/favicon.ico" />
-        <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}" />
+        <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/index.css') }}" />
 
     </head>
     <body>
 
         <main id="ui-wrapper">
             <div id="page-icon">
-                <img src="../static/img/favicon.ico" alt="Image" width="100"/>
+
             </div>
-            <div id="intro-wrapper">
+            <div class="jumbotron text-center" style="margin-bottom: 0">
+                <img src="../static/img/favicon.ico" alt="Image" width="100"/>
                 <h1>SPUdeS User Interface</h1>
                 <h3>This is a university project called SPUdeS. The goal is to make a working Stewart Platform. This web page will allow us to have a look at the actual model in motion while also controlling it.</h3>
             </div>
-            <div id="HUD">
-                <div id="angle-input-wrapper">
-                    <form action="/sendAngle/" method="post">
-                      <label>Angle Value:<input type="text" id="angle" value="" /></label>
-                      <button type="button" id="btn-angle" onclick="requestNewAngle();">Click</button>
-                      <div id="newAngle"></div>
-                    </form>
-                </div>
-                <div id="homing-angle-wrapper">
-                    <form action="/HomingAnglePage/" method="post">
-                      <button type="button" id="HomingAngle" value="true" onclick="requestHomingAngle();">Homing Button</button>
-                      <div id="Homing"></div>
-                    </form>
-                </div>
-                <div id="moving-up-wrapper">
-                    <form action="/MovingUpPage/" method="post">
-                      <button type="button" id="MoveUp" value="true" onclick="requestMovingUp();">Move Up Button</button>
-                      <div id="MovingUp"></div>
-                    </form>
-                </div>
-                <div id="plot-input-wrapper">
-                    <form action="/Plot/" method="post">
-                      <label><input type="text" id="angle_theta" value="Enter theta angle" /></label>
-                      <button type="button" onclick="requestNewAngle();">Enter</button>
-                      <div id="angleThetaInput"></div>
-                    </form>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column">
-                    <img src="{{ url_for('video_feed') }}" alt="Camera"style=" width:100%">
-                </div>
-                <div class="column">
-                    <img src="{{ url_for('plot_to_UI') }}" alt="Plot" style="width:100%">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img src="{{ url_for('video_feed') }}" alt="Camera"style=" width:100%">
+                    </div>
+                    <div class="col-sm-4">
+                        <!-- TESTING BOOTSTRAP -->
+                        <form>
+                          <div class="mb-3">
+                            <label for="input_position_x" class="form-label">Position X</label>
+                            <input type="number" class="form-control" id="input_position_x">
+                          </div>
+                          <div class="mb-3">
+                            <label for="input_position_y" class="form-label">Position Y</label>
+                            <input type="number" class="form-control" id="input_position_y">
+                          </div>
+                          <div class="mb-3">
+                            <label for="input_position_z" class="form-label">Position Z</label>
+                            <input type="number" class="form-control" id="input_position_z">
+                          </div>
+                          <div class="mb-3">
+                            <label for="input_position_alpha" class="form-label">Alpha</label>
+                            <input type="number" class="form-control" id="input_position_alpha">
+                          </div>
+                          <div class="mb-3">
+                            <label for="input_position_beta" class="form-label">Beta</label>
+                            <input type="number" class="form-control" id="input_position_beta">
+                          </div>
+                          <div class="mb-3">
+                            <label for="input_position_gamma" class="form-label">Gamma</label>
+                            <input type="number" class="form-control" id="input_position_gamma">
+                          </div>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                        <!-- END OF TESTING BOOTSTRAP -->
+                    </div>
+                    <div class="col-sm-4">
+                        <img src="/plot.png" alt="my plot">
+                        <div id="angle-input-wrapper">
+                            <form action="/sendAngle/" method="post">
+                              <label>Angle Value:<input type="text" id="angle" value="" /></label>
+                              <button type="button" id="btn-angle" onclick="requestNewAngle();">Click</button>
+                              <div id="newAngle"></div>
+                            </form>
+                        </div>
+                        <div id="homing-angle-wrapper">
+                            <form action="/HomingAnglePage/" method="post">
+                              <button type="button" id="HomingAngle" value="true" onclick="requestHomingAngle();">Homing Button</button>
+                              <div id="Homing"></div>
+                            </form>
+                        </div>
+                        <div id="moving-up-wrapper">
+                            <form action="/MovingUpPage/" method="post">
+                              <button type="button" id="MoveUp" value="true" onclick="requestMovingUp();">Move Up Button</button>
+                              <div id="MovingUp"></div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="project-link-wrapper">
@@ -70,25 +96,7 @@
             </div>
         </main>
         <script src="../static/js/index.js"></script>
-    <!-- TESTING BOOTSTRAP -->
-        <form>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-          </div>
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
 
-    <!-- END OF TESTING BOOTSTRAP -->
 
 
     </body>
