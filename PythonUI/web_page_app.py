@@ -1,7 +1,7 @@
 from flask import Flask, render_template, Response, request
 import cv2
 #from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition, goUpPosition
-#from ..stewartPlatform.stewartPlatform import stewartPlatform
+from Platform.stewartPlatform import stewartPlatform
 
 app = Flask(__name__)
 
@@ -60,6 +60,20 @@ def responseMovingUp():
             return moveUp
         return 0
     return render_template('index.html')
+
+@app.route('/Plot', methods=["POST", "GET"])
+def plot_to_UI():
+    if request.method == "POST":
+        angle_theta = request.form["angle_theta"]
+        angle_phi = request.form["angle_phi"]
+        angle_epsilon = request.form["angle_epsilon"]
+        position_x = request.form["position_x"]
+        position_y = request.form["position_y"]
+        position_z = request.form["position_z"]
+        # TODO: add the connection to stewartPlatform class
+        return 0
+    return Response(stewartPlatform.plot())
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
