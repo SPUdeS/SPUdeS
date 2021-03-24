@@ -45,8 +45,22 @@
                       <div id="MovingUp"></div>
                     </form>
                 </div>
+                <div id="plot-input-wrapper">
+                    <form action="/Plot/" method="post">
+                      <label><input type="text" id="angle_theta" value="Enter theta angle" /></label>
+                      <button type="button" onclick="requestNewAngle();">Enter</button>
+                      <div id="angleThetaInput"></div>
+                    </form>
+                </div>
             </div>
-            <img id='cam-feed' src="{{ url_for('video_feed') }}" alt="">
+            <div class="row">
+                <div class="column">
+                    <img src="{{ url_for('video_feed') }}" alt="Camera"style=" width:100%">
+                </div>
+                <div class="column">
+                    <img src="{{ url_for('plot_to_UI') }}" alt="Plot" style="width:100%">
+                </div>
+            </div>
             <div id="project-link-wrapper">
                 <p>
                     <a href="https://github.com/SPUdeS/SPUdeS">This GitHub Page</a> shows our full project code and CAD models.

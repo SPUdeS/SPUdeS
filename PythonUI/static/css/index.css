@@ -1,8 +1,18 @@
+#title-wrapper{
+    color: darkblue;
+    background-color: lightgreen;
+}
 #ui-wrapper {
 
 }
-#HUD {
+#page-icon {
+    align-content: center;
+}
+#intro-wrapper {
 
+}
+#HUD {
+    border: 10px solid black;
 }
 #cam-feed {
     height:100%;
@@ -12,7 +22,8 @@
 
 }
 #intro-wrapper {
-    color:green;
+    color: darkblue;
+    background-color: lightgreen;
 }
 #angle-input-wrapper {
     text-align: left;
@@ -20,6 +31,19 @@
 #btn-angle {
     text-align: left;
     color: blueviolet;
+}
+/* Three image containers (use 25% for four, and 50% for two, etc) */
+.column {
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
 }
 
 

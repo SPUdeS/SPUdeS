@@ -44,3 +44,19 @@ function requestMovingUp() {
     request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
     request.send("MovingUp=" + document.getElementById('MoveUp').value);
 }
+
+function requestPlot() {
+    var request = new XMLHttpRequest();
+    var result = document.getElementById('angleThetaInput')
+    request.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            result.innerHTML = this.responseText;
+        } else {
+            result.innerHTML = "There was an error in requesting the plot values"
+        }
+    };
+    alert("Plotting now!!")
+    request.open('POST', '/Plot', true)
+    request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+    request.send("angleThetaInput=" + document.getElementById('MoveUp').value);
+}
