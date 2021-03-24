@@ -2,7 +2,7 @@
     This file contain the relevant information to perform the inverse kinematics computations.
     If the platform geometry is changed, then this file should be modified and everything else
     should stay the same in the inverse kinematics file."""
-from numpy import array, column_stack
+from numpy import array, column_stack, pi
 
 # Constants - distances are in mm
 numberOfAnchors = 6
@@ -16,10 +16,10 @@ platformExteriorRadius = 90
 xPosition = 0
 yPosition = 1
 zPosition = 2
-
-# TODO: check if necessary
-vectorBase = column_stack([array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])])
-baseHomePosition = [0, 0, 0]
+baseOffsetAngle = 0
+platformOffsetAngle = pi / 3
+stewartVectorBase = column_stack([array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])])
+stewartHomePosition = [0, 0, 0]
 
 # TODO: Calculate when calling stewartPlatform class
 # Betas are the angles formed by each of the servo arms and the x-axis of the platform.

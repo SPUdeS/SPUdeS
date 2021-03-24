@@ -1,6 +1,6 @@
 import numpy as np
 from numpy import sqrt, cos, sin, arcsin, arctan2, pi, floor
-from Platform import configFile as config
+from Platform import config
 import matplotlib.pyplot as plt
 import matplotlib.collections as mc
 from Platform import stewartClasses as sc
@@ -26,7 +26,7 @@ class stewartPlatform:
         return arcsin(L0 / sqrt(M0 ** 2 + N0 ** 2)) - arctan2(N0, M0)
 
     def plot(self):
-        self.updatePlotAnchorsAndLines()
+        self.updateLegLines() #TODO: is this good?
         figure = plt.figure()
         axis = plt.axes(projection='3d')
         [bx, by, bz] = self.base.getPlotAnchors()
@@ -60,19 +60,13 @@ class stewartPlatform:
     def getLegPointsToJoin(self):
         return self.legPointsToJoin
 
-    def updatePlotAnchorsAndLines(self):
-        self.platform.updatePlotAnchors()
-
-        # List of lines to plot
-        self.platform.updatePointsToJoin()
-        self.updateLegLines()
 
     def pathSampling(self, targetPosition):
         """ Return a list of waypoints to get to the target.
             Each waypoint is a new frame coinciding with the new platform location
             Uses precision from config file """
-        actualPos = self.platform.getOrigin()[0]
-        target = targetPosition.getOrigin()[0]
+        actualPos = self.platform.getOrigin()
+        target = targetPosition.getOrigin()
 
         # Number of samples - distance to travel sampled at a rate defined by config variable pathSamplingPrecision
         distance = sqrt(
@@ -81,7 +75,7 @@ class stewartPlatform:
         numberOfWaypoints = round(distance / config.pathSamplingPrecision)
 
         # Rotation angles
-        [psy, theta, phi] = np.subtract(kf.getAnglesFromRotationMatrix(self.getRotationMatrixToTarget(targetPosition)),
+        [psy, theta, phi] = np.subtract(kf.getAnglesFromRotationMatrix(self.getRotationMatrixToTarget(targetPosition.vectorBase)),
                                         kf.getAnglesFromRotationMatrix(self.getBasePlatformRotationMatrix()))
 
         # Path Sampling
@@ -91,7 +85,7 @@ class stewartPlatform:
             new_vectorBase = np.matmul(
                 self.setRotationMatrix(i * psy / numberOfWaypoints, i * theta / numberOfWaypoints,
                                   i * phi / numberOfWaypoints),
-                self.platform.getVectorBase()[0])
+                self.platform.getVectorBase())
             waypoints.append(sc.frame([
                 actualPos[0] + (i * (target[0] - actualPos[0]) / numberOfWaypoints),
                 actualPos[1] + (i * (target[1] - actualPos[1]) / numberOfWaypoints),
@@ -107,7 +101,7 @@ class stewartPlatform:
             """
         targetPosition = self.setTargetPosition(target)
         translation = targetPosition.getOrigin()
-        base_R_platform = self.getRotationMatrixToTarget(targetPosition)
+        base_R_platform = self.getRotationMatrixToTarget(targetPosition.vectorBase)
 
         # Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi
         leg_lengths = []
@@ -125,15 +119,15 @@ class stewartPlatform:
 
 
     def setTargetPosition(self, target):
-        return sc.frame([target[0], target[1], target[2]], [target[3], target[4], target[5]])
+        return sc.frame(target.origin, target.vectorBase)
 
     def getBasePlatformRotationMatrix(self):
         """ Returns the rotation matrix between the base and the platform. """
-        return kf.getRotationMatrix(self.base.getVectorBase()[0], self.platform.getVectorBase()[0])
+        return kf.getRotationMatrix(self.base.getVectorBase(), self.platform.getVectorBase())
 
-    def getRotationMatrixToTarget(self, target):
+    def getRotationMatrixToTarget(self, targetVectorBase):
         """ Returns the rotation matrix between the base and a target frame. """
-        return kf.getRotationMatrix(self.base.getVectorBase()[0], target)
+        return kf.getRotationMatrix(self.base.getVectorBase(), targetVectorBase)
 
     def setRotationMatrix(self, psy, theta, phi):
         """ Sets the rotation matrix needed given yaw, pitch and roll.
@@ -156,7 +150,7 @@ if __name__ == "__main__":
     stewart = stewartPlatform()
     stewart.plot()
     # Set target
-    targetPosition = [10, 10, stewart.platform.origin[config.zPosition]]
+    targetPosition = [0, 0, stewart.platform.origin[config.zPosition]+50]
     targetOrientation = np.column_stack([np.array([1, 0, 0]), np.array([0, 1, 0]), np.array([0, 0, 1])])
     target = sc.frame(targetPosition, targetOrientation)
 
@@ -164,7 +158,9 @@ if __name__ == "__main__":
     waypoints = stewart.pathSampling(target)
 
     # Compute set of anchor angles to follow trajectory
+    #todo: append servo angles in list in a stewart platform function
     for point in waypoints:
+        #TODO: if NaN, dont append and return
         servoAngles = stewart.inverseKinematics(point)
         print(servoAngles)
 
