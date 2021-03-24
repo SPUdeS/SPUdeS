@@ -1,7 +1,7 @@
 from flask import Flask, render_template, Response, request
 import cv2
 #from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition, goUpPosition
-from stewartPlatform.stewartPlatform import stewartPlatform
+from Platform.stewartPlatform import stewartPlatform
 
 app = Flask(__name__)
 
