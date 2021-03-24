@@ -1,10 +1,10 @@
 import numpy as np
 from numpy import sqrt, cos, sin, arcsin, arctan2, pi, floor
-import configFile as config
+from Platform import config
 import matplotlib.pyplot as plt
 import matplotlib.collections as mc
-import stewartClasses as sc
-import kinematicFunctions as kf
+from Platform import stewartClasses as sc
+from Platform import kinematicFunctions as kf
 
 class stewartPlatform:
     """ Contains inner classes base and platform"""
@@ -15,22 +15,22 @@ class stewartPlatform:
         self.homeServoAngles = None
         self.homeServoAngles = self.getHomeServoAngle()
         self.legPointsToJoin = []
-        self.servoAngles = []
+        self.servoAngles = self.homeServoAngles
 
     def getHomeServoAngle(self):
         if self.homeServoAngles is not None: return self.homeServoAngles
-        # Angle of servos at home position
+        # Angle of anchors at home position
         L0 = 2 * config.armLength ** 2
         M0 = 2 * config.armLength * self.platform.origin[config.zPosition]
-        N0 = 2 * config.armLength * (self.base.corners[0][0] - self.platform.homeCorners[0][0])
+        N0 = 2 * config.armLength * (self.base.anchors[0][0] - self.platform.anchors[0][0])
         return arcsin(L0 / sqrt(M0 ** 2 + N0 ** 2)) - arctan2(N0, M0)
 
     def plot(self):
-        self.updatePlotCornersAndLines()
+        self.updateLegLines() #TODO: is this good?
         figure = plt.figure()
         axis = plt.axes(projection='3d')
-        [bx, by, bz] = self.base.getPlotCorners()
-        [px, py, pz] = self.platform.getPlotCorners()
+        [bx, by, bz] = self.base.getPlotAnchors()
+        [px, py, pz] = self.platform.getPlotAnchors()
         axis.scatter(bx, by, bz)
         axis.scatter(px, py, pz)
         axis.scatter(self.base.origin[config.xPosition], self.base.origin[config.yPosition],
@@ -52,27 +52,21 @@ class stewartPlatform:
 
     def updateLegLines(self):
         self._legPointsToJoin = []
-        [bx, by, bz] = self.base.getPlotCorners()
-        [px, py, pz] = self.platform.getPlotCorners()
-        for i in range(config.numberOfCorners):
+        [bx, by, bz] = self.base.getPlotAnchors()
+        [px, py, pz] = self.platform.getPlotAnchors()
+        for i in range(config.numberOfAnchors):
             self._legPointsToJoin.append([(bx[i], by[i], bz[i]), (px[(i + 1) % 6], py[(i + 1) % 6], pz[(i + 1) % 6])])
 
     def getLegPointsToJoin(self):
         return self.legPointsToJoin
 
-    def updatePlotCornersAndLines(self):
-        self.platform.updatePlotCorners()
-
-        # List of lines to plot
-        self.platform.updatePointsToJoin()
-        self.updateLegLines()
 
     def pathSampling(self, targetPosition):
         """ Return a list of waypoints to get to the target.
             Each waypoint is a new frame coinciding with the new platform location
             Uses precision from config file """
-        actualPos = self.platform.getOrigin()[0]
-        target = targetPosition.getOrigin()[0]
+        actualPos = self.platform.getOrigin()
+        target = targetPosition.getOrigin()
 
         # Number of samples - distance to travel sampled at a rate defined by config variable pathSamplingPrecision
         distance = sqrt(
@@ -81,7 +75,7 @@ class stewartPlatform:
         numberOfWaypoints = round(distance / config.pathSamplingPrecision)
 
         # Rotation angles
-        [psy, theta, phi] = np.subtract(kf.getAnglesFromRotationMatrix(self.getRotationMatrixToTarget(targetPosition)),
+        [psy, theta, phi] = np.subtract(kf.getAnglesFromRotationMatrix(self.getRotationMatrixToTarget(targetPosition.vectorBase)),
                                         kf.getAnglesFromRotationMatrix(self.getBasePlatformRotationMatrix()))
 
         # Path Sampling
@@ -91,7 +85,7 @@ class stewartPlatform:
             new_vectorBase = np.matmul(
                 self.setRotationMatrix(i * psy / numberOfWaypoints, i * theta / numberOfWaypoints,
                                   i * phi / numberOfWaypoints),
-                self.platform.getVectorBase()[0])
+                self.platform.getVectorBase())
             waypoints.append(sc.frame([
                 actualPos[0] + (i * (target[0] - actualPos[0]) / numberOfWaypoints),
                 actualPos[1] + (i * (target[1] - actualPos[1]) / numberOfWaypoints),
@@ -99,35 +93,41 @@ class stewartPlatform:
                 new_vectorBase))
         return waypoints
 
-    def inverseKinematics(self, targetPosition):
+    def inverseKinematics(self, target):
         """ Takes in parameters the new target frame the user wants to go to and the actual
             frame (given by the object platform).
-            Returns servo angles necessary to accomplish the movement. """
+            Returns servo angles necessary to accomplish the movement.
+            targetPosition = [x, y, z, ψ, θ, φ ] (angles d'euler)
+            """
+        targetPosition = self.setTargetPosition(target)
         translation = targetPosition.getOrigin()
-        base_R_platform = self.getRotationMatrixToTarget(targetPosition)
+        base_R_platform = self.getRotationMatrixToTarget(targetPosition.vectorBase)
 
         # Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi
         leg_lengths = []
-        for leg in range(config.numberOfCorners):
+        for leg in range(config.numberOfAnchors):
             leg_lengths.append(
-                np.add(translation, np.subtract(np.matmul(base_R_platform, self.platform.corners[leg]),
-                                                self.base.corners[leg])))
+                np.add(translation, np.subtract(np.matmul(base_R_platform, self.platform.anchors[leg]),
+                                                self.base.anchors[leg])))
 
-        # Compute servo angles to get effective leg lengths
+        # Compute anchor angles to get effective leg lengths
         servoAngles = []
-        for servo in range(config.numberOfCorners):
+        for anchor in range(config.numberOfAnchors):
             servoAngles.append(
-                kf.getAlpha(np.linalg.norm(leg_lengths[servo]), config.betas[servo], self.base, targetPosition))
+                kf.getAlpha(np.linalg.norm(leg_lengths[anchor]), config.betas[anchor], self.base, targetPosition))
         return servoAngles
 
 
+    def setTargetPosition(self, target):
+        return sc.frame(target.origin, target.vectorBase)
+
     def getBasePlatformRotationMatrix(self):
         """ Returns the rotation matrix between the base and the platform. """
-        return kf.getRotationMatrix(self.base.getVectorBase()[0], self.platform.getVectorBase()[0])
+        return kf.getRotationMatrix(self.base.getVectorBase(), self.platform.getVectorBase())
 
-    def getRotationMatrixToTarget(self, target):
+    def getRotationMatrixToTarget(self, targetVectorBase):
         """ Returns the rotation matrix between the base and a target frame. """
-        return kf.getRotationMatrix(self.base.getVectorBase()[0], target)
+        return kf.getRotationMatrix(self.base.getVectorBase(), targetVectorBase)
 
     def setRotationMatrix(self, psy, theta, phi):
         """ Sets the rotation matrix needed given yaw, pitch and roll.
@@ -149,17 +149,18 @@ if __name__ == "__main__":
     # Initialize platform
     stewart = stewartPlatform()
     stewart.plot()
-    print(stewart.platform.getOrigin())
     # Set target
-    targetPosition = [10, 10, stewart.platform.origin[config.zPosition]]
+    targetPosition = [0, 0, stewart.platform.origin[config.zPosition]+50]
     targetOrientation = np.column_stack([np.array([1, 0, 0]), np.array([0, 1, 0]), np.array([0, 0, 1])])
     target = sc.frame(targetPosition, targetOrientation)
 
     # Discretize trajectory
     waypoints = stewart.pathSampling(target)
 
-    # Compute set of servo angles to follow trajectory
+    # Compute set of anchor angles to follow trajectory
+    #todo: append servo angles in list in a stewart platform function
     for point in waypoints:
+        #TODO: if NaN, dont append and return
         servoAngles = stewart.inverseKinematics(point)
         print(servoAngles)
 

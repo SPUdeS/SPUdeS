@@ -2,16 +2,26 @@
     This file contain the relevant information to perform the inverse kinematics computations.
     If the platform geometry is changed, then this file should be modified and everything else
     should stay the same in the inverse kinematics file."""
-from numpy import sqrt, array, column_stack
+from numpy import array, column_stack, pi
+
 # Constants - distances are in mm
-numberOfCorners = 6
+numberOfAnchors = 6
 pathSamplingPrecision = 0.5
 armLength = 25
 legLength = 150
-baseInteriorRadius = 60
+baseInteriorRadius = 75
 baseExteriorRadius = 90
 platformInteriorRadius = 60
 platformExteriorRadius = 90
+xPosition = 0
+yPosition = 1
+zPosition = 2
+baseOffsetAngle = 0
+platformOffsetAngle = pi / 3
+stewartVectorBase = column_stack([array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])])
+stewartHomePosition = [0, 0, 0]
+
+# TODO: Calculate when calling stewartPlatform class
 # Betas are the angles formed by each of the servo arms and the x-axis of the platform.
 betas = [
     2.61788,
@@ -21,9 +31,4 @@ betas = [
     -2.61788,
     -2.61788
 ]
-vectorBase = column_stack([array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])])
-xPosition = 0
-yPosition = 1
-zPosition = 2
-baseHomePosition = [0, 0, 0]
 platformHomePosition = [0, 0, 119.81652640600127]
