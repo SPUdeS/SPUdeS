@@ -14,7 +14,7 @@ class stewartPlatform:
         self.platform = sc._platform(self.base)
         self.homeServoAngles = None
         self.homeServoAngles = self.getHomeServoAngle()
-        self.legPointsToJoin = []
+        self.legPointsToJoin = self.updateLegLines()
         self.servoAngles = self.homeServoAngles
 
     def getHomeServoAngle(self):
@@ -31,31 +31,35 @@ class stewartPlatform:
         axis = plt.axes(projection='3d')
         [bx, by, bz] = self.base.getPlotAnchors()
         [px, py, pz] = self.platform.getPlotAnchors()
+        #TODO : ajuster hauteur np.add(self.initAnchors(), [0,0, config.platformHomePosition[2]])
+
+        # Plot the 12 anchor points
         axis.scatter(bx, by, bz)
         axis.scatter(px, py, pz)
+
+        # Plot base origin
         axis.scatter(self.base.origin[config.xPosition], self.base.origin[config.yPosition],
                      self.base.origin[config.zPosition])
+        # Plot platform origin
         axis.scatter(self.platform.origin[config.xPosition], self.platform.origin[config.yPosition],
                      self.platform.origin[config.zPosition])
 
         self.drawLinesBetweenPoints(axis, self.platform.getPointsToJoin())
         self.drawLinesBetweenPoints(axis, self.base.getPointsToJoin())
         self.drawLinesBetweenPoints(axis, self.getLegPointsToJoin())
+
         plt.show()
 
     def drawLinesBetweenPoints(self, axis, listOfPointsToJoin):
         for points in listOfPointsToJoin:
             axis.plot([points[0][0], points[1][0]], [points[0][1], points[1][1]], [points[0][2], points[1][2]])
 
-    def setLines(self):
-        pass
-
     def updateLegLines(self):
-        self._legPointsToJoin = []
+        self.legPointsToJoin = []
         [bx, by, bz] = self.base.getPlotAnchors()
         [px, py, pz] = self.platform.getPlotAnchors()
         for i in range(config.numberOfAnchors):
-            self._legPointsToJoin.append([(bx[i], by[i], bz[i]), (px[(i + 1) % 6], py[(i + 1) % 6], pz[(i + 1) % 6])])
+            self.legPointsToJoin.append([(bx[i], by[i], bz[i]), (px[i], py[i], pz[i])])
 
     def getLegPointsToJoin(self):
         return self.legPointsToJoin
@@ -149,6 +153,7 @@ if __name__ == "__main__":
     # Initialize platform
     stewart = stewartPlatform()
     stewart.plot()
+
     # Set target
     targetPosition = [0, 0, stewart.platform.origin[config.zPosition]+50]
     targetOrientation = np.column_stack([np.array([1, 0, 0]), np.array([0, 1, 0]), np.array([0, 0, 1])])

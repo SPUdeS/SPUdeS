@@ -24,11 +24,12 @@ stewartHomePosition = [0, 0, 0]
 # TODO: Calculate when calling stewartPlatform class
 # Betas are the angles formed by each of the servo arms and the x-axis of the platform.
 betas = [
-    2.61788,
-    2.61788,
-    -1.5708,
-    -1.5708,
-    -2.61788,
-    -2.61788
+    (150/180)*pi,
+    (150/180)*pi,
+    (-90/180)*pi,
+    (-90/180)*pi,
+    (30/180)*pi,
+    (30/180)*pi
 ]
-platformHomePosition = [0, 0, 119.81652640600127]
+# Deprecated?
+#platformHomePosition = [0, 0, 119.81652640600127]

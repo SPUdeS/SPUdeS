@@ -44,7 +44,8 @@ class _piece(frame):
     def initAnchors(self):
         hexagonAnchors = []
         for i in range(config.numberOfAnchors):
-            hexagonAnchors.append(self._initAnchor(i, self.interiorRadius, self.exteriorRadius))
+            idx = i + 1 if isinstance(self, _base)  else i
+            hexagonAnchors.append(self._initAnchor(idx, self.interiorRadius, self.exteriorRadius))
         return hexagonAnchors
 
     def _initAnchor(self, idx, r_in, r_out):
@@ -64,9 +65,9 @@ class _piece(frame):
 
         # Place plot points for platform
         for i in range(config.numberOfAnchors):
-            anchorX.append(self.anchors[i][config.xPosition])
-            anchorY.append(self.anchors[i][config.yPosition])
-            anchorZ.append(self.anchors[i][config.zPosition])
+            anchorX.append(self.anchors[i][config.xPosition] + self.origin[config.xPosition])
+            anchorY.append(self.anchors[i][config.yPosition] + self.origin[config.yPosition])
+            anchorZ.append(self.anchors[i][config.zPosition] + self.origin[config.zPosition])
         return [anchorX, anchorY, anchorZ]
 
     def getPointsToJoin(self):
@@ -81,20 +82,20 @@ class _base(_piece):
     def __init__(self, origin=config.stewartHomePosition, vectorBase=config.stewartVectorBase):
         super().__init__(origin, vectorBase)
         self.offsetAngle = config.baseOffsetAngle
-        self.interiorRadius = config.platformInteriorRadius
-        self.exteriorRadius = config.platformExteriorRadius
+        self.interiorRadius = config.baseInteriorRadius
+        self.exteriorRadius = config.baseExteriorRadius
         self.anchors = self.initAnchors()
 
 
 class _platform(_piece):
-    def __init__(self, linkedBase, origin=config.platformHomePosition, vectorBase=config.stewartVectorBase):
+    def __init__(self, linkedBase, origin=config.stewartHomePosition, vectorBase=config.stewartVectorBase):
         super().__init__(origin, vectorBase)
         self.linkedBase = linkedBase  # TODO: déplacer calcul de h en config
         self.offsetAngle = config.platformOffsetAngle
-        self.origin = config.platformHomePosition
         self.interiorRadius = config.platformInteriorRadius
         self.exteriorRadius = config.platformExteriorRadius
         self.anchors = self.initAnchors()
+        self.origin = self._getHomePosition(self.linkedBase)
 
     def _getHomePosition(self, linkedBase):
         # Home position platform - computed from base/platform anchors #1 but any would do by symmetry
@@ -102,13 +103,3 @@ class _platform(_piece):
             config.armLength ** 2 + config.legLength ** 2 - (linkedBase.anchors[0][0] - self.anchors[0][0]) ** 2 - (
                     linkedBase.anchors[0][1] - self.anchors[0][1]) ** 2)
         return [0, 0, platformHomeZPosition]
-
-    """def initAnchors(self):
-        hexagonAnchors = super(_platform, self).initAnchors()
-        platformAnchors = []
-        for i in range(config.numberOfAnchors):
-            platformAnchors.append(np.add(self.getOrigin(),
-                                          np.matmul(kf.getRotationMatrix(config.stewartVectorBase,
-                                                                         self.getVectorBase()),
-                                                    hexagonAnchors[i])).tolist()[0])
-        return platformAnchors"""
