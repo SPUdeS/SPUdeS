@@ -1,5 +1,8 @@
-from numpy import dot, sqrt, cos, sin, arcsin, arctan2, array, matmul
+import numpy as np
+from numpy import dot, sqrt, cos, sin, arcsin, arctan2, array, matmul, ceil
 from Platform import config
+
+np.seterr(invalid='ignore')
 
 
 def getRotationMatrixFromAngles(alpha, beta, gamma):
@@ -36,6 +39,16 @@ def getAnglesFromRotationMatrix(b_R_p):
     beta = arctan2(-b_R_p[2][0], sqrt(b_R_p[0][0] ** 2 + b_R_p[1][0] ** 2))
     gamma = arctan2(b_R_p[2][1], b_R_p[2][2])
     return [alpha, beta, gamma]
+
+
+def getNumberOfWaypoints(initialOrigin, targetOrigin):
+    """ Returns the number of samples.
+        Distance to travel sampled at a rate defined by config variable pathSamplingPrecision. """
+    distance = sqrt(
+        np.subtract(targetOrigin[0], initialOrigin[0]) ** 2 +
+        np.subtract(targetOrigin[1], initialOrigin[1]) ** 2 +
+        np.subtract(targetOrigin[2], initialOrigin[2]) ** 2)
+    return int(ceil(distance / config.pathSamplingPrecision))
 
 
 def getAlpha(effectiveLegLength, beta, base, platform):

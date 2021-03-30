@@ -1,8 +1,7 @@
 import numpy as np
-from numpy import sqrt, cos, sin, arcsin, arctan2, pi, floor, ceil, isnan, any
+from numpy import sqrt, arcsin, arctan2, isnan
 from Platform import config
 import matplotlib.pyplot as plt
-import matplotlib.collections as mc
 from Platform import stewartClasses as sc
 from Platform import kinematicFunctions as kf
 
@@ -11,119 +10,109 @@ class stewartPlatform:
     """ Contains inner classes base and platform"""
 
     def __init__(self):
-        self.base = sc._base()
-        self.platform = sc._platform(self.base)
-        self.homeServoAngles = None
-        self.homeServoAngles = self.getHomeServoAngle()
-        self.legPointsToJoin = self.updateLegLines()
+        self.base = sc.base()
+        self.platform = sc.platform(self.base)
+        self.homeServoAngles = self.initHomeServoAngle()
         self.servoAngles = self.homeServoAngles
 
-    def getHomeServoAngle(self):
-        if self.homeServoAngles is not None: return self.homeServoAngles
+    def initHomeServoAngle(self):
         # Angle of anchors at home position
         L0 = 2 * config.armLength ** 2
-        M0 = 2 * config.armLength * self.platform.origin[2]
+        M0 = 2 * config.armLength * self.platform.getOrigin()[2]
         N0 = 2 * config.armLength * (self.base.anchors[0][0] - self.platform.anchors[0][0])
         return arcsin(L0 / sqrt(M0 ** 2 + N0 ** 2)) - arctan2(N0, M0)
 
+    def getHomeServoAngle(self):
+        return self.homeServoAngles
+
     def plot(self):
-        self.updateLegLines()  # TODO: is this good?
-        figure = plt.figure()
         axis = plt.axes(projection='3d')
+        baseOrigin = self.base.getOrigin()
+        platformOrigin = self.base.getOrigin()
         [bx, by, bz] = self.base.getPlotAnchors()
         [px, py, pz] = self.platform.getPlotAnchors()
 
-        # Plot the 12 anchor points
+        # Plot the 12 anchor points and the base and platform origin
         axis.scatter(bx, by, bz)
         axis.scatter(px, py, pz)
+        axis.scatter(baseOrigin[0], baseOrigin[1], baseOrigin[2])
+        axis.scatter(platformOrigin[0], platformOrigin[1], platformOrigin[2])
 
-        # Plot base origin
-        axis.scatter(self.base.origin[0], self.base.origin[1],
-                     self.base.origin[2])
-        # Plot platform origin
-        axis.scatter(self.platform.origin[0], self.platform.origin[1],
-                     self.platform.origin[2])
-
+        # Draw the base and platform hexagon lines and the connecting arms
         self.drawLinesBetweenPoints(axis, self.platform.getPointsToJoin())
         self.drawLinesBetweenPoints(axis, self.base.getPointsToJoin())
         self.drawLinesBetweenPoints(axis, self.getLegPointsToJoin())
 
         plt.show()
 
-    def drawLinesBetweenPoints(self, axis, listOfPointsToJoin):
+    @staticmethod
+    def drawLinesBetweenPoints(axis, listOfPointsToJoin):
         for points in listOfPointsToJoin:
             axis.plot([points[0][0], points[1][0]], [points[0][1], points[1][1]], [points[0][2], points[1][2]])
 
-    def updateLegLines(self):
-        self.legPointsToJoin = []
+    def getLegPointsToJoin(self):
+        legPointsToJoin = []
         [bx, by, bz] = self.base.getPlotAnchors()
         [px, py, pz] = self.platform.getPlotAnchors()
         for i in range(config.numberOfAnchors):
-            self.legPointsToJoin.append([(bx[i], by[i], bz[i]), (px[i], py[i], pz[i])])
+            legPointsToJoin.append([(bx[i], by[i], bz[i]), (px[i], py[i], pz[i])])
+        return legPointsToJoin
 
-    def getLegPointsToJoin(self):
-        return self.legPointsToJoin
-
-    def pathSampling(self, targetPosition):
+    def pathSampling(self, targetFrame):
         """ Return a list of waypoints to get to the target.
             Each waypoint is a new frame coinciding with the new platform location
             Uses precision from config file """
-        actualPos = self.platform.getOrigin()
-        target = targetPosition.getOrigin()
+        initialOrigin = self.platform.getOrigin()
+        targetOrigin = targetFrame.getOrigin()
+        numberOfWaypoints = kf.getNumberOfWaypoints(initialOrigin, targetOrigin)
+        [alpha, beta, gamma] = self.getRotationAnglesToFrame(targetFrame)
+        incrementedTarget = []
 
-        # Number of samples - distance to travel sampled at a rate defined by config variable pathSamplingPrecision
-        distance = sqrt(
-            np.subtract(target[0], actualPos[0]) ** 2 + np.subtract(target[1], actualPos[1]) ** 2 + np.subtract(
-                target[2], actualPos[2]) ** 2)
-        numberOfWaypoints = int(ceil(distance / config.pathSamplingPrecision))
-
-        # Rotation angles
-        [alpha, beta, gamma] = np.subtract(
-            kf.getAnglesFromRotationMatrix(self.getRotationMatrixToTarget(targetPosition.vectorBase)),
-            kf.getAnglesFromRotationMatrix(self.getBasePlatformRotationMatrix()))
-
-        # Path Sampling
-        waypoints = []
         for i in range(numberOfWaypoints):
-            # Rotate platform's basis vectors
             increment = (i + 1) / numberOfWaypoints
-            new_vectorBase = np.matmul(
+
+            # Displace platform origin
+            incrementedOrigin = [
+                initialOrigin[0] + (increment * (targetOrigin[0] - initialOrigin[0])),
+                initialOrigin[1] + (increment * (targetOrigin[1] - initialOrigin[1])),
+                initialOrigin[2] + (increment * (targetOrigin[2] - initialOrigin[2]))]
+            # Rotate platform's basis vectors
+            incrementedVectorBase = np.matmul(
                 kf.getRotationMatrixFromAngles(increment * alpha, increment * beta, increment * gamma),
                 self.platform.getVectorBase())
+            # Create new intermediate target waypoint
+            incrementedTarget.append(sc.frame(incrementedOrigin, incrementedVectorBase))
 
-            waypoints.append(sc.frame([
-                actualPos[0] + (increment * (target[0] - actualPos[0])),
-                actualPos[1] + (increment * (target[1] - actualPos[1])),
-                actualPos[2] + (increment * (target[2] - actualPos[2]))],
-                new_vectorBase))
-        return waypoints
+        return incrementedTarget
 
-    def inverseKinematics(self, target):
+    def inverseKinematics(self, targetPoint):
         """ Takes in parameters the new target frame the user wants to go to and the actual
             frame (given by the object platform).
             Returns servo angles necessary to accomplish the movement.
-            targetPosition = [x, y, z, ψ, θ, φ ] (angles d'euler)
+            target = [x, y, z, ψ, θ, φ ] (angles d'Euler)
             """
-        targetPosition = self.setTargetPosition(target)
-        translation = targetPosition.getOrigin()
-        base_R_platform = self.getRotationMatrixToTarget(targetPosition.vectorBase)
+        targetFrame = sc.frame(targetPoint.origin, targetPoint.vectorBase)
 
         # Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi
+        base_R_platform = self.getRotationMatrixToTarget(targetFrame.vectorBase)
         leg_lengths = []
         for leg in range(config.numberOfAnchors):
             leg_lengths.append(
-                np.add(translation, np.subtract(np.matmul(base_R_platform, self.platform.anchors[leg]),
-                                                self.base.anchors[leg])))
+                np.add(targetFrame.getOrigin(), np.subtract(np.matmul(base_R_platform, self.platform.anchors[leg]),
+                                                            self.base.anchors[leg])))
 
         # Compute anchor angles to get effective leg lengths
         servoAngles = []
         for anchor in range(config.numberOfAnchors):
             servoAngles.append(
-                kf.getAlpha(np.linalg.norm(leg_lengths[anchor]), config.betas[anchor], self.base, targetPosition))
+                kf.getAlpha(np.linalg.norm(leg_lengths[anchor]), config.betas[anchor], self.base, targetFrame))
         return servoAngles
 
-    def setTargetPosition(self, target):
-        return sc.frame(target.origin, target.vectorBase)
+    def getRotationAnglesToFrame(self, targetFrame):
+        """ Returns the rotation angle between the platform and a target frame. """
+        return np.subtract(
+            kf.getAnglesFromRotationMatrix(self.getRotationMatrixToTarget(targetFrame.vectorBase)),
+            kf.getAnglesFromRotationMatrix(self.getBasePlatformRotationMatrix()))
 
     def getBasePlatformRotationMatrix(self):
         """ Returns the rotation matrix between the base and the platform. """
@@ -139,13 +128,14 @@ class stewartPlatform:
         listServoAngles = []
         lastWaypoint = waypoints[-1]
         for point in waypoints:
-            servoAngles = stewart.inverseKinematics(point)
+            servoAngles = self.inverseKinematics(point)
             if not (isnan(servoAngles)).any():
                 listServoAngles.append(servoAngles)
             else:
                 lastWaypoint = point
                 break
         return [listServoAngles, lastWaypoint]
+
 
 if __name__ == "__main__":
     # Initialize platform
@@ -159,8 +149,8 @@ if __name__ == "__main__":
     target = sc.frame(targetPosition, targetOrientation)
 
     # Discretize trajectory
-    waypoints = stewart.pathSampling(target)
-    [listAngles, endPosition] = stewart.listServoAngles(waypoints)
+    wp = stewart.pathSampling(target)
+    [listAngles, endPosition] = stewart.listServoAngles(wp)
 
     # Update platform current position
     stewart.platform.updateFrame(endPosition)

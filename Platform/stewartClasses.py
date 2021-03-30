@@ -29,6 +29,7 @@ class frame:
         self.origin = frame.origin
         self.vectorBase = frame.vectorBase
 
+
 class _piece(frame):
     """ Position : column vector describing position in Base Frame
         Unit vectors [[Nx],[Ny],[Nz]] where Nx,y,z are column vectors
@@ -47,7 +48,7 @@ class _piece(frame):
     def initAnchors(self):
         hexagonAnchors = []
         for i in range(config.numberOfAnchors):
-            idx = i + 1 if isinstance(self, _base) else i
+            idx = i + 1 if isinstance(self, base) else i
             hexagonAnchors.append(self._initAnchor(idx, self.interiorRadius, self.exteriorRadius))
         return hexagonAnchors
 
@@ -83,7 +84,7 @@ class _piece(frame):
         return pointsToJoin
 
 
-class _base(_piece):
+class base(_piece):
     def __init__(self, origin=config.stewartHomePosition, vectorBase=config.stewartVectorBase):
         super().__init__(origin, vectorBase)
         self.offsetAngle = config.baseOffsetAngle
@@ -92,7 +93,7 @@ class _base(_piece):
         self.anchors = self.initAnchors()
 
 
-class _platform(_piece):
+class platform(_piece):
     def __init__(self, linkedBase, origin=config.stewartHomePosition, vectorBase=config.stewartVectorBase):
         super().__init__(origin, vectorBase)
         self.offsetAngle = config.platformOffsetAngle
