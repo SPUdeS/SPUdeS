@@ -65,9 +65,9 @@ class _piece(frame):
 
         # Place plot points for platform
         for i in range(config.numberOfAnchors):
-            anchorX.append(self.anchors[i][config.xPosition] + self.origin[config.xPosition])
-            anchorY.append(self.anchors[i][config.yPosition] + self.origin[config.yPosition])
-            anchorZ.append(self.anchors[i][config.zPosition] + self.origin[config.zPosition])
+            anchorX.append(self.anchors[i][0] + self.origin[0])
+            anchorY.append(self.anchors[i][1] + self.origin[1])
+            anchorZ.append(self.anchors[i][2] + self.origin[2])
         return [anchorX, anchorY, anchorZ]
 
     def getPointsToJoin(self):
@@ -90,14 +90,14 @@ class _base(_piece):
 class _platform(_piece):
     def __init__(self, linkedBase, origin=config.stewartHomePosition, vectorBase=config.stewartVectorBase):
         super().__init__(origin, vectorBase)
-        self.linkedBase = linkedBase  # TODO: déplacer calcul de h en config
         self.offsetAngle = config.platformOffsetAngle
         self.interiorRadius = config.platformInteriorRadius
         self.exteriorRadius = config.platformExteriorRadius
         self.anchors = self.initAnchors()
-        self.origin = self._getHomePosition(self.linkedBase)
+        self.homePosition = self.initHomePosition(linkedBase)
+        self.setOrigin(self.homePosition)
 
-    def _getHomePosition(self, linkedBase):
+    def initHomePosition(self, linkedBase):
         # Home position platform - computed from base/platform anchors #1 but any would do by symmetry
         platformHomeZPosition = sqrt(
             config.armLength ** 2 + config.legLength ** 2 - (linkedBase.anchors[0][0] - self.anchors[0][0]) ** 2 - (

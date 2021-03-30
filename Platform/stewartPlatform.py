@@ -21,7 +21,7 @@ class stewartPlatform:
         if self.homeServoAngles is not None: return self.homeServoAngles
         # Angle of anchors at home position
         L0 = 2 * config.armLength ** 2
-        M0 = 2 * config.armLength * self.platform.origin[config.zPosition]
+        M0 = 2 * config.armLength * self.platform.origin[2]
         N0 = 2 * config.armLength * (self.base.anchors[0][0] - self.platform.anchors[0][0])
         return arcsin(L0 / sqrt(M0 ** 2 + N0 ** 2)) - arctan2(N0, M0)
 
@@ -38,11 +38,11 @@ class stewartPlatform:
         axis.scatter(px, py, pz)
 
         # Plot base origin
-        axis.scatter(self.base.origin[config.xPosition], self.base.origin[config.yPosition],
-                     self.base.origin[config.zPosition])
+        axis.scatter(self.base.origin[0], self.base.origin[1],
+                     self.base.origin[2])
         # Plot platform origin
-        axis.scatter(self.platform.origin[config.xPosition], self.platform.origin[config.yPosition],
-                     self.platform.origin[config.zPosition])
+        axis.scatter(self.platform.origin[0], self.platform.origin[1],
+                     self.platform.origin[2])
 
         self.drawLinesBetweenPoints(axis, self.platform.getPointsToJoin())
         self.drawLinesBetweenPoints(axis, self.base.getPointsToJoin())
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     stewart.plot()
 
     # Set target
-    targetPosition = [0, 0, stewart.platform.origin[config.zPosition]+50]
+    targetPosition = [0, 0, stewart.platform.origin[2]+50]
     targetOrientation = np.column_stack([np.array([1, 0, 0]), np.array([0, 1, 0]), np.array([0, 0, 1])])
     target = sc.frame(targetPosition, targetOrientation)
 
