@@ -1,5 +1,22 @@
-from numpy import dot, sqrt, cos, sin, arcsin, arctan2
+from numpy import dot, sqrt, cos, sin, arcsin, arctan2, array, matmul
 from Platform import config
+
+
+def getRotationMatrixFromAngles(alpha, beta, gamma):
+    """ Sets the rotation matrix needed given yaw, pitch and roll.
+        Based on Yaw, pitch, roll - Euler ZYX(alpha, beta, gamma) convention.
+        platform unitvectors are given as: [[Px],[Py],[Pz]] in reference frame Base
+        alpha = angle around z
+        beta = angle around y
+        gamma = angle around x """
+
+    # Elementary Rotation Matrix
+    R_Z = array([[cos(alpha), -sin(alpha), 0], [sin(alpha), cos(alpha), 0], [0, 0, 1]])
+    R_Y = array([[cos(beta), 0, sin(beta)], [0, 1, 0], [-sin(beta), 0, cos(beta)]])
+    R_X = array([[1, 0, 0], [0, cos(gamma), -sin(gamma)], [0, sin(gamma), cos(gamma)]])
+
+    # Full rotation matrix
+    return matmul(matmul(R_Z, R_Y), R_X)
 
 
 def getRotationMatrix(vb1, vb2):
@@ -29,5 +46,5 @@ def getAlpha(effectiveLegLength, beta, base, platform):
     M = 2 * config.armLength * (platform.getOrigin()[2] - base.getOrigin()[2])
     # N = 2a*(cos Beta * (xp-xb) + sin Beta * (yp-yb)))
     N = 2 * config.armLength * (cos(beta) * (platform.getOrigin()[0] - base.getOrigin()[0])
-        + sin(beta) * (platform.getOrigin()[1] - base.getOrigin()[1]))
+                                + sin(beta) * (platform.getOrigin()[1] - base.getOrigin()[1]))
     return arcsin(L / sqrt(M ** 2 + N ** 2)) - arctan2(N, M)

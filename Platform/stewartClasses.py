@@ -25,6 +25,9 @@ class frame:
     def setVectorBase(self, vectorBase):
         self.vectorBase = vectorBase
 
+    def updateFrame(self, frame):
+        self.origin = frame.origin
+        self.vectorBase = frame.vectorBase
 
 class _piece(frame):
     """ Position : column vector describing position in Base Frame
@@ -44,7 +47,7 @@ class _piece(frame):
     def initAnchors(self):
         hexagonAnchors = []
         for i in range(config.numberOfAnchors):
-            idx = i + 1 if isinstance(self, _base)  else i
+            idx = i + 1 if isinstance(self, _base) else i
             hexagonAnchors.append(self._initAnchor(idx, self.interiorRadius, self.exteriorRadius))
         return hexagonAnchors
 
@@ -62,12 +65,14 @@ class _piece(frame):
         anchorX = []
         anchorY = []
         anchorZ = []
+        anchors = self.getAnchors()
 
         # Place plot points for platform
         for i in range(config.numberOfAnchors):
-            anchorX.append(self.anchors[i][0] + self.origin[0])
-            anchorY.append(self.anchors[i][1] + self.origin[1])
-            anchorZ.append(self.anchors[i][2] + self.origin[2])
+            anchorGlobal = np.matmul(anchors[i], kf.getRotationMatrix(self.getVectorBase(), config.stewartVectorBase))
+            anchorX.append(anchorGlobal[0] + self.origin[0])
+            anchorY.append(anchorGlobal[1] + self.origin[1])
+            anchorZ.append(anchorGlobal[2] + self.origin[2])
         return [anchorX, anchorY, anchorZ]
 
     def getPointsToJoin(self):
