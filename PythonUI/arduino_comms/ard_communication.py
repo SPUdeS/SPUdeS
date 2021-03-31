@@ -5,7 +5,7 @@ class ard_communication:
     """ Class that lets us control the motors with Communication to an Arduino with pyfirmata"""
 
     def __init__(self):
-        self.board = pyfirmata.Arduino('COM3')  # port = 'COM3'
+        self.board = pyfirmata.ArduinoMega('COM3')  # port = 'COM3'
         self.homingAngle = 5
         self.pin1 = 7
         self.pin2 = 8
@@ -19,23 +19,29 @@ class ard_communication:
 
 
     def setUpMotors(self):
-        self.board.digital[self.pin1].mode = pyfirmata.PWM
-        self.board.digital[self.pin2].mode = pyfirmata.PWM
-        self.board.digital[self.pin3].mode = pyfirmata.PWM
-        self.board.digital[self.pin4].mode = pyfirmata.PWM
-        self.board.digital[self.pin5].mode = pyfirmata.PWM
-        self.board.digital[self.pin6].mode = pyfirmata.PWM
+        self.board.digital[self.pin1].mode = pyfirmata.SERVO
+        self.board.digital[self.pin2].mode = pyfirmata.SERVO
+        self.board.digital[self.pin3].mode = pyfirmata.SERVO
+        self.board.digital[self.pin4].mode = pyfirmata.SERVO
+        self.board.digital[self.pin5].mode = pyfirmata.SERVO
+        self.board.digital[self.pin6].mode = pyfirmata.SERVO
 
     # Custom angle to set Servo motor angle
-    def setServoAngle(self, angle):
+    def setServoAngle(self, angle, isRad=0):
         #angle_int = int(angle)
-        self.board.analog.write[self.pin1].write(180.0-angle[1])
-        self.board.analog.write[self.pin2].write(angle[2])
-        self.board.analog.write[self.pin3].write(180.0 - angle[3])
-        self.board.analog.write[self.pin4].write(angle[4])
-        self.board.analog.write[self.pin5].write(180.0 - angle[5])
-        self.board.analog.write[self.pin6].write(angle[6])
-        sleep(0.015)
+        if isRad:
+            rad_to_deg = 180.0/3.1416
+        else:
+            rad_to_deg = 1
+
+        for i in range(len(angle)):
+            self.board.digital[self.pin1].write(180.0-angle[i][0]*rad_to_deg)
+            self.board.digital[self.pin2].write(angle[i][1]*rad_to_deg)
+            self.board.digital[self.pin3].write(180.0 - angle[i][2]*rad_to_deg)
+            self.board.digital[self.pin4].write(angle[i][3]*rad_to_deg)
+            self.board.digital[self.pin5].write(180.0 - angle[i][4]*rad_to_deg)
+            self.board.digital[self.pin6].write(angle[i][5]*rad_to_deg)
+            sleep(0.015)
 
     def goToHomePosition(self):
         self.setServoAngle(self.homingAngle)
@@ -71,3 +77,15 @@ class ard_communication:
         #goUP(angle)
         #setServoAngle(angle)
         # goToHomePosition()
+# if __name__ == "__main__":
+#     # Initialize ard_communication class
+#     arduino_coms = ard_communication()
+#     angle = [[1, 2, 1, 2, 1, 2], [1.5, 1.6, 1.7, 1.8, 1.9, 1.1]]
+#     arduino_coms.setServoAngle(angle, 1)
+#     print(arduino_coms.board.digital[arduino_coms.pin1].read())
+#     print(arduino_coms.board.digital[arduino_coms.pin2].read())
+#     print(arduino_coms.board.digital[arduino_coms.pin3].read())
+#     print(arduino_coms.board.digital[arduino_coms.pin4].read())
+#     print(arduino_coms.board.digital[arduino_coms.pin5].read())
+#     print(arduino_coms.board.digital[arduino_coms.pin6].read())
+
