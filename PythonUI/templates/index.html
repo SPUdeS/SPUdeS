@@ -24,35 +24,36 @@
                         <img src="{{ url_for('video_feed') }}" alt="Camera"style=" width:100%">
                     </div>
                     <div class="col-sm-4">
-                        <form>
+                        <form action="/NewDisplacementRequest/" method="post">
                           <div class="mb-3">
                             <label for="input_position_x" class="form-label">Position X</label>
-                            <input type="number" class="form-control" id="input_position_x">
+                            <input type="number" class="form-control" id="input_position_x" value="0">
                           </div>
                           <div class="mb-3">
                             <label for="input_position_y" class="form-label">Position Y</label>
-                            <input type="number" class="form-control" id="input_position_y">
+                            <input type="number" class="form-control" id="input_position_y" value="0">
                           </div>
                           <div class="mb-3">
                             <label for="input_position_z" class="form-label">Position Z</label>
-                            <input type="number" class="form-control" id="input_position_z">
+                            <input type="number" class="form-control" id="input_position_z" value="0">
                           </div>
                           <div class="mb-3">
                             <label for="input_position_alpha" class="form-label">Alpha</label>
-                            <input type="number" class="form-control" id="input_position_alpha">
+                            <input type="number" class="form-control" id="input_position_alpha" value="0">
                           </div>
                           <div class="mb-3">
                             <label for="input_position_beta" class="form-label">Beta</label>
-                            <input type="number" class="form-control" id="input_position_beta">
+                            <input type="number" class="form-control" id="input_position_beta" value="0">
                           </div>
                           <div class="mb-3">
                             <label for="input_position_gamma" class="form-label">Gamma</label>
-                            <input type="number" class="form-control" id="input_position_gamma">
+                            <input type="number" class="form-control" id="input_position_gamma" value="0">
                           </div>
-                          <button type="submit" class="btn btn-primary">Submit</button>
+                          <button type="button" onclick="requestDisplacementAngles();">Submit</button>
                         </form>
                     </div>
                     <div class="col-sm-4">
+                        <!--
                         <div id="angle-input-wrapper">
                             <form action="/sendAngle/" method="post">
                               <label>Angle Value:<input type="text" id="angle" value="" /></label>
@@ -71,6 +72,10 @@
                               <button type="button" id="MoveUp" value="true" onclick="requestMovingUp();">Move Up Button</button>
                               <div id="MovingUp"></div>
                             </form>
+                        </div>
+                        -->
+                        <div id="sweep_x_wrapper">
+
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@ class Server():
     """ Web server class. """
 
     def __init__(self):
-        # self.sp = Platform()
+        self.sp = stewartPlatform()
         # Choose the right camera with the argument for VideoCapture
         self.camera = cv2.VideoCapture(0)
         self.app = None
@@ -77,6 +77,10 @@ class Server():
                 frame = buffer.tobytes()
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    def requestToStewartPlatform(self, jsonData):
+        plot = sp.requestFromFlask(jsonData)
+        plot.savefig()
+        #TODO: confirm update of photo before posting
 
 
 if __name__ == '__main__':

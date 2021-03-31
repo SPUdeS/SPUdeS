@@ -74,6 +74,13 @@ def plot_to_UI():
         return 0
     return Response(stewartPlatform.plot())
 
+@app.route('/NewDisplacementRequest', methods=["POST"])
+def displacement_request():
+    if request.method == "POST":
+        displacementData = request.json
+        return 0
+    return render_template('index.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
