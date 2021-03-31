@@ -1,5 +1,4 @@
-import numpy as np
-from numpy import sqrt, arcsin, arctan2, isnan
+from numpy import sqrt, arcsin, arctan2, isnan, add, subtract, matmul, column_stack, linalg, array
 from Platform import config
 import matplotlib.pyplot as plt
 from Platform import stewartClasses as sc
@@ -77,7 +76,7 @@ class stewartPlatform:
                 initialOrigin[1] + (increment * (targetOrigin[1] - initialOrigin[1])),
                 initialOrigin[2] + (increment * (targetOrigin[2] - initialOrigin[2]))]
             # Rotate platform's basis vectors
-            incrementedVectorBase = np.matmul(
+            incrementedVectorBase = matmul(
                 kf.getRotationMatrixFromAngles(increment * alpha, increment * beta, increment * gamma),
                 self.platform.getVectorBase())
             # Create new intermediate target waypoint
@@ -92,25 +91,27 @@ class stewartPlatform:
             target = [x, y, z, ψ, θ, φ ] (angles d'Euler)
             """
         targetFrame = sc.frame(targetPoint.origin, targetPoint.vectorBase)
-
-        # Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi
-        base_R_platform = self.getRotationMatrixToTarget(targetFrame.vectorBase)
-        leg_lengths = []
-        for leg in range(config.numberOfAnchors):
-            leg_lengths.append(
-                np.add(targetFrame.getOrigin(), np.subtract(np.matmul(base_R_platform, self.platform.anchors[leg]),
-                                                            self.base.anchors[leg])))
+        legLengths = self.getEffectiveLegLengths(targetFrame)
 
         # Compute anchor angles to get effective leg lengths
         servoAngles = []
-        for anchor in range(config.numberOfAnchors):
+        for i in range(config.numberOfAnchors):
             servoAngles.append(
-                kf.getAlpha(np.linalg.norm(leg_lengths[anchor]), config.betas[anchor], self.base, targetFrame))
+                kf.getAlpha(linalg.norm(legLengths[i]), config.betas[i], self.base, targetFrame))
         return servoAngles
+
+    def getEffectiveLegLengths(self, targetFrame):
+        """ Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi . """
+        base_R_target = self.getRotationMatrixToTarget(targetFrame.vectorBase)
+        legLengths = []
+        for i in range(config.numberOfAnchors):
+            legLengths.append(add(targetFrame.getOrigin(),
+                                  subtract(matmul(base_R_target, self.platform.anchors[i]), self.base.anchors[i])))
+        return legLengths
 
     def getRotationAnglesToFrame(self, targetFrame):
         """ Returns the rotation angle between the platform and a target frame. """
-        return np.subtract(
+        return subtract(
             kf.getAnglesFromRotationMatrix(self.getRotationMatrixToTarget(targetFrame.vectorBase)),
             kf.getAnglesFromRotationMatrix(self.getBasePlatformRotationMatrix()))
 
@@ -123,10 +124,10 @@ class stewartPlatform:
         return kf.getRotationMatrix(self.base.getVectorBase(), targetVectorBase)
 
     def listServoAngles(self, waypoints):
-        """ Return a list of six-tuples servo angles to move through the trajectory."""
-        # Compute set of anchor angles to follow trajectory
-        listServoAngles = []
+        """ Return a list of six-tuples servo angles to move through the trajectory.
+            Returns the last waypoint to later update the platform's origin. """
         lastWaypoint = waypoints[-1]
+        listServoAngles = []
         for point in waypoints:
             servoAngles = self.inverseKinematics(point)
             if not (isnan(servoAngles)).any():
@@ -144,8 +145,8 @@ if __name__ == "__main__":
 
     # Set target
     targetPosition = [0, 0, stewart.platform.origin[2] - 20]
-    # [np.array([1, 0, 0]), np.array([0, 1, 0]), np.array([0, 0, 1])]
-    targetOrientation = np.column_stack([np.array([1, 0, 0]), np.array([0, 0, -1]), np.array([0, 1, 0])])
+    # [array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])]
+    targetOrientation = column_stack([array([1, 0, 0]), array([0, 0, -1]), array([0, 1, 0])])
     target = sc.frame(targetPosition, targetOrientation)
 
     # Discretize trajectory

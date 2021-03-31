@@ -1,5 +1,4 @@
-import numpy as np
-from numpy import sqrt, cos, sin, pi, floor
+from numpy import sqrt, cos, sin, pi, floor, matmul
 from Platform import config
 from Platform import kinematicFunctions as kf
 
@@ -25,9 +24,9 @@ class frame:
     def setVectorBase(self, vectorBase):
         self.vectorBase = vectorBase
 
-    def updateFrame(self, frame):
-        self.origin = frame.origin
-        self.vectorBase = frame.vectorBase
+    def updateFrame(self, newFrame):
+        self.origin = newFrame.origin
+        self.vectorBase = newFrame.vectorBase
 
 
 class _piece(frame):
@@ -52,14 +51,14 @@ class _piece(frame):
             hexagonAnchors.append(self._initAnchor(idx, self.interiorRadius, self.exteriorRadius))
         return hexagonAnchors
 
-    def _initAnchor(self, idx, r_in, r_out):
+    def _initAnchor(self, index, interiorRadius, exteriorRadius):
         """ Returns the position of a corner of an hexagon.
             Hexagon is purely 2D, thus z = 0 in it's frame of reference.
             Helper function for initAnchors"""
-        angle = (self.offsetAngle + (2 * pi / 3) * floor(idx / 2)) % (2 * pi)
-        a_delta = 2 * (2 * r_in - r_out) / sqrt(3)
-        x = r_out * cos(angle) + ((-1) ** idx) * (a_delta / 2) * sin(angle)
-        y = r_out * sin(angle) - ((-1) ** idx) * (a_delta / 2) * cos(angle)
+        angle = (self.offsetAngle + (2 * pi / 3) * floor(index / 2)) % (2 * pi)
+        a_delta = 2 * (2 * interiorRadius - exteriorRadius) / sqrt(3)
+        x = exteriorRadius * cos(angle) + ((-1) ** index) * (a_delta / 2) * sin(angle)
+        y = exteriorRadius * sin(angle) - ((-1) ** index) * (a_delta / 2) * cos(angle)
         return [x, y, 0]
 
     def getPlotAnchors(self):
@@ -70,7 +69,7 @@ class _piece(frame):
 
         # Place plot points for platform
         for i in range(config.numberOfAnchors):
-            anchorGlobal = np.matmul(anchors[i], kf.getRotationMatrix(self.getVectorBase(), config.stewartVectorBase))
+            anchorGlobal = matmul(anchors[i], kf.getRotationMatrix(self.getVectorBase(), config.stewartVectorBase))
             anchorX.append(anchorGlobal[0] + self.origin[0])
             anchorY.append(anchorGlobal[1] + self.origin[1])
             anchorZ.append(anchorGlobal[2] + self.origin[2])
@@ -104,7 +103,7 @@ class platform(_piece):
         self.setOrigin(self.homePosition)
 
     def initHomePosition(self, linkedBase):
-        # Home position platform - computed from base/platform anchors #1 but any would do by symmetry
+        """ Returns home position of platform - computed from base/platform anchors #1 but any would do by symmetry. """
         platformHomeZPosition = sqrt(
             config.armLength ** 2 + config.legLength ** 2 - (linkedBase.anchors[0][0] - self.anchors[0][0]) ** 2 - (
                     linkedBase.anchors[0][1] - self.anchors[0][1]) ** 2)
