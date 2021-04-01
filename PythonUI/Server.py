@@ -35,15 +35,24 @@ class Server():
         def displacement_request():
             if request.method == "POST":
                 data = json.loads(request.data)
-                self.requestTarget(data["type_"], data["displacement"])
+                self.requestSP(data["type_"], data["displacement"])
+                return render_template('index.html')
+
+        @app.route('/NewSweepRequest', methods=["POST", "GET"])
+        def sweep_request():
+            if request.method == "POST":
+                data = json.loads(request.data)
+                self.requestSP(data["type_"], data["DoF"])
                 return render_template('index.html')
 
 
         # Assign app to Server variable Server.app
         self.app = app
 
-    def requestTarget(self, type_, destinations):
-        pass ## TODO: send data to sp
+    def requestSP(self, type_, data):
+        plot = self.sp.requestFromFlask(type_, data)
+        #plot.savefig()
+        # TODO: confirm update of photo before posting
 
     def generate_frames(self):
         """ Generate frame by frame. """
@@ -59,10 +68,6 @@ class Server():
                 frame = buffer.tobytes()
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-    def requestToStewartPlatform(self, jsonData):
-        plot = sp.requestFromFlask(jsonData)
-        plot.savefig()
-        #TODO: confirm update of photo before posting
 
 
 if __name__ == '__main__':

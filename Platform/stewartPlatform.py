@@ -137,10 +137,49 @@ class stewartPlatform:
                 break
         return [listServoAngles, lastWaypoint]
 
+    def requestFromFlask(self, type_, data):
+        # Confirm validity of request and check the type of request: "target" or "sweep"
+        requestType = self.confirmRequestValidity(type_, data)
+        if requestType == config.unsuccessfulRequest: return config.unsuccessfulRequest # TODO: what to return here?
+        # Generate matrix of targets
+        listOfTargets = self.generateListOfTargets(requestType, data)
+        # Calculate the servo angle paths
+        # Send path to motors
+        #
+
+    @staticmethod
+    def confirmRequestValidity(type_, data):
+        """ Confirms whether or not the request is valid.
+            Returns 0 if type is target, 1 if type is sweep, and -1 if there is a problem with the request. """
+        requestType = config.unsuccessfulRequest
+        # TODO: create exception if the request is not properly formatted instead of print(...)
+        if type_ == "target" and len(data) == 6 and all(isinstance(n, (int, float)) for n in data):
+            # TODO: make sure their types: int, float ?
+            requestType = config.targetRequest
+        elif type_ == "sweep" and data == "x" or "y" or "z" or "a" or "b" or "c":
+            requestType = config.sweepRequest
+        elif type_ == "target" or "sweep":
+            print("Data is wrong or missing!")
+        else:
+            print("Type error!")
+        return requestType
+
+    def generateListOfTargets(self, requestType, data):
+        """ Redirects request depending on its type. """
+        return self.targetListForTarget(data) if requestType == config.targetRequest else self.targetListForSweep(data)
+
+    def targetListForTarget(self, displacements):
+        currentPosition = array(self.platform.getOrigin() + self.platform.getAngles())
+        return [(currentPosition + array(displacements)).tolist()]
+
+    def targetListForSweep(self, DoF):
+        pass
 
 if __name__ == "__main__":
     # Initialize platform
     stewart = stewartPlatform()
+
+    stewart.targetListForTarget([1,1,1,1,1,1])
     stewart.plot()
 
     # Set target
