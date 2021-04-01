@@ -42,8 +42,10 @@ class Server():
         # Assign app to Server variable Server.app
         self.app = app
 
-    def requestTarget(self, type_, destinations):
-        pass ## TODO: send data to sp
+    def requestTarget(self, type_, displacements):
+        plot = self.sp.requestFromFlask(type_, displacements)
+        #plot.savefig()
+        # TODO: confirm update of photo before posting
 
     def generate_frames(self):
         """ Generate frame by frame. """
@@ -59,10 +61,6 @@ class Server():
                 frame = buffer.tobytes()
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-    def requestToStewartPlatform(self, jsonData):
-        plot = sp.requestFromFlask(jsonData)
-        plot.savefig()
-        #TODO: confirm update of photo before posting
 
 
 if __name__ == '__main__':
