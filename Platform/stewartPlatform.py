@@ -137,6 +137,50 @@ class stewartPlatform:
                 break
         return [listServoAngles, lastWaypoint]
 
+    def requestFromFlask(self, type_, displacements=None, DoF=None):
+        # Confirm validity of request and check the type of request: "target" or "sweep"
+        requestType = self.confirmRequestValidity(type_, displacements, DoF)
+        if requestType == config.unsuccessfulRequest: return config.unsuccessfulRequest # TODO: what to return here?
+        # Generate matrix of targets
+        listOfTargets = self.generateListOfTargets(requestType, displacements, DoF)
+        # Calculate the servo angle paths
+        # Send path to motors
+        #
+
+    @staticmethod
+    def confirmRequestValidity(type_, displacements, DoF):
+        """ Confirms whether or not the request is valid.
+            Returns 0 if type is target, 1 if type is sweep, and -1 if there is a problem with the request. """
+        requestType = config.unsuccessfulRequest
+        # TODO: create exception if the request is not properly formatted instead of print(...)
+        if type_ == "target" and displacements is not None:
+            # TODO: make sure their types: int, float ?
+            if len(displacements) == 6 and all(isinstance(n, (int, float)) for n in displacements):
+                requestType = config.targetRequest
+            else:
+                print("Wrong length or not numbers")
+        elif type_ == "target" and displacements is None:
+            print("No displacement!")
+        elif type_ == "sweep" and DoF == "x" or "y" or "z" or "a" or "b" or "c":
+            requestType = config.sweepRequest
+        elif type_ == "sweep" and DoF != "x" or "y" or "z" or "a" or "b" or "c":
+            print("What do we sweep?")
+        else:
+            print("Something is missing!")
+        return requestType
+
+    def generateListOfTargets(self, requestType, displacements, DoF):
+        if requestType == config.targetRequest:
+            listOfTargets = self.generateListOfTargetsForTarget(displacements)
+        else:
+            listOfTargets = self.generateListOfTargetsForSweep(DoF)
+        return listOfTargets
+
+    def generateListOfTargetsForTarget(self, displacements):
+        pass
+
+    def generateListOfTargetsForSweep(self, DoF):
+        pass
 
 if __name__ == "__main__":
     # Initialize platform
