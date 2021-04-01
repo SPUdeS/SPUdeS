@@ -137,7 +137,7 @@ class stewartPlatform:
                 break
         return [listServoAngles, lastWaypoint]
 
-    def requestFromFlask(self, type_=None, data=None):
+    def requestFromFlask(self, type_, data):
         # Confirm validity of request and check the type of request: "target" or "sweep"
         requestType = self.confirmRequestValidity(type_, data)
         if requestType == config.unsuccessfulRequest: return config.unsuccessfulRequest # TODO: what to return here?
@@ -169,7 +169,8 @@ class stewartPlatform:
         return self.targetListForTarget(data) if requestType == config.targetRequest else self.targetListForSweep(data)
 
     def targetListForTarget(self, displacements):
-        pass
+        currentPosition = array(self.platform.getOrigin() + self.platform.getAngles())
+        return [(currentPosition + array(displacements)).tolist()]
 
     def targetListForSweep(self, DoF):
         pass
@@ -177,6 +178,8 @@ class stewartPlatform:
 if __name__ == "__main__":
     # Initialize platform
     stewart = stewartPlatform()
+
+    stewart.targetListForTarget([1,1,1,1,1,1])
     stewart.plot()
 
     # Set target
