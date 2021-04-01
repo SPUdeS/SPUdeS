@@ -52,11 +52,36 @@ function requestPlot() {
         if(this.readyState == 4 && this.status == 200) {
             result.innerHTML = this.responseText;
         } else {
-            result.innerHTML = "There was an error in requesting the plot values"
+            result.innerHTML = "There was an error in sending the displacement request"
         }
     };
-    alert("Plotting now!!")
-    request.open('POST', '/Plot', true)
+    alert("Sending displacement request now!!")
+    request.open('POST', '/NewDisplacementRequest', true)
     request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
     request.send("angleThetaInput=" + document.getElementById('MoveUp').value);
+}
+
+function requestDisplacementAngles() {
+    var request = new XMLHttpRequest();
+    var position_x = document.getElementById("position_x").value
+    var position_y = document.getElementById("position_y").value
+    var position_z = document.getElementById("position_z").value
+    var position_a = document.getElementById("position_a").value
+    var position_b = document.getElementById("position_b").value
+    var position_c = document.getElementById("position_c").value
+    var data = {type_: "target", displacement: [parseFloat(position_x),parseFloat(position_y),parseFloat(position_z), parseFloat(position_a),parseFloat(position_b),parseFloat(position_c)]}
+    // request.onreadystatechange = function() {
+    //     if(this.readyState == 4 && this.status == 200) {
+    //         data.innerHTML = this.responseText;
+    //     } else {
+    //         data.innerHTML = "There was an error in sending the displacement request"
+    //     }
+    // };
+
+    alert("Sending displacement request now!!")
+    request.open('POST', '/NewDisplacementRequest', true)
+    request.setRequestHeader('content-type', 'application/json')
+    request.send(JSON.stringify(data));
+    // request.send(data);
+
 }
