@@ -2,7 +2,7 @@ from flask import Flask, render_template, Response, request
 import cv2
 # from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition, goUpPosition
 from Platform.stewartPlatform import stewartPlatform
-
+import json
 
 class Server():
     """ Web server class. """
@@ -31,37 +31,19 @@ class Server():
             """Video Streaming Index Page"""
             return render_template('index.html')
 
-        @app.route('/sendAngle', methods=["POST", "GET"])
-        def sendAngleToArduino():
+        @app.route('/NewDisplacementRequest', methods=["POST", "GET"])
+        def displacement_request():
             if request.method == "POST":
-                angle_str = request.form["angle"]
-                angle_int = int(angle_str)
-                goUPandDown(angle_int)
-                return "Angle received: " + angle_str
-            return render_template('index.html')
+                data = json.loads(request.data)
+                self.requestTarget(data["type_"], data["displacement"])
+                return render_template('index.html')
 
-        @app.route('/HomingAnglePage', methods=["POST"])
-        def responseHomingAngle():
-            if request.method == "POST":
-                homing = request.form["Homing"]
-                if homing == "true":
-                    goToHomePosition()
-                    return homing
-                return 0
-            return render_template('index.html')
-
-        @app.route('/MovingUpPage', methods=["POST"])
-        def responseMovingUp():
-            if request.method == "POST":
-                moveUp = request.form["MovingUp"]
-                if moveUp == "true":
-                    goUpPosition()
-                    return moveUp
-                return 0
-            return render_template('index.html')
 
         # Assign app to Server variable Server.app
         self.app = app
+
+    def requestTarget(self, type_, destinations):
+        pass ## TODO: send data to sp
 
     def generate_frames(self):
         """ Generate frame by frame. """

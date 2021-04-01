@@ -63,23 +63,25 @@ function requestPlot() {
 
 function requestDisplacementAngles() {
     var request = new XMLHttpRequest();
-    var position_x = document.getElementById("input_position_x")
-    var position_y = document.getElementById("input_position_y")
-    var position_z = document.getElementById("input_position_z")
-    var position_a = document.getElementById("input_position_alpha")
-    var position_b = document.getElementById("input_position_beta")
-    var position_c = document.getElementById("input_position_gamma")
-    request.onreadystatechange = function() {
-        if(this.readyState == 4 && this.status == 200) {
-            result.innerHTML = this.responseText;
-        } else {
-            result.innerHTML = "There was an error in sending the displacement request"
-        }
-    };
+    var position_x = document.getElementById("position_x").value
+    var position_y = document.getElementById("position_y").value
+    var position_z = document.getElementById("position_z").value
+    var position_a = document.getElementById("position_a").value
+    var position_b = document.getElementById("position_b").value
+    var position_c = document.getElementById("position_c").value
+    var data = {type_: "target", displacement: [parseFloat(position_x),parseFloat(position_y),parseFloat(position_z), parseFloat(position_a),parseFloat(position_b),parseFloat(position_c)]}
+    // request.onreadystatechange = function() {
+    //     if(this.readyState == 4 && this.status == 200) {
+    //         data.innerHTML = this.responseText;
+    //     } else {
+    //         data.innerHTML = "There was an error in sending the displacement request"
+    //     }
+    // };
 
     alert("Sending displacement request now!!")
     request.open('POST', '/NewDisplacementRequest', true)
     request.setRequestHeader('content-type', 'application/json')
-    request.send(JSON.stringify({"type": "target", "displacement": [position_x,position_y,position_z, position_a,position_b,position_c]}));
+    request.send(JSON.stringify(data));
+    // request.send(data);
 
 }
