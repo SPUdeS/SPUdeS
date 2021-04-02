@@ -23,6 +23,5 @@ function requestSweep(DOF) {
 }
 
 function getImagePath() {
-    let image = document.getElementById("img")
-    image.src = ("../static/img/plot.png") ?  "../static/img/plot.png"  : "../static/img/plotHome.png"
+    return ("../static/img/plot.png") ?  "../static/img/plot.png"  : "../static/img/plotHome.png"
 }
