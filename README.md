@@ -31,7 +31,8 @@
     - [Power Supply: Motor/Arduino](#Power)
     - [Servo Rods](#Rods)
     - [Hardware](#Hardware)
-    - [Parts to make](#Parts)
+    - [Parts to solder](#Parts_solder)
+    - [Parts to print](#Parts_print)
 - [Platform Assembly Guide](#Assembly)
     - [Design](#Design)
     - [CAD Files](#CAD)
@@ -91,16 +92,22 @@ Fundamentally, the platform is built from six linear actuators in parallel. Each
 - Quantity: 6
 
 #### <a id="Hardware"></a> Hardware
--	Female Heim joints M3 (12x)\
--	Threaded inserts M3 x 6mm (42x; optional)\
--	Countersunk bolts M3x6 (6x; optional)\
--	Countersunk bolts M3x12 (42x)\
--	Nylock nuts M3 (6x)\
--	Round head self-tapping screws No3 (6x)\
+-	Female Heim joints M3 (12x)
+-	Threaded inserts M3 x 6mm (42x; optional)
+-	Countersunk bolts M3x6 (6x; optional)
+-	Countersunk bolts M3x12 (42x)
+-	Nylock nuts M3 (6x)
+-	Round head self-tapping screws No3 (6x)
 
-#### <a id="Parts"></a> Parts to make
--	Wiring for servo motors (proto-board, headers, wires and soldering kit)\
--	Platform, base, microcontroller holder and servo arms (a spool of PLA and access to a 3D printer)
+#### <a id="Parts_solder"></a> Parts to solder
+-	PCB to power the 6 motors (proto-board, headers, wires and soldering kit)
+     
+#### <a id="Parts_print"></a> Parts to print
+Materials needed : a spool of PLA and access to a 3D printer.
+-	[Platform](CADs/V2%20-%20HS422/Platform.SLDPRT)
+-   [Base](CADs/V2%20-%20HS422/Base%20V3.SLDPRT) 
+-   [Microcontroller holder](CADs/V2%20-%20HS422/MicroController%20Holder.SLDPRT)
+-   [servo arms](CADs/V2%20-%20HS422/ServoArm.SLDPRT)
 
 ## <a id="Assembly"></a>Platform Assembly Guide
 #### <a id="Design"></a>Design
