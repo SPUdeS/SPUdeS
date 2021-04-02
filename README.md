@@ -28,7 +28,7 @@
     - [Single-Board Computer](#Computer)
     - [Microcontroller](#Controller)
     - [Servomotors](#Servo)
-    - [Power Supply: Motor/Arduino](#Power)
+    - [Power Adaptor](#Power)
     - [Servo Rods](#Rods)
     - [Hardware](#Hardware)
     - [Parts to solder](#Parts_solder)
@@ -51,7 +51,7 @@
 [//]: # (------------------------------------------------)
 
 ## <a id="Setup"></a>Setup
-1. Buy the component in the [External Resources](#Resources) section.
+1. Buy the component in the [Supplies](#Supplies) section.
 2. Use the [CAD models](CADs) to 3D print the [base](CADs/Base.SLDPRT), the [platform](CADs/Platform.SLDPRT) and the [servo arms](CADs/Legs.SLDASM).
 3. Do the electrical connections using the [electrical schematics](Documentation/Electical%20schematics.pdf) in the documentation section.
 3. Set up the [Raspberry Pi](#Computer) by connecting it with the [Arduino](#Controller), your computer and the to a power source.
@@ -100,10 +100,11 @@ Fundamentally, the platform is built from six linear actuators in parallel. Each
 -	Round head self-tapping screws No3 (6x)
 
 #### <a id="Parts_solder"></a> Parts to solder
--	PCB to power the 6 motors (proto-board, headers, wires and soldering kit)
+Materials needed:  proto-board, headers, wires and soldering kit
+-	PCB to power the 6 motors
      
 #### <a id="Parts_print"></a> Parts to print
-Materials needed : a spool of PLA and access to a 3D printer.
+Materials needed: a spool of PLA and access to a 3D printer.
 -	[Platform](CADs/V2%20-%20HS422/Platform.SLDPRT)
 -   [Base](CADs/V2%20-%20HS422/Base%20V3.SLDPRT) 
 -   [Microcontroller holder](CADs/V2%20-%20HS422/MicroController%20Holder.SLDPRT)
@@ -152,10 +153,6 @@ Printing all the pieces required for the build takes about 560 grams of PLA whic
 
 Now it is only a question of uploading the codes to the Arduino and the raspberry pi and connecting both with the appropriate power adaptors. Launching the web server allows for a clean interface where the user can command the platform.
 
-
-## <a id="Documentation"></a>Documentation
-
-The dynamic system can be found in the [Geometric model](Geometric%20model) folder.
 ## <a id="Operation"></a>Platform Operation
 
 The camera feed can show the Stewart platform instantly. The platform can be controlled using the following buttons on the interface:
