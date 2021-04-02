@@ -17,6 +17,12 @@ baseOffsetAngle = 0
 platformOffsetAngle = pi / 3
 stewartVectorBase = column_stack([array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])])
 stewartHomePosition = [0, 0, 0]
+sweepDisplacement = 20
+
+# Flask request logic
+targetRequest = 0
+sweepRequest = 1
+unsuccessfulRequest = -1
 
 # TODO: Calculate when calling stewartPlatform class
 # Betas are the angles formed by each of the servo arms and the x-axis of the platform.

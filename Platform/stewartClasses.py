@@ -108,3 +108,6 @@ class platform(_piece):
             config.armLength ** 2 + config.legLength ** 2 - (linkedBase.anchors[0][0] - self.anchors[0][0]) ** 2 - (
                     linkedBase.anchors[0][1] - self.anchors[0][1]) ** 2)
         return [0, 0, platformHomeZPosition]
+
+    def getAngles(self):
+        return kf.getAnglesFromRotationMatrix(self.getVectorBase())

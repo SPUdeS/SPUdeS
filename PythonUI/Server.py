@@ -2,13 +2,13 @@ from flask import Flask, render_template, Response, request
 import cv2
 # from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition, goUpPosition
 from Platform.stewartPlatform import stewartPlatform
-
+import json
 
 class Server():
     """ Web server class. """
 
     def __init__(self):
-        # self.sp = Platform()
+        self.sp = stewartPlatform()
         # Choose the right camera with the argument for VideoCapture
         self.camera = cv2.VideoCapture(0)
         self.app = None
@@ -31,37 +31,28 @@ class Server():
             """Video Streaming Index Page"""
             return render_template('index.html')
 
-        @app.route('/sendAngle', methods=["POST", "GET"])
-        def sendAngleToArduino():
+        @app.route('/NewDisplacementRequest', methods=["POST", "GET"])
+        def displacement_request():
             if request.method == "POST":
-                angle_str = request.form["angle"]
-                angle_int = int(angle_str)
-                goUPandDown(angle_int)
-                return "Angle received: " + angle_str
-            return render_template('index.html')
+                data = json.loads(request.data)
+                self.requestSP(data["type_"], data["displacement"])
+                return render_template('index.html')
 
-        @app.route('/HomingAnglePage', methods=["POST"])
-        def responseHomingAngle():
+        @app.route('/NewSweepRequest', methods=["POST", "GET"])
+        def sweep_request():
             if request.method == "POST":
-                homing = request.form["Homing"]
-                if homing == "true":
-                    goToHomePosition()
-                    return homing
-                return 0
-            return render_template('index.html')
+                data = json.loads(request.data)
+                self.requestSP(data["type_"], data["DoF"])
+                return render_template('index.html')
 
-        @app.route('/MovingUpPage', methods=["POST"])
-        def responseMovingUp():
-            if request.method == "POST":
-                moveUp = request.form["MovingUp"]
-                if moveUp == "true":
-                    goUpPosition()
-                    return moveUp
-                return 0
-            return render_template('index.html')
 
         # Assign app to Server variable Server.app
         self.app = app
+
+    def requestSP(self, type_, data):
+        plot = self.sp.requestFromFlask(type_, data)
+        #plot.savefig()
+        # TODO: confirm update of photo before posting
 
     def generate_frames(self):
         """ Generate frame by frame. """

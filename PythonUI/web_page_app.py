@@ -1,7 +1,8 @@
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request, url_for, redirect
 import cv2
 #from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition, goUpPosition
 from Platform.stewartPlatform import stewartPlatform
+import json
 
 app = Flask(__name__)
 
@@ -74,6 +75,11 @@ def plot_to_UI():
         return 0
     return Response(stewartPlatform.plot())
 
+@app.route('/NewDisplacementRequest', methods=["POST", "GET"])
+def displacement_request():
+    if request.method == "POST":
+        data = json.loads(request.data)
+        return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
