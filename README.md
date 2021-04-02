@@ -107,7 +107,7 @@ Materials needed : a spool of PLA and access to a 3D printer.
 -	[Platform](CADs/V2%20-%20HS422/Platform.SLDPRT)
 -   [Base](CADs/V2%20-%20HS422/Base%20V3.SLDPRT) 
 -   [Microcontroller holder](CADs/V2%20-%20HS422/MicroController%20Holder.SLDPRT)
--   [servo arms](CADs/V2%20-%20HS422/ServoArm.SLDPRT)
+-   [Servo arms](CADs/V2%20-%20HS422/ServoArm.SLDPRT)
 
 ## <a id="Assembly"></a>Platform Assembly Guide
 #### <a id="Design"></a>Design
