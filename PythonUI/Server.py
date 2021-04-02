@@ -35,23 +35,14 @@ class Server():
         def displacement_request():
             if request.method == "POST":
                 data = json.loads(request.data)
-                self.requestSP(data["type_"], data["displacement"])
+                self.requestSP(data["type_"], data["data_"])
                 return render_template('index.html')
-
-        @app.route('/NewSweepRequest', methods=["POST", "GET"])
-        def sweep_request():
-            if request.method == "POST":
-                data = json.loads(request.data)
-                self.requestSP(data["type_"], data["DoF"])
-                return render_template('index.html')
-
 
         # Assign app to Server variable Server.app
         self.app = app
 
     def requestSP(self, type_, data):
-        plot = self.sp.requestFromFlask(type_, data)
-        #plot.savefig()
+        self.sp.requestFromFlask(type_, data)
         # TODO: confirm update of photo before posting
 
     def generate_frames(self):

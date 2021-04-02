@@ -11,7 +11,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="../static/img/favicon.ico" />
         <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/index.css') }}" />
     </head>
-    <body>
+    <body onload="getImagePath();">
         <main id="ui-wrapper">
             <div class="jumbotron text-center" style="margin-bottom: 0">
                 <img src="../static/img/favicon.ico" alt="Image" width="100"/>
@@ -28,56 +28,40 @@
                           <div class="mb-3">
                             Position X:
                             <input type="number" id="position_x" value="0"/>
+                            <button type="button" onclick="requestSweep('x');" class="btn btn-dark"> Sweep X axis</button>
                           </div>
                           <div class="mb-3">
                             Position Y:
                             <input type="number" id="position_y" value="0"/>
+                            <button type="button" onclick="requestSweep('y');" class="btn btn-primary"> Sweep Y axis</button>
                           </div>
                           <div class="mb-3">
                             Position Z:
                             <input type="number" id="position_z" value="0"/>
+                            <button type="button" onclick="requestSweep('z');" class="btn btn-secondary"> Sweep Z axis</button>
                           </div>
                           <div class="mb-3">
                             Position A:
                             <input type="number" id="position_a" value="0"/>
+                            <button type="button" onclick="requestSweep('a');" class="btn btn-success"> Sweep A axis</button>
                           </div>
                           <div class="mb-3">
                             Position B:
                             <input type="number" id="position_b" value="0"/>
+                            <button type="button" onclick="requestSweep('b');" class="btn btn-danger"> Sweep B axis</button>
                           </div>
                           <div class="mb-3">
                             Position C:
                             <input type="number" id="position_c" value="0"/>
+                            <button type="button" onclick="requestSweep('c');" class="btn btn-warning"> Sweep C axis</button>
                           </div>
                             <!--<input type="submit" value="Submit"/>-->
                             <button type="button" onclick="requestDisplacementAngles();">Submit</button>
                         </form>
                     </div>
                     <div class="col-sm-4">
-                        <!--
-                        <div id="angle-input-wrapper">
-                            <form action="/sendAngle/" method="post">
-                              <label>Angle Value:<input type="text" id="angle" value="" /></label>
-                              <button type="button" id="btn-angle" onclick="requestNewAngle();">Click</button>
-                              <div id="newAngle"></div>
-                            </form>
-                        </div>
-                        <div id="homing-angle-wrapper">
-                            <form action="/HomingAnglePage/" method="post">
-                              <button type="button" id="HomingAngle" value="true" onclick="requestHomingAngle();">Homing Button</button>
-                              <div id="Homing"></div>
-                            </form>
-                        </div>
-                        <div id="moving-up-wrapper">
-                            <form action="/MovingUpPage/" method="post">
-                              <button type="button" id="MoveUp" value="true" onclick="requestMovingUp();">Move Up Button</button>
-                              <div id="MovingUp"></div>
-                            </form>
-                        </div>
-                        -->
-                        <div id="sweep_x_wrapper">
-
-                        </div>
+                       <!-- PLOT -->
+                        <img src="../static/img/plotHome.png">
                     </div>
                 </div>
             </div>
