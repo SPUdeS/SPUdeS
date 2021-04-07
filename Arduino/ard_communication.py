@@ -5,12 +5,12 @@ class ard_communication:
     """ Class that lets us control the motors with Communication to an Arduino with pyfirmata"""
 
     def __init__(self):
-        self.board = pyfirmata.ArduinoMega('COM3')  # port = 'COM3'
+        self.board = pyfirmata.Arduino('COM5')  # Check on which port the arduino is connected
         self.alpha0 = -2.7
         self.homingAngle = [[90+self.alpha0, 90+self.alpha0, 90+self.alpha0,
                             90+self.alpha0, 90+self.alpha0, 90+self.alpha0]]
         self.pin1 = 7
-        self.pin2 = 8
+        self.pin2 = 9
         self.pin3 = 11
         self.pin4 = 12
         self.pin5 = 5
@@ -46,39 +46,37 @@ class ard_communication:
             self.board.digital[self.pin4].write(alpha + angle[i][3]*rad_to_deg)
             self.board.digital[self.pin5].write(180.0 - (alpha - angle[i][4]*rad_to_deg*beta))
             self.board.digital[self.pin6].write(alpha + angle[i][5]*rad_to_deg)
-            sleep(0.015)
+            sleep(1)
 
     def goToHomePosition(self):
         self.setServoAngle(self.homingAngle)
         print("HOMING NOW")
 
     def goToUpDownPosition(self):
-        for i in range(90, 140):
-            up = [i, i, i, i, i, i]
-            self.setServoAngle(up)
-            sleep(0.5)
-        for i in range(140, 60):
-            down = [i, i, i, i, i, i]
-            self.setServoAngle(down)
-            sleep(0.5)
+        up = []
+        down = []
+        for i in range(90, 140, 10):
+            up.append([i, i, i, i, i, i])
+        self.setServoAngle(up)
+        for i in range(140, 60, 10):
+            down.append([i, i, i, i, i, i])
+        self.setServoAngle(down)
 
         self.goToHomePosition()
 
     def goToTiltsPosition(self):
-        for i in range(90, 170):
-            tilt = [i, i, 90, 90, 90, 90]
-            self.setServoAngle(tilt)
-            sleep(0.5)
+        tilt = []
+        for i in range(90, 170, 10):
+            tilt.append([i, i, 90, 90, 90, 90])
+        self.setServoAngle(tilt)
         self.goToHomePosition()
-        for i in range(90, 170):
-            tilt = [90, 90, i, i, 90, 90]
-            self.setServoAngle(tilt)
-            sleep(0.5)
+        for i in range(90, 170, 10):
+            tilt.append([90, 90, i, i, 90, 90])
+        self.setServoAngle(tilt)
         self.goToHomePosition()
-        for i in range(90, 170):
-            tilt = [90, 90, 90, 90, i, i]
-            self.setServoAngle(tilt)
-            sleep(0.5)
+        for i in range(90, 170, 10):
+            tilt.append([90, 90, 90, 90, i, i])
+        self.setServoAngle(tilt)
         self.goToHomePosition()
 
 
@@ -109,10 +107,16 @@ class ard_communication:
         # goToHomePosition()
 if __name__ == "__main__":
      # Initialize ard_communication class
+
      arduino_coms = ard_communication()
-     angle = [[0.5, 0.7, 0.9, 0.7, 0.4, 0.5], [0.4, 0.5, 0.6, 0.8, 0.9, 1]]
-     arduino_coms.setServoAngle(angle, 1)
-     print(arduino_coms.getServoAngle())
+
      arduino_coms.goToHomePosition()
+     #print(arduino_coms.getServoAngle())
+     #arduino_coms.goToUpDownPosition()
+     arduino_coms.goToTiltsPosition()
+     #angle_rad = [[0.5, 0.7, 0.9, 0.7, 0.4, 0.5], [0.4, 0.5, 0.6, 0.8, 0.9, 1]]
+     # arduino_coms.setServoAngle(angle_rad,1)
+     #angle_deg = [[145, 145, 145, 145, 145, 145], [90, 90, 90, 90, 90, 90], [45, 45, 45, 45, 45, 45], [0, 0, 0, 0, 0, 0]]
+     #arduino_coms.setServoAngle(angle_deg)
      print(arduino_coms.getServoAngle())
 
