@@ -22,6 +22,14 @@ function requestSweep(DOF) {
     request.send(JSON.stringify(data));
 }
 
+function requestInitPlatform() {
+    let request = new XMLHttpRequest()
+    let data = {type_: "initialization", data_: [0,0,0,0,0,0]}
+    request.open('POST', '/NewDisplacementRequest', true)
+    request.setRequestHeader('content-type', 'application/json')
+    request.send(JSON.stringify(data));
+}
+
 function getImagePath() {
     return ("../static/img/plot.png") ?  "../static/img/plot.png"  : "../static/img/plotHome.png"
 }

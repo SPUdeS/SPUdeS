@@ -1,4 +1,4 @@
-from numpy import sqrt, cos, sin, pi, floor, matmul
+from numpy import sqrt, cos, sin, pi, floor, matmul, array
 from Platform import config
 from Platform import kinematicFunctions as kf
 
@@ -99,10 +99,10 @@ class platform(_piece):
         self.interiorRadius = config.platformInteriorRadius
         self.exteriorRadius = config.platformExteriorRadius
         self.anchors = self.initAnchors()
-        self.homePosition = self.initHomePosition(linkedBase)
-        self.setOrigin(self.homePosition)
+        self.setOrigin(self.getHomeOrigin(linkedBase))
+        self.initialPosition = array(self.getOrigin() + self.getAngles()).tolist()
 
-    def initHomePosition(self, linkedBase):
+    def getHomeOrigin(self, linkedBase):
         """ Returns home position of platform - computed from base/platform anchors #1 but any would do by symmetry. """
         platformHomeZPosition = sqrt(
             config.armLength ** 2 + config.legLength ** 2 - (linkedBase.anchors[0][0] - self.anchors[0][0]) ** 2 - (
