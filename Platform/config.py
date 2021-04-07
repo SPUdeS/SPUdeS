@@ -24,6 +24,7 @@ sweepDisplacement = 20
 # Flask request logic
 targetRequest = 0
 sweepRequest = 1
+initializationRequest = 3
 unsuccessfulRequest = -1
 
 pythonUIPath = pythonUIConfig.pythonUIPath

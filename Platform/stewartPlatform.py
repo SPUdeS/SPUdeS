@@ -155,7 +155,9 @@ class stewartPlatform:
             Returns 0 if type is target, 1 if type is sweep, and -1 if there is a problem with the request. """
         requestType = config.unsuccessfulRequest
         # TODO: create exception if the request is not properly formatted instead of print(...)
-        if type_ == "target" and len(data_) == 6 and all(isinstance(n, (int, float)) for n in data):
+        if type_ == "initialization":
+            requestType = config.initializationRequest
+        elif type_ == "target" and len(data_) == 6 and all(isinstance(n, (int, float)) for n in data):
             # TODO: make sure their types: int, float ?
             requestType = config.targetRequest
         elif type_ == "sweep" and data_ == "x" or "y" or "z" or "a" or "b" or "c":
@@ -168,7 +170,15 @@ class stewartPlatform:
 
     def generateListOfTargets(self, requestType, data_):
         """ Redirects request depending on its type. """
-        return self.targetListForTarget(data_) if requestType == config.targetRequest else self.targetListForSweep(data)
+        if requestType == config.targetRequest:
+            return self.targetListForTarget(data_)
+        elif requestType == config.sweepRequest:
+            return self.targetListForSweep(data_)
+        elif requestType == config.initializationRequest:
+            return self.targetListForInitialize()
+        else:
+            return self.targetListForInitialize()
+
 
     def targetListForTarget(self, displacements):
         currentPosition = array(self.platform.getOrigin() + self.platform.getAngles())
@@ -176,6 +186,9 @@ class stewartPlatform:
 
     def targetListForSweep(self, DoF):
         pass
+
+    def targetListForInitialize(self):
+        return [self.platform.initialPosition]
 
 if __name__ == "__main__":
     # Initialize platform
