@@ -12,8 +12,8 @@ class Server():
     def __init__(self):
         self.sp = stewartPlatform()
         self.initPlot()
-        # Choose the right camera with the argument for VideoCapture
-        self.camera = cv2.VideoCapture(1)
+        self.camera = None
+        self.updateCamera()
         self.app = None
         self.initiateFlaskApp()
         self.run()
@@ -41,6 +41,11 @@ class Server():
                 self.requestSP(data["type_"], data["data_"])
                 return render_template('index.html')
 
+        @app.route('/UpdateCamera', methods=["POST", "GET"])
+        def updateCameraRequest():
+            data = json.loads(request.data)
+            self.updateCamera(int(data["cameraNumber"]))
+
         # Assign app to Server variable Server.app
         self.app = app
 
@@ -52,8 +57,8 @@ class Server():
             pass
         shutil.copy(config.plotHomePath, config.plotPath)
 
-    def updateCamera(self):
-        pass
+    def updateCamera(self, cameraNumber = 0):
+        self.camera = cv2.VideoCapture(cameraNumber)
 
     def requestSP(self, type_, data):
         self.sp.requestFromFlask(type_, data)
