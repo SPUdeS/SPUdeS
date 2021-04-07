@@ -30,6 +30,14 @@ function requestInitPlatform() {
     request.send(JSON.stringify(data));
 }
 
+function updateCameraNumber() {
+    let request = new XMLHttpRequest()
+    let data = {cameraNumber: document.getElementById("cameraNumber").value}
+    request.open('POST', '/UpdateCamera', true)
+    request.setRequestHeader('content-type', 'application/json')
+    request.send(JSON.stringify(data));
+}
+
 function getImagePath() {
     return ("../static/img/plot.png") ?  "../static/img/plot.png"  : "../static/img/plotHome.png"
 }
