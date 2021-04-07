@@ -1,16 +1,19 @@
 from flask import Flask, render_template, Response, request
 import cv2
-# from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition, goUpPosition
-from Platform.stewartPlatform import stewartPlatform
 import json
+import os
+import shutil
+from Platform.stewartPlatform import stewartPlatform
+import config
 
 class Server():
     """ Web server class. """
 
     def __init__(self):
         self.sp = stewartPlatform()
+        self.initPlot()
         # Choose the right camera with the argument for VideoCapture
-        self.camera = cv2.VideoCapture(0)
+        self.camera = cv2.VideoCapture(1)
         self.app = None
         self.initiateFlaskApp()
         self.run()
@@ -40,6 +43,17 @@ class Server():
 
         # Assign app to Server variable Server.app
         self.app = app
+
+    @staticmethod
+    def initPlot():
+        try:
+            os.remove(config.plotPath)
+        except OSError:
+            pass
+        shutil.copy(config.plotHomePath, config.plotPath)
+
+    def updateCamera(self):
+        pass
 
     def requestSP(self, type_, data):
         self.sp.requestFromFlask(type_, data)
