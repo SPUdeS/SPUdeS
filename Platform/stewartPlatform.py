@@ -140,14 +140,14 @@ class stewartPlatform:
         return [listServoAngles, lastWaypoint]
 
     def requestFromFlask(self, type_, data_):
-        # Confirm validity of request and check the type of request: "target" or "sweep"
         requestType = self.confirmRequestValidity(type_, data_)
         if requestType == config.unsuccessfulRequest: return config.unsuccessfulRequest # TODO: what to return here?
-        # Generate matrix of targets
         listOfTargets = self.generateListOfTargets(requestType, data_)
-        # Calculate the servo angle paths
-        # Send path to motors
-        #
+        # TODO: Calculate the servo angle paths
+        # TODO: Send path to motors
+        # TODO: Update plot
+        # TODO: Finish & confirm request
+        # TODO: block other requests while there is already a request active
 
     @staticmethod
     def confirmRequestValidity(type_, data_):
@@ -157,10 +157,10 @@ class stewartPlatform:
         # TODO: create exception if the request is not properly formatted instead of print(...)
         if type_ == "initialization":
             requestType = config.initializationRequest
-        elif type_ == "target" and len(data_) == 6 and all(isinstance(n, (int, float)) for n in data):
+        elif type_ == "target" and len(data_) == 6 and all(isinstance(n, (int, float)) for n in data_):
             # TODO: make sure their types: int, float ?
             requestType = config.targetRequest
-        elif type_ == "sweep" and data_ == "x" or "y" or "z" or "a" or "b" or "c":
+        elif type_ == "sweep" and data_ in config.DoFSet:
             requestType = config.sweepRequest
         elif type_ == "target" or "sweep":
             print("Data is wrong or missing!")

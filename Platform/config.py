@@ -24,8 +24,9 @@ sweepDisplacement = 20
 # Flask request logic
 targetRequest = 0
 sweepRequest = 1
-initializationRequest = 3
+initializationRequest = 2
 unsuccessfulRequest = -1
+DoFSet = {"x", "y", "z", "a", "b", "c"}
 
 pythonUIPath = pythonUIConfig.pythonUIPath
 imageName = "plot.png"
