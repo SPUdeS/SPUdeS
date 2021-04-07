@@ -22,10 +22,9 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <img src="{{ url_for('video_feed') }}" alt="Camera"style=" width:100%">
-                        <div class="mb-3">
-                            Camera number:
+                        <div class="mb-3 button-wrapper">
+                            <button class="btn" type="button" onclick="updateCameraNumber();">Change camera</button>
                             <input type="number" id="cameraNumber" value="0"/>
-                            <button type="button" onclick="updateCameraNumber();">Change camera</button>
                           </div>
                     </div>
                     <div class="col-sm-4">
