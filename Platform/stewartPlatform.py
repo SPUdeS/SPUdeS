@@ -42,9 +42,10 @@ class stewartPlatform:
         self.drawLinesBetweenPoints(axis, self.base.getPointsToJoin())
         self.drawLinesBetweenPoints(axis, self.getLegPointsToJoin())
 
-        # plt.show()
+        plt.savefig(config.imagePath, bbox_inches='tight')
 
-        plt.savefig(config.imagePath)
+        ### Uncomment to update default plot ###
+        ###plt.savefig(config.imageHomePath, bbox_inches='tight')
 
     @staticmethod
     def drawLinesBetweenPoints(axis, listOfPointsToJoin):
@@ -193,8 +194,6 @@ class stewartPlatform:
 if __name__ == "__main__":
     # Initialize platform
     stewart = stewartPlatform()
-
-    stewart.targetListForTarget([1,1,1,1,1,1])
     stewart.plot()
 
     # Set target

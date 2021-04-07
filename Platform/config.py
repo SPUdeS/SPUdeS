@@ -31,6 +31,7 @@ DoFSet = {"x", "y", "z", "a", "b", "c"}
 pythonUIPath = pythonUIConfig.pythonUIPath
 imageName = "plot.png"
 imagePath = os.path.join(pythonUIPath, imageName)
+imageHomePath = os.path.join(pythonUIPath, "plotHome.png")
 
 
 # TODO: Calculate when calling stewartPlatform class
