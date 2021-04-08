@@ -31,14 +31,13 @@ class stewartPlatform:
         # Update arm points
         self.UpdateArmPoints()
 
-        # Get usefull point
+        # Get useful point
         [bx, by, bz] = self.base.getPlotAnchors()
         [px, py, pz] = self.platform.getPlotAnchors()
         [ax, ay, az] = self.getArmPoints()
 
-        # affiche points
         # UpView
-        plt.subplot(3, 3, 1)
+        upView = plt.figure()
         plt.fill(bx, by, 'g')
         plt.fill(px, py, 'r')
         plt.plot([ax, bx], [ay, by], 'b')
@@ -47,9 +46,10 @@ class stewartPlatform:
         plt.ylabel("Y")
         plt.title("UpView")
         plt.axis('equal')
+        upView.savefig(config.plotUpViewPath, bbox_inches='tight')
 
         # FrontView
-        plt.subplot(3, 3, 7)
+        frontView = plt.figure()
         plt.plot(bx, bz, 'g')
         plt.plot(px, pz, 'r')
         plt.plot([ax, bx], [az, bz], 'b')
@@ -58,9 +58,10 @@ class stewartPlatform:
         plt.ylabel("z")
         plt.title("FrontView")
         plt.axis('equal')
+        frontView.savefig(config.plotFrontViewPath, bbox_inches='tight')
 
         # RightView
-        plt.subplot(3, 3, 9)
+        rightView = plt.figure()
         plt.plot(by, bz, 'g')
         plt.plot(py, pz, 'r')
         plt.plot([ay, by], [az, bz], 'b')
@@ -69,7 +70,8 @@ class stewartPlatform:
         plt.ylabel('Z')
         plt.title("RightView")
         plt.axis('equal')
-        plt.show()
+        rightView.savefig(config.plotRightViewPath, bbox_inches='tight')
+
 
     def display3D(self):
         # Update arm points
@@ -83,8 +85,8 @@ class stewartPlatform:
         [ax, ay, az] = self.getArmPoints()
 
         # create a 3D graph
+        plot3D = plt.figure()
         axis = plt.axes(projection='3d')
-        axis.set_title("3D")
         axis.set_xlabel('X')
         axis.set_ylabel('Y')
         axis.set_zlabel('Z')
@@ -102,9 +104,9 @@ class stewartPlatform:
         self.drawLinesBetweenPoints(axis, self.getArmPointsToJoin(), 'b')
         self.drawLinesBetweenPoints(axis, self.getLegPointsToJoin(), 'y')
 
-        plt.savefig(config.imagePath, bbox_inches='tight')
+        plot3D.savefig(config.plot3DPath, bbox_inches='tight')
         ### Uncomment to update default plot ###
-        #plt.savefig(config.imageHomePath, bbox_inches='tight')
+        #plt.savefig(config.plot3DHomePath, bbox_inches='tight')
 
     def UpdateArmPoints(self):
         # get or init usefull variable
@@ -262,7 +264,8 @@ class stewartPlatform:
         listOfTargets = self.generateListOfTargets(requestType, data_)
         # TODO: Calculate the servo angle paths
         listOfServoAngles = self.getListServoAngles(listOfTargets)
-        self.plot()
+        self.display3D()
+        self.displayView()
         return listOfServoAngles
 
     @staticmethod
@@ -317,12 +320,7 @@ if __name__ == "__main__":
     targetOrientation = column_stack([array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])])
     target = sc.frame(targetPosition, targetOrientation)
 
-    # Discretize trajectory
-    wp = stewart.pathSampling(target)
-    [listAngles, endPosition] = stewart.getListServoAngles(wp)
-
     # Update platform current position
-    stewart.platform.updateFrame(endPosition)
     stewart.display3D()
     stewart.displayView()
 
