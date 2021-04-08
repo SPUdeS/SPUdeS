@@ -1,62 +1,45 @@
-function requestNewAngle() {
-    var request = new XMLHttpRequest();
-    var result = document.getElementById('newAngle');
-    request.onreadystatechange = function() {
-        if(this.readyState == 4 && this.status == 200) {
-            result.innerHTML = this.responseText;
-        } else {
-            result.innerHTML = "There was an error in the request"
-        }
-    };
-    request.open('POST', '/sendAngle', true)
-    request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
-    request.send("angle=" + document.getElementById('angle').value);
-};
+const pi = 3.14159265359
 
-function requestHomingAngle() {
-    var request = new XMLHttpRequest();
-    var result = document.getElementById('Homing')
-    request.onreadystatechange = function() {
-        if(this.readyState == 4 && this.status == 200) {
-            result.innerHTML = this.responseText;
-        } else {
-            result.innerHTML = "There was an error in requesting the Homing Angle"
-        }
-    };
-    alert("Homing button was pressed. Homing now!")
-    request.open('POST', '/HomingAnglePage', true)
-    request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
-    request.send("Homing=" + document.getElementById('HomingAngle').value);
+function requestDisplacementAngles() {
+    let request = new XMLHttpRequest();
+    let positions = [
+        parseFloat(document.getElementById("position_x").value),
+        parseFloat(document.getElementById("position_y").value),
+        parseFloat(document.getElementById("position_z").value),
+        (pi/180)*parseFloat(document.getElementById("position_a").value),
+        (pi/180)*parseFloat(document.getElementById("position_b").value),
+        (pi/180)*parseFloat(document.getElementById("position_c").value)
+    ]
+    let data = {type_: "target", data_: positions}
+    request.open('POST', '/NewDisplacementRequest', true)
+    request.setRequestHeader('content-type', 'application/json')
+    request.send(JSON.stringify(data));
 }
 
-function requestMovingUp() {
-    var request = new XMLHttpRequest();
-    var result = document.getElementById('MovingUp')
-    request.onreadystatechange = function() {
-        if(this.readyState == 4 && this.status == 200) {
-            result.innerHTML = this.responseText;
-        } else {
-            result.innerHTML = "There was an error in requesting the Moving Up button"
-        }
-    };
-    alert("Moving Up button was pressed. Moving up now!")
-    request.open('POST', '/MovingUpPage', true)
-    request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
-    request.send("MovingUp=" + document.getElementById('MoveUp').value);
+function requestSweep(DOF) {
+    let request = new XMLHttpRequest()
+    let data = {type_: "sweep", data_: DOF}
+    request.open('POST', '/NewDisplacementRequest', true)
+    request.setRequestHeader('content-type', 'application/json')
+    request.send(JSON.stringify(data));
 }
 
-function requestPlot() {
-    var request = new XMLHttpRequest();
-    var result = document.getElementById('angleThetaInput')
-    request.onreadystatechange = function() {
-        if(this.readyState == 4 && this.status == 200) {
-            result.innerHTML = this.responseText;
-        } else {
-            result.innerHTML = "There was an error in requesting the plot values"
-        }
-    };
-    alert("Plotting now!!")
-    request.open('POST', '/Plot', true)
-    request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
-    request.send("angleThetaInput=" + document.getElementById('MoveUp').value);
+function requestInitPlatform() {
+    let request = new XMLHttpRequest()
+    let data = {type_: "initialization", data_: [0,0,0,0,0,0]}
+    request.open('POST', '/NewDisplacementRequest', true)
+    request.setRequestHeader('content-type', 'application/json')
+    request.send(JSON.stringify(data));
+}
+
+function updateCameraNumber() {
+    let request = new XMLHttpRequest()
+    let data = {cameraNumber: document.getElementById("cameraNumber").value}
+    request.open('POST', '/UpdateCamera', true)
+    request.setRequestHeader('content-type', 'application/json')
+    request.send(JSON.stringify(data));
+}
+
+function getImagePath() {
+    return ("../static/img/plot.png") ?  "../static/img/plot.png"  : "../static/img/plotHome.png"
 }

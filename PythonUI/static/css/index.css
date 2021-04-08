@@ -64,6 +64,16 @@
     border-bottom: 50px solid #555;
 }
 
+.button-wrapper .btn {
+    background-color: rgba(0,0,0,0.05);
+    display: inline-block;
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.1) inset;
+    -moz-box-shadow: 0 0 5px rgba(0,0,0,0.1) inset;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1) inset;
+    width: auto;
+    margin-bottom:8px;
+}
 
-
-
+.positionInput {
+    width: 45px;
+}

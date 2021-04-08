@@ -11,7 +11,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="../static/img/favicon.ico" />
         <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/index.css') }}" />
     </head>
-    <body>
+    <body onload="getImagePath();">
         <main id="ui-wrapper">
             <div class="jumbotron text-center" style="margin-bottom: 0">
                 <img src="../static/img/favicon.ico" alt="Image" width="100"/>
@@ -22,56 +22,52 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <img src="{{ url_for('video_feed') }}" alt="Camera"style=" width:100%">
+                        <div class="mb-3 button-wrapper">
+                            <button class="btn" type="button" onclick="updateCameraNumber();">Change camera</button>
+                            <input type="number" id="cameraNumber" value="0"/>
+                          </div>
                     </div>
                     <div class="col-sm-4">
-                        <form>
+                        <form action="/NewDisplacementRequest" method="POST">
                           <div class="mb-3">
-                            <label for="input_position_x" class="form-label">Position X</label>
-                            <input type="number" class="form-control" id="input_position_x">
+                            Δx [mm]:
+                            <input class="positionInput" type="number" id="position_x" value="0"/>
+                            <button type="button" onclick="requestSweep('x');" class="btn btn-dark"> Sweep X axis</button>
                           </div>
                           <div class="mb-3">
-                            <label for="input_position_y" class="form-label">Position Y</label>
-                            <input type="number" class="form-control" id="input_position_y">
+                            Δy [mm]:
+                            <input class="positionInput" type="number" id="position_y" value="0"/>
+                            <button type="button" onclick="requestSweep('y');" class="btn btn-primary"> Sweep Y axis</button>
                           </div>
                           <div class="mb-3">
-                            <label for="input_position_z" class="form-label">Position Z</label>
-                            <input type="number" class="form-control" id="input_position_z">
+                            Δz [mm]:
+                            <input class="positionInput" type="number" id="position_z" value="0"/>
+                            <button type="button" onclick="requestSweep('z');" class="btn btn-secondary"> Sweep Z axis</button>
                           </div>
                           <div class="mb-3">
-                            <label for="input_position_alpha" class="form-label">Alpha</label>
-                            <input type="number" class="form-control" id="input_position_alpha">
+                            Δα [deg]:
+                            <input class="positionInput" type="number" id="position_a" value="0"/>
+                            <button type="button" onclick="requestSweep('a');" class="btn btn-success"> Sweep A axis</button>
                           </div>
                           <div class="mb-3">
-                            <label for="input_position_beta" class="form-label">Beta</label>
-                            <input type="number" class="form-control" id="input_position_beta">
+                            Δβ [deg]:
+                            <input class="positionInput" type="number" id="position_b" value="0"/>
+                            <button type="button" onclick="requestSweep('b');" class="btn btn-danger"> Sweep B axis</button>
                           </div>
                           <div class="mb-3">
-                            <label for="input_position_gamma" class="form-label">Gamma</label>
-                            <input type="number" class="form-control" id="input_position_gamma">
+                            Δγ [deg]:
+                            <input class="positionInput" type="number" id="position_c" value="0"/>
+                            <button type="button" onclick="requestSweep('c');" class="btn btn-warning"> Sweep C axis</button>
                           </div>
-                          <button type="submit" class="btn btn-primary">Submit</button>
+                            <!--<input type="submit" value="Submit"/>-->
+                            <button type="button" style="margin:8px" onclick="requestDisplacementAngles();">Submit</button>
+                            <button type="button" onclick="requestInitPlatform();">Initialize Platform</button>
                         </form>
                     </div>
                     <div class="col-sm-4">
-                        <div id="angle-input-wrapper">
-                            <form action="/sendAngle/" method="post">
-                              <label>Angle Value:<input type="text" id="angle" value="" /></label>
-                              <button type="button" id="btn-angle" onclick="requestNewAngle();">Click</button>
-                              <div id="newAngle"></div>
-                            </form>
-                        </div>
-                        <div id="homing-angle-wrapper">
-                            <form action="/HomingAnglePage/" method="post">
-                              <button type="button" id="HomingAngle" value="true" onclick="requestHomingAngle();">Homing Button</button>
-                              <div id="Homing"></div>
-                            </form>
-                        </div>
-                        <div id="moving-up-wrapper">
-                            <form action="/MovingUpPage/" method="post">
-                              <button type="button" id="MoveUp" value="true" onclick="requestMovingUp();">Move Up Button</button>
-                              <div id="MovingUp"></div>
-                            </form>
-                        </div>
+                       <!-- PLOT -->
+                        <img src="../static/img/plotHome.png" align="center"> <!--TODO: absolute Path-->
+                        <h5 style="text-align:center">Stewart Platform Plot</h5>
                     </div>
                 </div>
             </div>

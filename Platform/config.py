@@ -3,6 +3,8 @@
     If the platform geometry is changed, then this file should be modified and everything else
     should stay the same in the stewartPlatform file."""
 from numpy import array, column_stack, pi
+import os
+from PythonUI import config as pythonUIConfig
 
 # Constants - Distances are in mm, angles are in radians
 numberOfAnchors = 6
@@ -17,6 +19,20 @@ baseOffsetAngle = 0
 platformOffsetAngle = pi / 3
 stewartVectorBase = column_stack([array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])])
 stewartHomePosition = [0, 0, 0]
+sweepDisplacement = 20
+
+# Flask request logic
+targetRequest = 0
+sweepRequest = 1
+initializationRequest = 2
+unsuccessfulRequest = -1
+DoFSet = {"x", "y", "z", "a", "b", "c"}
+
+pythonUIPath = pythonUIConfig.pythonUIPath
+imageName = "plot.png"
+imagePath = os.path.join(pythonUIPath, imageName)
+imageHomePath = os.path.join(pythonUIPath, "plotHome.png")
+
 
 # TODO: Calculate when calling stewartPlatform class
 # Betas are the angles formed by each of the servo arms and the x-axis of the platform.

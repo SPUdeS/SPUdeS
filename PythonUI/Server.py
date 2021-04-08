@@ -1,22 +1,34 @@
 from flask import Flask, render_template, Response, request
 import cv2
-# from arduino_comms.ard_communication import setServoAngle, goUPandDown, goToHomePosition, goUpPosition
+import json
+import os
+import shutil
 from Platform.stewartPlatform import stewartPlatform
-
+from Arduino.ard_communication import ard_communication
+import config
 
 class Server():
     """ Web server class. """
 
     def __init__(self):
-        # self.sp = Platform()
-        # Choose the right camera with the argument for VideoCapture
-        self.camera = cv2.VideoCapture(0)
+        self.sp = stewartPlatform()
+        try:
+            self.arduinoCommunication = ard_communication()
+        except:
+            self.arduinoCommunication = None
+            pass
+        self.camera = None
         self.app = None
+        self.initPlot()
+        self.updateCamera()
         self.initiateFlaskApp()
         self.run()
 
     def run(self):
         self.app.run(debug=True, use_reloader=False)
+
+    def updateHost(self): #todo:host
+        self.app.run(debug=True, use_reloader=False, host="192.168.176.1")
 
     def initiateFlaskApp(self):
         app = Flask(__name__)
@@ -31,37 +43,38 @@ class Server():
             """Video Streaming Index Page"""
             return render_template('index.html')
 
-        @app.route('/sendAngle', methods=["POST", "GET"])
-        def sendAngleToArduino():
+        @app.route('/NewDisplacementRequest', methods=["POST", "GET"])
+        def displacement_request():
             if request.method == "POST":
-                angle_str = request.form["angle"]
-                angle_int = int(angle_str)
-                goUPandDown(angle_int)
-                return "Angle received: " + angle_str
-            return render_template('index.html')
+                data = json.loads(request.data)
+                self.requestSP(data["type_"], data["data_"])
+                return render_template('index.html')
 
-        @app.route('/HomingAnglePage', methods=["POST"])
-        def responseHomingAngle():
-            if request.method == "POST":
-                homing = request.form["Homing"]
-                if homing == "true":
-                    goToHomePosition()
-                    return homing
-                return 0
-            return render_template('index.html')
-
-        @app.route('/MovingUpPage', methods=["POST"])
-        def responseMovingUp():
-            if request.method == "POST":
-                moveUp = request.form["MovingUp"]
-                if moveUp == "true":
-                    goUpPosition()
-                    return moveUp
-                return 0
-            return render_template('index.html')
+        @app.route('/UpdateCamera', methods=["POST", "GET"])
+        def updateCameraRequest():
+            data = json.loads(request.data)
+            self.updateCamera(int(data["cameraNumber"]))
 
         # Assign app to Server variable Server.app
         self.app = app
+
+    @staticmethod
+    def initPlot():
+        try:
+            os.remove(config.plotPath)
+        except OSError:
+            pass
+        shutil.copy(config.plotHomePath, config.plotPath)
+
+    def updateCamera(self, cameraNumber = 0):
+        self.camera = cv2.VideoCapture(cameraNumber)
+
+    def requestSP(self, type_, data):
+        listOfServoAngles = self.sp.requestFromFlask(type_, data)
+        if self.arduinoCommunication is not None:
+            self.arduinoCommunication.setServoAngle(listOfServoAngles)
+
+        # TODO: confirm update of photo before posting
 
     def generate_frames(self):
         """ Generate frame by frame. """
