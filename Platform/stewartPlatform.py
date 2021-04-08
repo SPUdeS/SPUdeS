@@ -30,21 +30,26 @@ class stewartPlatform:
     def displayView(self):
         # Update arm points
         self.UpdateArmPoints()
+
         # Get usefull point
         [bx, by, bz] = self.base.getPlotAnchors()
         [px, py, pz] = self.platform.getPlotAnchors()
         [ax, ay, az] = self.getArmPoints()
+
         # affiche points
+        # UpView
         plt.subplot(3, 3, 1)
         plt.fill(bx, by, 'g')
         plt.fill(px, py, 'r')
-        plt.plot([ax,bx],[ay,by],'b')
-        plt.plot([ax,px],[ay,py],'y')
+        plt.plot([ax, bx], [ay, by], 'b')
+        plt.plot([ax, px], [ay, py], 'y')
         plt.xlabel("X")
         plt.ylabel("Y")
         plt.title("UpView")
         plt.axis('equal')
-        plt.subplot(3,3,7)
+
+        # FrontView
+        plt.subplot(3, 3, 7)
         plt.plot(bx, bz, 'g')
         plt.plot(px, pz, 'r')
         plt.plot([ax, bx], [az, bz], 'b')
@@ -53,7 +58,9 @@ class stewartPlatform:
         plt.ylabel("z")
         plt.title("FrontView")
         plt.axis('equal')
-        plt.subplot(3,3,9)
+
+        # RightView
+        plt.subplot(3, 3, 9)
         plt.plot(by, bz, 'g')
         plt.plot(py, pz, 'r')
         plt.plot([ay, by], [az, bz], 'b')
@@ -67,45 +74,61 @@ class stewartPlatform:
     def display3D(self):
         # Update arm points
         self.UpdateArmPoints()
+
         # Get usefull point
         baseOrigin = self.base.getOrigin()
         platformOrigin = self.platform.getOrigin()
         [bx, by, bz] = self.base.getPlotAnchors()
         [px, py, pz] = self.platform.getPlotAnchors()
         [ax, ay, az] = self.getArmPoints()
-        # affiche points
+
+        # create a 3D graph
         axis = plt.axes(projection='3d')
         axis.set_title("3D")
         axis.set_xlabel('X')
         axis.set_ylabel('Y')
         axis.set_zlabel('Z')
+
+        # Add points to the graph
         axis.scatter(baseOrigin[0], baseOrigin[1], baseOrigin[2], c="green")
         axis.scatter(platformOrigin[0], platformOrigin[1], platformOrigin[2], c="red")
         axis.scatter(ax, ay, az, c="blue")
         axis.scatter(bx, by, bz, c="green")
         axis.scatter(px, py, pz, c="red")
+
+        # Add lines to the graph
         self.drawLinesBetweenPoints(axis, self.platform.getPointsToJoin(), 'r')
         self.drawLinesBetweenPoints(axis, self.base.getPointsToJoin(), 'g')
         self.drawLinesBetweenPoints(axis, self.getArmPointsToJoin(), 'b')
         self.drawLinesBetweenPoints(axis, self.getLegPointsToJoin(), 'y')
+
         plt.show()
 
     def UpdateArmPoints(self):
+        # get or init usefull variable
         X = []
         Y = []
         Z = []
         basePoints = self.base.getPlotAnchors()
         armAngle = self.getServoAngles()
+
+        # Calculate points for each motors
         for index in range(config.numberOfAnchors):
+
+            # Calculate theta(angle in the x,y plane)
             if index == 4 or index == 5:
                 theta = config.betas[index]
             else:
                 theta = pi - config.betas[index]
+
+            # Calculate the displacement
             L = config.armLength * cos(abs(armAngle[index]))
             deltaZ = config.armLength * sin(abs(armAngle[index]))
-            Z.append(basePoints[2][index] + deltaZ)
             deltaX = L * cos(theta)
             deltaY = L * sin(theta)
+
+            # Find the extremity of the arm of the servos
+            Z.append(basePoints[2][index] + deltaZ)
             if index == 0 or index == 2 or index == 4:
                 Y.append(basePoints[1][index] - deltaY)
             else:
@@ -114,7 +137,8 @@ class stewartPlatform:
                 X.append(basePoints[0][index] - deltaX)
             else:
                 X.append(basePoints[0][index] + deltaX)
-        self.armPoints = [X,Y,Z]
+
+        self.armPoints = [X, Y, Z]
 
     def getArmPoints(self):
         return self.armPoints
@@ -240,8 +264,6 @@ if __name__ == "__main__":
 
     # Update platform current position
     stewart.platform.updateFrame(endPosition)
-
-    # stewart.plot()
     stewart.display3D()
     stewart.displayView()
 
