@@ -43,9 +43,8 @@ class stewartPlatform:
         self.drawLinesBetweenPoints(axis, self.getLegPointsToJoin())
 
         plt.savefig(config.imagePath, bbox_inches='tight')
-
         ### Uncomment to update default plot ###
-        ###plt.savefig(config.imageHomePath, bbox_inches='tight')
+        #plt.savefig(config.imageHomePath, bbox_inches='tight')
 
     @staticmethod
     def drawLinesBetweenPoints(axis, listOfPointsToJoin):
@@ -93,23 +92,32 @@ class stewartPlatform:
             Returns servo angles necessary to accomplish the movement.
             target = [x, y, z, ψ, θ, φ ] (angles d'Euler)
             """
-        targetFrame = sc.frame(targetPoint.origin, targetPoint.vectorBase)
+
+        targetFrame = self.getTargetFrameFromPoint(targetPoint)
         legLengths = self.getEffectiveLegLengths(targetFrame)
 
-        # Compute anchor angles to get effective leg lengths
+        # Compute servo angles to get effective leg lengths
         servoAngles = []
         for i in range(config.numberOfAnchors):
-            servoAngles.append(
-                kf.getAlpha(linalg.norm(legLengths[i]), config.betas[i], self.base, targetFrame))
+            servoAngles.append(kf.getAlpha(legLengths[i], config.betas[i], self.base, targetFrame))
         return servoAngles
+
+    @staticmethod
+    def getTargetFrameFromPoint(targetPoint):
+        origin = [targetPoint[0], targetPoint[1], targetPoint[2]]
+        # TODO: confirm this with Jean-Gab
+        vectorBase = kf.getRotationMatrixFromAngles(targetPoint[3], targetPoint[4], targetPoint[5])
+        return sc.frame(origin, vectorBase)
+
 
     def getEffectiveLegLengths(self, targetFrame):
         """ Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi . """
-        base_R_target = self.getRotationMatrixToTarget(targetFrame.vectorBase)
+        #todo: why is base_R_target different that the vector base of the target frame???!!!
         legLengths = []
         for i in range(config.numberOfAnchors):
-            legLengths.append(add(targetFrame.getOrigin(),
-                                  subtract(matmul(base_R_target, self.platform.anchors[i]), self.base.anchors[i])))
+            legCoord = add(targetFrame.getOrigin(),
+                                  subtract(matmul(targetFrame.vectorBase, self.platform.anchors[i]), self.base.anchors[i]))
+            legLengths.append(linalg.norm(legCoord))
         return legLengths
 
     def getRotationAnglesToFrame(self, targetFrame):
@@ -126,7 +134,7 @@ class stewartPlatform:
         """ Returns the rotation matrix between the base and a target frame. """
         return kf.getRotationMatrix(self.base.getVectorBase(), targetVectorBase)
 
-    def listServoAngles(self, waypoints):
+    def getListServoAngles(self, waypoints):
         """ Return a list of six-tuples servo angles to move through the trajectory.
             Returns the last waypoint to later update the platform's origin. """
         lastWaypoint = waypoints[-1]
@@ -142,13 +150,12 @@ class stewartPlatform:
 
     def requestFromFlask(self, type_, data_):
         requestType = self.confirmRequestValidity(type_, data_)
-        if requestType == config.unsuccessfulRequest: return config.unsuccessfulRequest # TODO: what to return here?
+        if requestType == config.unsuccessfulRequest: return [] # TODO: what to return here?
         listOfTargets = self.generateListOfTargets(requestType, data_)
         # TODO: Calculate the servo angle paths
-        # TODO: Send path to motors
-        # TODO: Update plot
-        # TODO: Finish & confirm request
-        # TODO: block other requests while there is already a request active
+        listOfServoAngles = self.getListServoAngles(listOfTargets)
+        self.plot()
+        return listOfServoAngles
 
     @staticmethod
     def confirmRequestValidity(type_, data_):
@@ -180,16 +187,15 @@ class stewartPlatform:
         else:
             return self.targetListForInitialize()
 
-
     def targetListForTarget(self, displacements):
         currentPosition = array(self.platform.getOrigin() + self.platform.getAngles())
-        return [(currentPosition + array(displacements)).tolist()]
+        return [(array(currentPosition) + array(displacements)).tolist()]
 
     def targetListForSweep(self, DoF):
         pass
 
     def targetListForInitialize(self):
-        return [self.platform.initialPosition]
+        return [self.platform.initialPosition] # TODO: initalize platform before using!!! cannot sample position on initialization.
 
 if __name__ == "__main__":
     # Initialize platform
@@ -204,7 +210,7 @@ if __name__ == "__main__":
 
     # Discretize trajectory
     wp = stewart.pathSampling(target)
-    [listAngles, endPosition] = stewart.listServoAngles(wp)
+    [listAngles, endPosition] = stewart.getListServoAngles(wp)
 
     # Update platform current position
     stewart.platform.updateFrame(endPosition)

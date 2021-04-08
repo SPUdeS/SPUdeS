@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 from Platform.stewartPlatform import stewartPlatform
+from Arduino.ard_communication import ard_communication
 import config
 
 class Server():
@@ -11,15 +12,23 @@ class Server():
 
     def __init__(self):
         self.sp = stewartPlatform()
-        self.initPlot()
+        try:
+            self.arduinoCommunication = ard_communication()
+        except:
+            self.arduinoCommunication = None
+            pass
         self.camera = None
-        self.updateCamera()
         self.app = None
+        self.initPlot()
+        self.updateCamera()
         self.initiateFlaskApp()
         self.run()
 
     def run(self):
         self.app.run(debug=True, use_reloader=False)
+
+    def updateHost(self): #todo:host
+        self.app.run(debug=True, use_reloader=False, host="192.168.176.1")
 
     def initiateFlaskApp(self):
         app = Flask(__name__)
@@ -61,7 +70,10 @@ class Server():
         self.camera = cv2.VideoCapture(cameraNumber)
 
     def requestSP(self, type_, data):
-        self.sp.requestFromFlask(type_, data)
+        listOfServoAngles = self.sp.requestFromFlask(type_, data)
+        if self.arduinoCommunication is not None:
+            self.arduinoCommunication.setServoAngle(listOfServoAngles)
+
         # TODO: confirm update of photo before posting
 
     def generate_frames(self):
