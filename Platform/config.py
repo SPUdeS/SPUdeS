@@ -29,10 +29,24 @@ unsuccessfulRequest = -1
 DoFSet = {"x", "y", "z", "a", "b", "c"}
 
 pythonUIPath = pythonUIConfig.pythonUIPath
-imageName = "plot.png"
-imagePath = os.path.join(pythonUIPath, imageName)
-imageHomePath = os.path.join(pythonUIPath, "plotHome.png")
+plot3D = "plot3D.png"
+plot3DHome = "plot3DHome.png"
+plot3DPath = os.path.join(pythonUIPath, plot3D)
+plot3DHomePath = os.path.join(pythonUIPath, plot3DHome)
 
+plotUpView = "plotUpView.png"
+plotFrontView = "plotFrontView.png"
+plotRightView = "plotRightView.png"
+plotUpViewPath = os.path.join(pythonUIPath, plotUpView)
+plotFrontViewPath = os.path.join(pythonUIPath, plotFrontView)
+plotRightViewPath = os.path.join(pythonUIPath, plotRightView)
+
+plotUpViewHome = "plotUpViewHome.png"
+plotFrontViewHome = "plotFrontViewHome.png"
+plotRightViewHome = "plotRightViewHome.png"
+plotUpViewHomePath = os.path.join(pythonUIPath, plotUpViewHome)
+plotFrontViewHomePath = os.path.join(pythonUIPath, plotFrontViewHome)
+plotRightViewHomePath = os.path.join(pythonUIPath, plotRightViewHome)
 
 # TODO: Calculate when calling stewartPlatform class
 # Betas are the angles formed by each of the servo arms and the x-axis of the platform.

@@ -1,9 +1,8 @@
-from numpy import sqrt, arcsin, arctan2, isnan, add, subtract, matmul, column_stack, linalg, array
+from numpy import sqrt, arcsin, ones, cos, sin, arctan2, isnan, add, subtract, matmul, column_stack, linalg, array, pi
 from Platform import config
 import matplotlib.pyplot as plt
 from Platform import stewartClasses as sc
 from Platform import kinematicFunctions as kf
-
 
 class stewartPlatform:
     """ Contains inner classes base and platform"""
@@ -12,10 +11,11 @@ class stewartPlatform:
         self.base = sc.base()
         self.platform = sc.platform(self.base)
         self.homeServoAngles = self.initHomeServoAngle()
-        self.servoAngles = self.homeServoAngles
+        self.servoAngles = ones(6) * self.homeServoAngles
+        self.armPoints = []
 
     def initHomeServoAngle(self):
-        # Angle of anchors at home position
+        # Angle of servos at home position
         L0 = 2 * config.armLength ** 2
         M0 = 2 * config.armLength * self.platform.getOrigin()[2]
         N0 = 2 * config.armLength * (self.base.anchors[0][0] - self.platform.anchors[0][0])
@@ -24,39 +24,148 @@ class stewartPlatform:
     def getHomeServoAngle(self):
         return self.homeServoAngles
 
-    def plot(self):
-        axis = plt.axes(projection='3d')
-        baseOrigin = self.base.getOrigin()
-        platformOrigin = self.base.getOrigin()
+    def getServoAngles(self):
+        return self.servoAngles
+
+    def displayView(self):
+        # Update arm points
+        self.UpdateArmPoints()
+
+        # Get useful point
         [bx, by, bz] = self.base.getPlotAnchors()
         [px, py, pz] = self.platform.getPlotAnchors()
+        [ax, ay, az] = self.getArmPoints()
 
-        # Plot the 12 anchor points and the base and platform origin
-        axis.scatter(bx, by, bz)
-        axis.scatter(px, py, pz)
-        axis.scatter(baseOrigin[0], baseOrigin[1], baseOrigin[2])
-        axis.scatter(platformOrigin[0], platformOrigin[1], platformOrigin[2])
+        # UpView
+        upView = plt.figure()
+        plt.fill(bx, by, 'g')
+        plt.fill(px, py, 'r')
+        plt.plot([ax, bx], [ay, by], 'b')
+        plt.plot([ax, px], [ay, py], 'y')
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.title("UpView")
+        plt.axis('equal')
+        upView.savefig(config.plotUpViewPath, bbox_inches='tight')
 
-        # Draw the base and platform hexagon lines and the connecting arms
-        self.drawLinesBetweenPoints(axis, self.platform.getPointsToJoin())
-        self.drawLinesBetweenPoints(axis, self.base.getPointsToJoin())
-        self.drawLinesBetweenPoints(axis, self.getLegPointsToJoin())
+        # FrontView
+        frontView = plt.figure()
+        plt.plot(bx, bz, 'g')
+        plt.plot(px, pz, 'r')
+        plt.plot([ax, bx], [az, bz], 'b')
+        plt.plot([ax, px], [az, pz], 'y')
+        plt.xlabel("x")
+        plt.ylabel("z")
+        plt.title("FrontView")
+        plt.axis('equal')
+        frontView.savefig(config.plotFrontViewPath, bbox_inches='tight')
 
-        plt.savefig(config.imagePath, bbox_inches='tight')
+        # RightView
+        rightView = plt.figure()
+        plt.plot(by, bz, 'g')
+        plt.plot(py, pz, 'r')
+        plt.plot([ay, by], [az, bz], 'b')
+        plt.plot([ay, py], [az, pz], 'y')
+        plt.xlabel("Y")
+        plt.ylabel('Z')
+        plt.title("RightView")
+        plt.axis('equal')
+        rightView.savefig(config.plotRightViewPath, bbox_inches='tight')
+
+
+    def display3D(self):
+        # Update arm points
+        self.UpdateArmPoints()
+
+        # Get usefull point
+        baseOrigin = self.base.getOrigin()
+        platformOrigin = self.platform.getOrigin()
+        [bx, by, bz] = self.base.getPlotAnchors()
+        [px, py, pz] = self.platform.getPlotAnchors()
+        [ax, ay, az] = self.getArmPoints()
+
+        # create a 3D graph
+        plot3D = plt.figure()
+        axis = plt.axes(projection='3d')
+        axis.set_xlabel('X')
+        axis.set_ylabel('Y')
+        axis.set_zlabel('Z')
+
+        # Add points to the graph
+        axis.scatter(baseOrigin[0], baseOrigin[1], baseOrigin[2], c="green")
+        axis.scatter(platformOrigin[0], platformOrigin[1], platformOrigin[2], c="red")
+        axis.scatter(ax, ay, az, c="blue")
+        axis.scatter(bx, by, bz, c="green")
+        axis.scatter(px, py, pz, c="red")
+
+        # Add lines to the graph
+        self.drawLinesBetweenPoints(axis, self.platform.getPointsToJoin(), 'r')
+        self.drawLinesBetweenPoints(axis, self.base.getPointsToJoin(), 'g')
+        self.drawLinesBetweenPoints(axis, self.getArmPointsToJoin(), 'b')
+        self.drawLinesBetweenPoints(axis, self.getLegPointsToJoin(), 'y')
+
+        plot3D.savefig(config.plot3DPath, bbox_inches='tight')
         ### Uncomment to update default plot ###
-        #plt.savefig(config.imageHomePath, bbox_inches='tight')
+        #plt.savefig(config.plot3DHomePath, bbox_inches='tight')
+
+    def UpdateArmPoints(self):
+        # get or init usefull variable
+        X = []
+        Y = []
+        Z = []
+        basePoints = self.base.getPlotAnchors()
+        armAngle = self.getServoAngles()
+
+        # Calculate points for each motors
+        for index in range(config.numberOfAnchors):
+
+            # Calculate theta(angle in the x,y plane)
+            if index == 4 or index == 5:
+                theta = config.betas[index]
+            else:
+                theta = pi - config.betas[index]
+
+            # Calculate the displacement
+            L = config.armLength * cos(abs(armAngle[index]))
+            deltaZ = config.armLength * sin(abs(armAngle[index]))
+            deltaX = L * cos(theta)
+            deltaY = L * sin(theta)
+
+            # Find the extremity of the arm of the servos
+            Z.append(basePoints[2][index] + deltaZ)
+            if index == 0 or index == 2 or index == 4:
+                Y.append(basePoints[1][index] - deltaY)
+            else:
+                Y.append(basePoints[1][index] + deltaY)
+            if index == 1 or index == 2 or index == 4:
+                X.append(basePoints[0][index] - deltaX)
+            else:
+                X.append(basePoints[0][index] + deltaX)
+
+        self.armPoints = [X, Y, Z]
+
+    def getArmPoints(self):
+        return self.armPoints
+
+    def getArmPointsToJoin(self):
+        armPointsToJoin = []
+        [bx, by, bz] = self.base.getPlotAnchors()
+        [ax, ay, az] = self.armPoints
+        for i in range(config.numberOfAnchors):
+            armPointsToJoin.append([(bx[i], by[i], bz[i]), (ax[i], ay[i], az[i])])
+        return armPointsToJoin
 
     @staticmethod
-    def drawLinesBetweenPoints(axis, listOfPointsToJoin):
+    def drawLinesBetweenPoints(axis, listOfPointsToJoin, color):
         for points in listOfPointsToJoin:
-            axis.plot([points[0][0], points[1][0]], [points[0][1], points[1][1]], [points[0][2], points[1][2]])
+            axis.plot([points[0][0], points[1][0]], [points[0][1], points[1][1]], [points[0][2], points[1][2]], color)
 
     def getLegPointsToJoin(self):
         legPointsToJoin = []
-        [bx, by, bz] = self.base.getPlotAnchors()
+        [ax, ay, az] = self.armPoints
         [px, py, pz] = self.platform.getPlotAnchors()
         for i in range(config.numberOfAnchors):
-            legPointsToJoin.append([(bx[i], by[i], bz[i]), (px[i], py[i], pz[i])])
+            legPointsToJoin.append([(ax[i], ay[i], az[i]), (px[i], py[i], pz[i])])
         return legPointsToJoin
 
     def pathSampling(self, targetFrame):
@@ -146,6 +255,7 @@ class stewartPlatform:
             else:
                 lastWaypoint = point
                 break
+        self.servoAngles = listServoAngles[-1]
         return [listServoAngles, lastWaypoint]
 
     def requestFromFlask(self, type_, data_):
@@ -154,7 +264,8 @@ class stewartPlatform:
         listOfTargets = self.generateListOfTargets(requestType, data_)
         # TODO: Calculate the servo angle paths
         listOfServoAngles = self.getListServoAngles(listOfTargets)
-        self.plot()
+        self.display3D()
+        self.displayView()
         return listOfServoAngles
 
     @staticmethod
@@ -200,20 +311,16 @@ class stewartPlatform:
 if __name__ == "__main__":
     # Initialize platform
     stewart = stewartPlatform()
-    stewart.plot()
+    stewart.display3D()
+    stewart.displayView()
 
     # Set target
-    targetPosition = [0, 0, stewart.platform.origin[2] - 20]
+    targetPosition = [0, 0, stewart.platform.origin[2] + 20]
     # [array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])]
-    targetOrientation = column_stack([array([1, 0, 0]), array([0, 0, -1]), array([0, 1, 0])])
+    targetOrientation = column_stack([array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])])
     target = sc.frame(targetPosition, targetOrientation)
 
-    # Discretize trajectory
-    wp = stewart.pathSampling(target)
-    [listAngles, endPosition] = stewart.getListServoAngles(wp)
-
     # Update platform current position
-    stewart.platform.updateFrame(endPosition)
+    stewart.display3D()
+    stewart.displayView()
 
-    stewart.plot()
-    print(stewart.platform.getOrigin())

@@ -39,7 +39,3 @@ function updateCameraNumber() {
     request.setRequestHeader('content-type', 'application/json')
     request.send(JSON.stringify(data));
 }
-
-function getImagePath() {
-    return ("../static/img/plot.png") ?  "../static/img/plot.png"  : "../static/img/plotHome.png"
-}

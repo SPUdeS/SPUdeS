@@ -11,7 +11,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="../static/img/favicon.ico" />
         <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/index.css') }}" />
     </head>
-    <body onload="getImagePath();">
+    <body>
         <main id="ui-wrapper">
             <div class="jumbotron text-center" style="margin-bottom: 0">
                 <img src="../static/img/favicon.ico" alt="Image" width="100"/>
@@ -66,9 +66,17 @@
                     </div>
                     <div class="col-sm-4">
                        <!-- PLOT -->
-                        <img src="../static/img/plotHome.png" align="center"> <!--TODO: absolute Path-->
+                        <img src="../static/img/plot3D.png" align="center"> <!--TODO: absolute Path-->
                         <h5 style="text-align:center">Stewart Platform Plot</h5>
                     </div>
+                    <!-- TODO: Format this block-->
+                    <!--
+                    <div class="col-sm-4">
+
+                        <img src="../static/img/plotUpView.png" align="center">
+                        <img src="../static/img/plotFrontView.png" align="center">
+                        <img src="../static/img/plotRightView.png" align="center">
+                    </div> -->
                 </div>
             </div>
             <div id="project-link-wrapper">

@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 from Platform.stewartPlatform import stewartPlatform
+from Platform import config as spConfig
 from Arduino.ard_communication import ard_communication
 import config
 
@@ -61,10 +62,25 @@ class Server():
     @staticmethod
     def initPlot():
         try:
-            os.remove(config.plotPath)
+            os.remove(spConfig.plot3DPath)
         except OSError:
             pass
-        shutil.copy(config.plotHomePath, config.plotPath)
+        try:
+            os.remove(spConfig.plotUpViewPath)
+        except OSError:
+            pass
+        try:
+            os.remove(spConfig.plotFrontViewPath)
+        except OSError:
+            pass
+        try:
+            os.remove(spConfig.plotRightViewPath)
+        except OSError:
+            pass
+        shutil.copy(spConfig.plot3DHomePath, spConfig.plot3DPath)
+        shutil.copy(spConfig.plotUpViewHomePath, spConfig.plotUpViewPath)
+        shutil.copy(spConfig.plotFrontViewHomePath, spConfig.plotFrontViewPath)
+        shutil.copy(spConfig.plotRightViewHomePath, spConfig.plotRightViewPath)
 
     def updateCamera(self, cameraNumber = 0):
         self.camera = cv2.VideoCapture(cameraNumber)
