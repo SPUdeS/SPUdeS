@@ -225,7 +225,7 @@ class stewartPlatform:
         legLengths = []
         for i in range(config.numberOfAnchors):
             legCoord = add(targetFrame.getOrigin(),
-                                  subtract(matmul(targetFrame.vectorBase, self.platform.anchors[i]), self.base.anchors[i]))
+                           subtract(matmul(targetFrame.vectorBase, self.platform.anchors[i]), self.base.anchors[i]))
             legLengths.append(linalg.norm(legCoord))
         return legLengths
 
@@ -264,7 +264,7 @@ class stewartPlatform:
         listOfTargets = self.generateListOfTargets(requestType, data_)
         # TODO: Calculate the servo angle paths
         listOfServoAngles = self.getListServoAngles(listOfTargets)
-        self.display3D()
+        self.display3D() #TODO: if this is long, calculate after returning
         self.displayView()
         return listOfServoAngles
 
@@ -298,29 +298,28 @@ class stewartPlatform:
         else:
             return self.targetListForInitialize()
 
+    def targetListForInitialize(self):
+        # TODO: initalize platform before using! Cannot sample position because the current position is unknown.
+        return [self.platform.initialPosition]
+
     def targetListForTarget(self, displacements):
         currentPosition = array(self.platform.getOrigin() + self.platform.getAngles())
         return [(array(currentPosition) + array(displacements)).tolist()]
 
     def targetListForSweep(self, DoF):
-        pass
+        return [
+            self.platform.initialPosition,
+            add(self.platform.initialPosition, config.displacementDictionary[DoF]).tolist(),
+            self.platform.initialPosition,
+            subtract(self.platform.initialPosition, config.displacementDictionary[DoF]).tolist(),
+            self.platform.initialPosition
+        ]
 
-    def targetListForInitialize(self):
-        return [self.platform.initialPosition] # TODO: initalize platform before using!!! cannot sample position on initialization.
+
 
 if __name__ == "__main__":
     # Initialize platform
     stewart = stewartPlatform()
-    stewart.display3D()
-    stewart.displayView()
-
-    # Set target
-    targetPosition = [0, 0, stewart.platform.origin[2] + 20]
-    # [array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])]
-    targetOrientation = column_stack([array([1, 0, 0]), array([0, 1, 0]), array([0, 0, 1])])
-    target = sc.frame(targetPosition, targetOrientation)
-
-    # Update platform current position
     stewart.display3D()
     stewart.displayView()
 
