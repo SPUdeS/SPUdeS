@@ -25,11 +25,7 @@ def getRotationMatrixFromAngles(alpha, beta, gamma):
 def getRotationMatrix(vb1, vb2):
     """ Computes the rotation matrix between two vector bases.
      Convention: Euler ZYX (α,β,γ). """
-    return [
-        [dot(vb1[0], vb2[0]), dot(vb1[0], vb2[1]), dot(vb1[0], vb2[2])],
-        [dot(vb1[1], vb2[0]), dot(vb1[1], vb2[1]), dot(vb1[1], vb2[2])],
-        [dot(vb1[2], vb2[0]), dot(vb1[2], vb2[1]), dot(vb1[2], vb2[2])]
-    ]
+    return matmul(vb1, vb2)
 
 
 def getAnglesFromRotationMatrix(b_R_p):

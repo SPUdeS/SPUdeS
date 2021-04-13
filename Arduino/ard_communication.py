@@ -28,7 +28,7 @@ class ard_communication:
         self.board.digital[self.pin6].mode = pyfirmata.SERVO
 
     # Custom angle to set Servo motor angle
-    def setServoAngle(self, angle, isRad=0):
+    def setServoAngle(self, angle, isRad=1):
         #angle_int = int(angle)
         if isRad:
             rad_to_deg = 180.0/3.1416
