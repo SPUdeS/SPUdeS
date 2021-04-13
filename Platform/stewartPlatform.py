@@ -214,14 +214,12 @@ class stewartPlatform:
     @staticmethod
     def getTargetFrameFromPoint(targetPoint):
         origin = [targetPoint[0], targetPoint[1], targetPoint[2]]
-        # TODO: confirm this with Jean-Gab
         vectorBase = kf.getRotationMatrixFromAngles(targetPoint[3], targetPoint[4], targetPoint[5])
         return sc.frame(origin, vectorBase)
 
 
     def getEffectiveLegLengths(self, targetFrame):
         """ Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi . """
-        #todo: why is base_R_target different that the vector base of the target frame???!!!
         legLengths = []
         for i in range(config.numberOfAnchors):
             legCoord = add(targetFrame.getOrigin(),
@@ -262,7 +260,6 @@ class stewartPlatform:
         requestType = self.confirmRequestValidity(type_, data_)
         if requestType == config.unsuccessfulRequest: return [] # TODO: what to return here?
         listOfTargets = self.generateListOfTargets(requestType, data_)
-        # TODO: Calculate the servo angle paths
         listOfServoAngles = self.getListServoAngles(listOfTargets)
         self.display3D() #TODO: if this is long, calculate after returning
         self.displayView()
@@ -273,7 +270,6 @@ class stewartPlatform:
         """ Confirms whether or not the request is valid.
             Returns 0 if type is target, 1 if type is sweep, and -1 if there is a problem with the request. """
         requestType = config.unsuccessfulRequest
-        # TODO: create exception if the request is not properly formatted instead of print(...)
         if type_ == "initialization":
             requestType = config.initializationRequest
         elif type_ == "target" and len(data_) == 6 and all(isinstance(n, (int, float)) for n in data_):
