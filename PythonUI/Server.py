@@ -4,6 +4,8 @@ import json
 import os
 import shutil
 from Platform.stewartPlatform import stewartPlatform
+from Platform import config as spConfig
+from Arduino.ard_communication import ard_communication
 import config
 
 class Server():
@@ -11,15 +13,23 @@ class Server():
 
     def __init__(self):
         self.sp = stewartPlatform()
-        self.initPlot()
+        try:
+            self.arduinoCommunication = ard_communication()
+        except:
+            self.arduinoCommunication = None
+            pass
         self.camera = None
-        self.updateCamera()
         self.app = None
+        self.initPlot()
+        self.updateCamera()
         self.initiateFlaskApp()
         self.run()
 
     def run(self):
         self.app.run(debug=True, use_reloader=False)
+
+    def updateHost(self): #todo:host
+        self.app.run(debug=True, use_reloader=False, host="192.168.176.1")
 
     def initiateFlaskApp(self):
         app = Flask(__name__)
@@ -52,16 +62,34 @@ class Server():
     @staticmethod
     def initPlot():
         try:
-            os.remove(config.plotPath)
+            os.remove(spConfig.plot3DPath)
         except OSError:
             pass
-        shutil.copy(config.plotHomePath, config.plotPath)
+        try:
+            os.remove(spConfig.plotUpViewPath)
+        except OSError:
+            pass
+        try:
+            os.remove(spConfig.plotFrontViewPath)
+        except OSError:
+            pass
+        try:
+            os.remove(spConfig.plotRightViewPath)
+        except OSError:
+            pass
+        shutil.copy(spConfig.plot3DHomePath, spConfig.plot3DPath)
+        shutil.copy(spConfig.plotUpViewHomePath, spConfig.plotUpViewPath)
+        shutil.copy(spConfig.plotFrontViewHomePath, spConfig.plotFrontViewPath)
+        shutil.copy(spConfig.plotRightViewHomePath, spConfig.plotRightViewPath)
 
     def updateCamera(self, cameraNumber = 0):
         self.camera = cv2.VideoCapture(cameraNumber)
 
     def requestSP(self, type_, data):
-        self.sp.requestFromFlask(type_, data)
+        listOfServoAngles = self.sp.requestFromFlask(type_, data)
+        if self.arduinoCommunication is not None:
+            self.arduinoCommunication.setServoAngle(listOfServoAngles)
+
         # TODO: confirm update of photo before posting
 
     def generate_frames(self):

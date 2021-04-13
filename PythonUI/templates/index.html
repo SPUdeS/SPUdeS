@@ -11,7 +11,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="../static/img/favicon.ico" />
         <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/index.css') }}" />
     </head>
-    <body onload="getImagePath();">
+    <body>
         <main id="ui-wrapper">
             <div class="jumbotron text-center" style="margin-bottom: 0">
                 <img src="../static/img/favicon.ico" alt="Image" width="100"/>
@@ -30,32 +30,32 @@
                     <div class="col-sm-4">
                         <form action="/NewDisplacementRequest" method="POST">
                           <div class="mb-3">
-                            Position X:
+                            Δx [mm]:
                             <input class="positionInput" type="number" id="position_x" value="0"/>
                             <button type="button" onclick="requestSweep('x');" class="btn btn-dark"> Sweep X axis</button>
                           </div>
                           <div class="mb-3">
-                            Position Y:
+                            Δy [mm]:
                             <input class="positionInput" type="number" id="position_y" value="0"/>
                             <button type="button" onclick="requestSweep('y');" class="btn btn-primary"> Sweep Y axis</button>
                           </div>
                           <div class="mb-3">
-                            Position Z:
+                            Δz [mm]:
                             <input class="positionInput" type="number" id="position_z" value="0"/>
                             <button type="button" onclick="requestSweep('z');" class="btn btn-secondary"> Sweep Z axis</button>
                           </div>
                           <div class="mb-3">
-                            Position A:
+                            Δα [deg]:
                             <input class="positionInput" type="number" id="position_a" value="0"/>
                             <button type="button" onclick="requestSweep('a');" class="btn btn-success"> Sweep A axis</button>
                           </div>
                           <div class="mb-3">
-                            Position B:
+                            Δβ [deg]:
                             <input class="positionInput" type="number" id="position_b" value="0"/>
                             <button type="button" onclick="requestSweep('b');" class="btn btn-danger"> Sweep B axis</button>
                           </div>
                           <div class="mb-3">
-                            Position C:
+                            Δγ [deg]:
                             <input class="positionInput" type="number" id="position_c" value="0"/>
                             <button type="button" onclick="requestSweep('c');" class="btn btn-warning"> Sweep C axis</button>
                           </div>
@@ -66,9 +66,17 @@
                     </div>
                     <div class="col-sm-4">
                        <!-- PLOT -->
-                        <img src="../static/img/plotHome.png" align="center"> <!--TODO: absolute Path-->
+                        <img src="../static/img/plot3D.png" align="center"> <!--TODO: absolute Path-->
                         <h5 style="text-align:center">Stewart Platform Plot</h5>
                     </div>
+                    <!-- TODO: Format this block-->
+                    <!--
+                    <div class="col-sm-4">
+
+                        <img src="../static/img/plotUpView.png" align="center">
+                        <img src="../static/img/plotFrontView.png" align="center">
+                        <img src="../static/img/plotRightView.png" align="center">
+                    </div> -->
                 </div>
             </div>
             <div id="project-link-wrapper">
