@@ -38,7 +38,7 @@
     - [CAD Files](#CAD)
     - [Platform](#Platform)
     - [Base](#Base)
-    - [Servo motor amrs](#Servo)
+    - [Servo motor arms](#Servo)
     - [Legs](#Legs)
     - [Microcontroller holder](#Holder)
     - [Summary](#Summary)
@@ -51,17 +51,17 @@
 [//]: # (------------------------------------------------)
 
 ## <a id="Setup"></a>Setup
-1. Buy the component in the [Supplies](#Supplies) section.
+1. Buy the components in the [Supplies](#Supplies) section.
 2. Use the [CAD models](CADs) to 3D print the [base](CADs/Base.SLDPRT), the [platform](CADs/Platform.SLDPRT) and the [servo arms](CADs/Legs.SLDASM).
 3. Do the electrical connections using the [electrical schematics](Documentation/Electical%20schematics.pdf) in the documentation section.
-3. Set up the [Raspberry Pi](#Computer) by connecting it with the [Arduino](#Controller), your computer and the to a power source.
+3. Set up the [Raspberry Pi](#Computer) by connecting it with the [Arduino](#Controller), your computer and to a power source.
 4. Download or clone the repository in the Raspberry Pi.
 5. Verify your Python version (3.5 and above) and the port series.
 6. Build and transfer all the code to the Arduino and Raspberry Pi.
 7. Open the interface and look at the [platform operation](#Operation) section.
 ## <a id="Stewart"></a>Stewart Platforms
 
-A Stewart platform is a type of parallel robot built in such a way as to offer six degrees of freedom. This type of platform was created and publicised in the second half of the 20th century by three different engineers. Distributing the load on six legs allows for a strong manipulator while preserving high precision in movements. The combination of high strength and precision in six degrees of freedom make this type of robot the ideal platform for various simulators (automobile, aviation). This type of robot as also been used for a telescope and tire testing machines.
+A Stewart platform is a type of parallel robot built in such a way as to offer six degrees of freedom. This type of platform was created and publicised in the second half of the 20th century by three different engineers. Distributing the load on six legs allows for a strong manipulator while preserving high precision in movements. The combination of high strength and precision in six degrees of freedom makes this type of robot the ideal platform for various simulators (automobile, aviation). This type of robot as also been used for a telescope and tire testing machines.
 
 Fundamentally, the platform is built from six linear actuators in parallel. Each ends of the linear actuators are linked to the fixed base and the manipulator via Heim joints. It is also possible to assemble the platform with rotary actuators. The rotation of an arm connecting to the base of the leg allows for some variation of the effective length of the legs emulating a linear actuator. It is the way we have decided to build our prototype platform since servo motors are cheaper and easier to get our hands on then linear actuators.
 
@@ -112,7 +112,7 @@ Materials needed: a spool of PLA and access to a 3D printer.
 
 ## <a id="Assembly"></a>Platform Assembly Guide
 #### <a id="Design"></a>Design
-The main components of the robot are the base, the arms fixing the legs to the servo motors, the leg themselves, and the platform. The geometry and proportions of the platform are critical factors allowing the position of the manipulator to be completely defined. Furthermore, using rotary actuators elevate the complexity versus using simple actuators. Thankfully, Robert Eisele has proposed and published a solution for the inverse kinematics of the platform using rotary actuators. Building from his [work](https://www.xarg.org/paper/inverse-kinematics-of-a-stewart-platform/), it is possible to develop a custom sized platform given we respect some parameters. For those of you who would want to change the values we used be sure to look at the parameters defined in the configuration files of the project. We would strongly advise also trying your new parameters in the CAD files to inspect proportions and overall look. We have drawn them based on variables to make it easy for the user to input whatever values desired for the basic parameters.
+The main components of the robot are the base, the arms fixing the legs to the servo motors, the legs themselves, and the platform. The geometry and proportions of the platform are critical factors allowing the position of the manipulator to be completely defined. Furthermore, using rotary actuators elevate the complexity versus using simple actuators. Thankfully, Robert Eisele has proposed and published a solution for the inverse kinematics of the platform using rotary actuators. Building from his [work](https://www.xarg.org/paper/inverse-kinematics-of-a-stewart-platform/), it is possible to develop a custom sized platform given we respect some parameters. For those of you who would want to change the values we used be sure to look at the parameters defined in the configuration files of the project. We would strongly advise also trying your new parameters in the CAD files to inspect proportions and overall look. We have drawn them based on variables to make it easy for the user to input whatever values desired for the basic parameters.
 
 To keep the project as simple as possible, we have designed the platform to be table-top sized. This way, it is not too small so that the hardware is easily available at the hardware store. On the other hand, it is not too big, so the cost of material isn’t prohibitive either. For maximum flexibility we based all our design on the fact that a 3D printer was readily available. One could use other ways to build the platform out of different materials, but we felt 3D printing was the more practical means of fabrication for most.
 
