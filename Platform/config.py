@@ -29,29 +29,11 @@ sweepAngleDisplacement = 14*(pi/180)
 displacementDictionary = {
     "x": [2*sweepPositionDisplacement, 0, 0, 0, 0, 0],
     "y": [0, 2*sweepPositionDisplacement, 0, 0, 0, 0],
-    "z": [0, 0, sweepPositionDisplacement, 0, 0, 0],
+    "z": [0, 0, 1.5*sweepPositionDisplacement, 0, 0, 0],
     "a": [0, 0, 0, 2*sweepAngleDisplacement, 0, 0],
     "b": [0, 0, 0, 0, sweepAngleDisplacement, 0],
     "c": [0, 0, 0, 0, 0, sweepAngleDisplacement],
 }
-
-# Predetermined list of targets
-showoffTargets = [
-    [0, 0, 0, 0, 0, 0],
-    [-0.5, 0, 0, 0, 0, -0.5],
-    [0, -0.5, -0.5, 0, 0, 0],
-    [0, 0, 0, -0.5, -0.5, 0],
-    [0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0],
-    [-1, -1, -1, -1, -1, -1],
-    [0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0],
-    [-1, -1, -1, -1, -1, -1],
-    [0, 0, 0, 0, 0, 0]
-]
-
 
 # Flask request logic
 targetRequest = 0

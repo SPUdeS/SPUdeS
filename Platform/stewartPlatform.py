@@ -3,6 +3,7 @@ from Platform import config
 import matplotlib.pyplot as plt
 from Platform import stewartClasses as sc
 from Platform import kinematicFunctions as kf
+from mpl_toolkits import mplot3d
 
 class stewartPlatform:
     """ Contains inner classes base and platform"""
@@ -245,9 +246,7 @@ class stewartPlatform:
         """ Return a list of six-tuples servo angles to move through the trajectory.
             Returns the last waypoint to later update the platform's origin. """
         listServoAngles = []
-
         for target in listOfTargets:
-
             targetFrame = self.getTargetFrameFromPoint(target)
             waypoints = self.pathSampling(targetFrame)
             lastWaypoint = waypoints[-1]
@@ -258,19 +257,18 @@ class stewartPlatform:
                 else:
                     lastWaypoint = frame
                     break
-        self.platform.updateFrame(lastWaypoint)
-        if listServoAngles == []:
+            self.platform.updateFrame(lastWaypoint)
+
+        if not listServoAngles:
             listServoAngles.append(self.servoAngles)
         self.servoAngles = listServoAngles[-1]
         return listServoAngles
 
     def requestFromFlask(self, type_, data_):
         requestType = self.confirmRequestValidity(type_, data_)
-        if requestType == config.unsuccessfulRequest: return [self.servoAngles] # TODO: what to return here?
+        if requestType == config.unsuccessfulRequest: return [self.servoAngles]
         listOfTargets = self.generateListOfTargets(requestType, data_)
         listOfServoAngles = self.getListServoAngles(listOfTargets)
-        self.display3D() #TODO: if this is long, calculate after returning
-        self.displayView()
         return listOfServoAngles
 
     @staticmethod

@@ -89,6 +89,8 @@ class Server():
         listOfServoAngles = self.sp.requestFromFlask(type_, data)
         if self.arduinoCommunication is not None:
             self.arduinoCommunication.setServoAngle(listOfServoAngles)
+        self.sp.display3D()
+        self.sp.displayView()
 
         # TODO: confirm update of photo before posting
 
