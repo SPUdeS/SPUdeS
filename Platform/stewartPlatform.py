@@ -259,12 +259,14 @@ class stewartPlatform:
                     lastWaypoint = frame
                     break
         self.platform.updateFrame(lastWaypoint)
+        if listServoAngles == []:
+            listServoAngles.append(self.servoAngles)
         self.servoAngles = listServoAngles[-1]
         return listServoAngles
 
     def requestFromFlask(self, type_, data_):
         requestType = self.confirmRequestValidity(type_, data_)
-        if requestType == config.unsuccessfulRequest: return [] # TODO: what to return here?
+        if requestType == config.unsuccessfulRequest: return [self.servoAngles] # TODO: what to return here?
         listOfTargets = self.generateListOfTargets(requestType, data_)
         listOfServoAngles = self.getListServoAngles(listOfTargets)
         self.display3D() #TODO: if this is long, calculate after returning

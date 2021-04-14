@@ -40,13 +40,13 @@ class ard_communication:
             alpha = 0
 
         for i in range(len(angle)):
-            self.board.digital[self.pin2].write(int(180.0-(alpha + angle[i][0]*rad_to_deg)))
-            self.board.digital[self.pin3].write(int(alpha + angle[i][1]*rad_to_deg))
-            self.board.digital[self.pin4].write(int(180.0 - (alpha + angle[i][2]*rad_to_deg)))
-            self.board.digital[self.pin5].write(int(alpha + angle[i][3]*rad_to_deg))
-            self.board.digital[self.pin6].write(int(180.0 - (alpha + angle[i][4]*rad_to_deg)))
-            self.board.digital[self.pin1].write(int(alpha + angle[i][5]*rad_to_deg))
-            sleep(0.05)
+            self.board.digital[self.pin1].write(int(alpha + angle[i][0]*rad_to_deg))
+            self.board.digital[self.pin2].write(int(180.0-(alpha + angle[i][1]*rad_to_deg)))
+            self.board.digital[self.pin3].write(int(alpha + angle[i][2]*rad_to_deg))
+            self.board.digital[self.pin4].write(int(180.0-(alpha + angle[i][3]*rad_to_deg)))
+            self.board.digital[self.pin5].write(int(alpha + angle[i][4]*rad_to_deg))
+            self.board.digital[self.pin6].write(int(180.0-(alpha + angle[i][5]*rad_to_deg)))
+            sleep(0.01)
 
     def goToHomePosition(self):
         self.setServoAngle(self.homingAngle, 0)

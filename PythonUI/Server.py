@@ -23,6 +23,7 @@ class Server():
         self.updateCamera()
         self.initiateFlaskApp()
         self.run()
+        #TODO: initialize with requestSP
 
     def run(self):
         self.app.run(debug=True, use_reloader=False)

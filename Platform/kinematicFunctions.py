@@ -47,7 +47,7 @@ def getNumberOfWaypoints(initialOrigin, initialVectorBase, targetOrigin, targetV
     angle = max(getAnglesFromRotationMatrix(getRotationMatrix(initialVectorBase, targetVectorBase)))
 
     distanceWaypoints = ceil(distance / config.pathSamplingPrecision)
-    angleWaypoints = ceil(angle / config.angleSamplingPrecision)
+    angleWaypoints = ceil(abs(angle / config.angleSamplingPrecision))
     numberOfWaypoints = int(max(distanceWaypoints, angleWaypoints))
     return numberOfWaypoints if (numberOfWaypoints > 0) else 1
 

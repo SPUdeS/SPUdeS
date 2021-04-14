@@ -24,16 +24,34 @@ stewartHomePosition = [0, 0, 0]
 betas = [150*(pi/180), 150*(pi/180), -90*(pi/180), -90*(pi/180), 30*(pi/180), 30*(pi/180)]
 
 # Sweep request logic
-sweepPositionDisplacement = 25
-sweepAngleDisplacement = 45*(pi/180)
+sweepPositionDisplacement = 20
+sweepAngleDisplacement = 14*(pi/180)
 displacementDictionary = {
-    "x": [sweepPositionDisplacement, 0, 0, 0, 0, 0],
-    "y": [0, sweepPositionDisplacement, 0, 0, 0, 0],
-    "z": [0, 0, sweepPositionDisplacement, 0, 0],
-    "a": [0, 0, 0, sweepAngleDisplacement, 0, 0],
+    "x": [2*sweepPositionDisplacement, 0, 0, 0, 0, 0],
+    "y": [0, 2*sweepPositionDisplacement, 0, 0, 0, 0],
+    "z": [0, 0, sweepPositionDisplacement, 0, 0, 0],
+    "a": [0, 0, 0, 2*sweepAngleDisplacement, 0, 0],
     "b": [0, 0, 0, 0, sweepAngleDisplacement, 0],
     "c": [0, 0, 0, 0, 0, sweepAngleDisplacement],
 }
+
+# Predetermined list of targets
+showoffTargets = [
+    [0, 0, 0, 0, 0, 0],
+    [-0.5, 0, 0, 0, 0, -0.5],
+    [0, -0.5, -0.5, 0, 0, 0],
+    [0, 0, 0, -0.5, -0.5, 0],
+    [0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0],
+    [-1, -1, -1, -1, -1, -1],
+    [0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0],
+    [-1, -1, -1, -1, -1, -1],
+    [0, 0, 0, 0, 0, 0]
+]
+
 
 # Flask request logic
 targetRequest = 0
