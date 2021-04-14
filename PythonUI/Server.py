@@ -6,7 +6,6 @@ import shutil
 from Platform.stewartPlatform import stewartPlatform
 from Platform import config as spConfig
 from Arduino.ard_communication import ard_communication
-import config
 
 class Server():
     """ Web server class. """

@@ -195,14 +195,13 @@ class stewartPlatform:
 
         return incrementedTarget
 
-    def inverseKinematics(self, targetPoint):
+    def inverseKinematics(self, targetFrame):
         """ Takes in parameters the new target frame the user wants to go to and the actual
             frame (given by the object platform).
             Returns servo angles necessary to accomplish the movement.
             target = [x, y, z, ψ, θ, φ ] (angles d'Euler)
             """
 
-        targetFrame = self.getTargetFrameFromPoint(targetPoint)
         legLengths = self.getEffectiveLegLengths(targetFrame)
 
         # Compute servo angles to get effective leg lengths
@@ -241,20 +240,26 @@ class stewartPlatform:
         """ Returns the rotation matrix between the base and a target frame. """
         return kf.getRotationMatrix(self.base.getVectorBase(), targetVectorBase)
 
-    def getListServoAngles(self, waypoints):
+    def getListServoAngles(self, listOfTargets):
         """ Return a list of six-tuples servo angles to move through the trajectory.
             Returns the last waypoint to later update the platform's origin. """
-        lastWaypoint = waypoints[-1]
         listServoAngles = []
-        for point in waypoints:
-            servoAngles = self.inverseKinematics(point)
-            if not (isnan(servoAngles)).any():
-                listServoAngles.append(servoAngles)
-            else:
-                lastWaypoint = point
-                break
+
+        for target in listOfTargets:
+
+            targetFrame = self.getTargetFrameFromPoint(target)
+            waypoints = self.pathSampling(targetFrame)
+            lastWaypoint = waypoints[-1]
+            for frame in waypoints:
+                servoAngles = self.inverseKinematics(frame)
+                if not (isnan(servoAngles)).any():
+                    listServoAngles.append(servoAngles)
+                else:
+                    lastWaypoint = frame
+                    break
+        self.platform.updateFrame(lastWaypoint)
         self.servoAngles = listServoAngles[-1]
-        return [listServoAngles, lastWaypoint]
+        return listServoAngles
 
     def requestFromFlask(self, type_, data_):
         requestType = self.confirmRequestValidity(type_, data_)
