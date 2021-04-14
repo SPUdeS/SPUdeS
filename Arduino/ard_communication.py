@@ -18,6 +18,8 @@ class ard_communication:
         self.max_angle = 180
         self.min_angle = 0
         self.setUpMotors()
+        self.goToHomePosition()
+
 
     def setUpMotors(self):
         self.board.digital[self.pin1].mode = pyfirmata.SERVO
@@ -38,13 +40,13 @@ class ard_communication:
             alpha = 0
 
         for i in range(len(angle)):
-            self.board.digital[self.pin1].write(int(180.0-(alpha + angle[i][0]*rad_to_deg)))
-            self.board.digital[self.pin2].write(int(alpha + angle[i][1]*rad_to_deg))
-            self.board.digital[self.pin3].write(int(180.0 - (alpha + angle[i][2]*rad_to_deg)))
-            self.board.digital[self.pin4].write(int(alpha + angle[i][3]*rad_to_deg))
-            self.board.digital[self.pin5].write(int(180.0 - (alpha + angle[i][4]*rad_to_deg)))
-            self.board.digital[self.pin6].write(int(alpha + angle[i][5]*rad_to_deg))
-            sleep(1)
+            self.board.digital[self.pin2].write(int(180.0-(alpha + angle[i][0]*rad_to_deg)))
+            self.board.digital[self.pin3].write(int(alpha + angle[i][1]*rad_to_deg))
+            self.board.digital[self.pin4].write(int(180.0 - (alpha + angle[i][2]*rad_to_deg)))
+            self.board.digital[self.pin5].write(int(alpha + angle[i][3]*rad_to_deg))
+            self.board.digital[self.pin6].write(int(180.0 - (alpha + angle[i][4]*rad_to_deg)))
+            self.board.digital[self.pin1].write(int(alpha + angle[i][5]*rad_to_deg))
+            sleep(0.05)
 
     def goToHomePosition(self):
         self.setServoAngle(self.homingAngle, 0)
@@ -103,18 +105,17 @@ class ard_communication:
         #goUP(angle)
         #setServoAngle(angle)
         # goToHomePosition()
-#if __name__ == "__main__":
+if __name__ == "__main__":
      # Initialize ard_communication class#
 
-#     arduino_coms = ard_communication()
-#
-  #   arduino_coms.goToHomePosition()
- #    #print(arduino_coms.getServoAngle())
-#     #arduino_coms.goToUpDownPosition()
-#     #arduino_coms.goToTiltsPosition()
-#     #angle_rad = [[1, 1, 1, 1, 1, 1], [0.4123, 0.4123, 0.4123, 0.4123, 0.4123, 0.4123]]
-#     #arduino_coms.setServoAngle(angle_rad, 1)
-#     angle_deg = [[-190, 190, -190, 190, -190, 190]]#, [90, 90, 90, 90, 90, 90], [45, 45, 45, 45, 45, 45], [0, 0, 0, 0, 0, 0]]
-#     arduino_coms.setServoAngle(angle_deg,0)
-#     print(arduino_coms.getServoAngle())
+    arduino_coms = ard_communication()
+    #arduino_coms.goToHomePosition()
+    #print(arduino_coms.getServoAngle())
+    #arduino_coms.goToUpDownPosition()
+    #arduino_coms.goToTiltsPosition()
+    #angle_rad = [[1, 1, 1, 1, 1, 1], [0.4123, 0.4123, 0.4123, 0.4123, 0.4123, 0.4123]]
+    #arduino_coms.setServoAngle(angle_rad, 1)
+    #angle_deg = [[-190, 190, -190, 190, -190, 190], [90, 90, 90, 90, 90, 90], [45, 45, 45, 45, 45, 45], [0, 0, 0, 0, 0, 0]]
+    #arduino_coms.setServoAngle(angle_deg,0)
+    #print(arduino_coms.getServoAngle())
 
