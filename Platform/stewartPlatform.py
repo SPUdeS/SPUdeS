@@ -174,7 +174,8 @@ class stewartPlatform:
             Uses precision from config file """
         initialOrigin = self.platform.getOrigin()
         targetOrigin = targetFrame.getOrigin()
-        numberOfWaypoints = kf.getNumberOfWaypoints(initialOrigin, targetOrigin)
+        numberOfWaypoints = kf.getNumberOfWaypoints(initialOrigin, self.platform.getVectorBase(),
+                                                    targetOrigin, targetFrame.getVectorBase())
         [alpha, beta, gamma] = self.getRotationAnglesToFrame(targetFrame)
         incrementedTarget = []
 

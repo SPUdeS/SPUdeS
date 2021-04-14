@@ -37,14 +37,18 @@ def getAnglesFromRotationMatrix(b_R_p):
     return [alpha, beta, gamma]
 
 
-def getNumberOfWaypoints(initialOrigin, targetOrigin):
+def getNumberOfWaypoints(initialOrigin, initialVectorBase, targetOrigin, targetVectorBase):
     """ Returns the number of samples.
         Distance to travel sampled at a rate defined by config variable pathSamplingPrecision. """
     distance = sqrt(
         np.subtract(targetOrigin[0], initialOrigin[0]) ** 2 +
         np.subtract(targetOrigin[1], initialOrigin[1]) ** 2 +
         np.subtract(targetOrigin[2], initialOrigin[2]) ** 2)
-    numberOfWaypoints = int(ceil(distance / config.pathSamplingPrecision))
+    angle = max(getAnglesFromRotationMatrix(getRotationMatrix(initialVectorBase, targetVectorBase)))
+
+    distanceWaypoints = ceil(distance / config.pathSamplingPrecision)
+    angleWaypoints = ceil(angle / config.angleSamplingPrecision)
+    numberOfWaypoints = int(max(distanceWaypoints, angleWaypoints))
     return numberOfWaypoints if (numberOfWaypoints > 0) else 1
 
 

@@ -9,6 +9,7 @@ from PythonUI import config as pythonUIConfig
 # Constants - Distances are in mm, angles are in radians
 numberOfAnchors = 6
 pathSamplingPrecision = 0.5
+angleSamplingPrecision = pi/180
 armLength = 25
 legLength = 150
 baseInteriorRadius = 75
