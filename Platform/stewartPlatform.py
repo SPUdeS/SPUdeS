@@ -3,6 +3,7 @@ from Platform import config
 import matplotlib.pyplot as plt
 from Platform import stewartClasses as sc
 from Platform import kinematicFunctions as kf
+from mpl_toolkits import mplot3d
 
 class stewartPlatform:
     """ Contains inner classes base and platform"""

@@ -5,7 +5,7 @@ class ard_communication:
     """ Class that lets us control the motors with Communication to an Arduino with pyfirmata"""
 
     def __init__(self):
-        self.board = pyfirmata.Arduino('COM5')  # Check on which port the arduino is connected
+        self.board = pyfirmata.Arduino('/dev/ttyACM0')  # Check on which port the arduino is connected
         self.alpha0 = -2.7
         self.homingAngle = [[90+self.alpha0, 90+self.alpha0, 90+self.alpha0,
                             90+self.alpha0, 90+self.alpha0, 90+self.alpha0]]
