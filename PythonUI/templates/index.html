@@ -6,62 +6,66 @@
         <!-- Required meta tags -->
         <title>SPUdeS UI</title>
         <meta charset="utf-8">
-        <meta name="description" content="This is the user interface used to control and view the SPUdeS. SPUdeS is a project started at the University of Sherbrooke to make a Stewart Platform.">
+        <meta name="description" content="This is the user interface used to control and view the SPUdeS. SPUdeS is a six degrees of freedom Stewart Platform. This is an academic project by robotics engineering undergraduates at l'Université de Sherbrooke.">
         <meta name="author" content="SPUdeS">
-        <link rel="shortcut icon" type="image/x-icon" href="../static/img/favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="../static/img/usherbrooke.png" />
         <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/index.css') }}" />
     </head>
     <body>
         <main id="ui-wrapper">
             <div class="jumbotron text-center" style="margin-bottom: 0">
-                <img src="../static/img/favicon.ico" alt="Image" width="100"/>
-                <h1>SPUdeS User Interface</h1>
-                <h3>This is a university project called SPUdeS. The goal is to make a working Stewart Platform. This web page will allow us to have a look at the actual model in motion while also controlling it.</h3>
+                 <h1>
+                    <span>
+                        <img class="inline-image" src="../static/img/usherbrooke.png" alt="Image" width="75">
+                    </span>
+                    SPUdeS User Interface | The six degrees of freedom Stewart Platform.
+                 </h1>
             </div>
             <div class="container">
                 <div class="row">
                     <div class="col-sm-4">
                         <img src="{{ url_for('video_feed') }}" alt="Camera"style=" width:100%">
                         <div class="mb-3 button-wrapper">
-                            <button class="btn" type="button" onclick="updateCameraNumber();">Change camera</button>
-                            <input type="number" id="cameraNumber" value="0"/>
+                            <button class="btn grey" type="button" onclick="updateCameraNumber();">Change camera</button>
+                            <input class="positionInput" type="number" id="cameraNumber" value="0"/>
                           </div>
                     </div>
                     <div class="col-sm-4">
                         <form action="/NewDisplacementRequest" method="POST">
-                          <div class="mb-3">
+                          <div class="mb-3 button-wrapper">
                             Δx [mm]:
                             <input class="positionInput" type="number" id="position_x" value="0"/>
-                            <button type="button" onclick="requestSweep('x');" class="btn btn-dark"> Sweep X axis</button>
+                            <button type="button" onclick="requestSweep('x');" class="btn red"> Sweep x axis</button>
                           </div>
-                          <div class="mb-3">
+                          <div class="mb-3 button-wrapper">
                             Δy [mm]:
                             <input class="positionInput" type="number" id="position_y" value="0"/>
-                            <button type="button" onclick="requestSweep('y');" class="btn btn-primary"> Sweep Y axis</button>
+                            <button type="button" onclick="requestSweep('y');" class="btn orange"> Sweep x axis</button>
                           </div>
-                          <div class="mb-3">
+                          <div class="mb-3 button-wrapper">
                             Δz [mm]:
                             <input class="positionInput" type="number" id="position_z" value="0"/>
-                            <button type="button" onclick="requestSweep('z');" class="btn btn-secondary"> Sweep Z axis</button>
+                            <button type="button" onclick="requestSweep('z');" class="btn yellow"> Sweep x axis</button>
                           </div>
-                          <div class="mb-3">
+                          <div class="mb-3 button-wrapper">
                             Δα [deg]:
                             <input class="positionInput" type="number" id="position_a" value="0"/>
-                            <button type="button" onclick="requestSweep('a');" class="btn btn-success"> Sweep α axis</button>
+                            <button type="button" onclick="requestSweep('a');" class="btn green"> Sweep α axis</button>
                           </div>
-                          <div class="mb-3">
+                          <div class="mb-3 button-wrapper">
                             Δβ [deg]:
                             <input class="positionInput" type="number" id="position_b" value="0"/>
-                            <button type="button" onclick="requestSweep('b');" class="btn btn-danger"> Sweep β axis</button>
+                            <button type="button" onclick="requestSweep('b');" class="btn blue"> Sweep β axis</button>
                           </div>
-                          <div class="mb-3">
+                          <div class="mb-3 button-wrapper">
                             Δγ [deg]:
                             <input class="positionInput" type="number" id="position_c" value="0"/>
-                            <button type="button" onclick="requestSweep('c');" class="btn btn-warning"> Sweep γ axis</button>
+                            <button type="button" onclick="requestSweep('c');" class="btn violet"> Sweep γ axis</button>
                           </div>
-                            <!--<input type="submit" value="Submit"/>-->
-                            <button type="button" style="margin:8px" onclick="requestDisplacementAngles();">Submit</button>
-                            <button type="button" onclick="requestInitPlatform();">Home</button>
+                          <div class="mb-3 button-wrapper">
+                            <button class="btn grey" type="button" onclick="requestDisplacementAngles();">Submit</button>
+                            <button class="btn grey" type="button" onclick="requestInitPlatform();">Home</button>
+                          </div>
                         </form>
                     </div>
                     <div class="col-sm-4">
@@ -81,7 +85,9 @@
             </div>
             <div id="project-link-wrapper">
                 <p>
-                    <a href="https://github.com/SPUdeS/SPUdeS">This GitHub Page</a> shows our full project code and CAD models.
+                    <a href="https://github.com/SPUdeS/SPUdeS">
+                        <img class="inline-image" src="../static/img/GitHub-logo.png" alt="Image" width="35"></a>
+                     | View source code, CAD models and documentation!
                 </p>
             </div>
         </main>
