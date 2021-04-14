@@ -44,7 +44,8 @@ def getNumberOfWaypoints(initialOrigin, targetOrigin):
         np.subtract(targetOrigin[0], initialOrigin[0]) ** 2 +
         np.subtract(targetOrigin[1], initialOrigin[1]) ** 2 +
         np.subtract(targetOrigin[2], initialOrigin[2]) ** 2)
-    return int(ceil(distance / config.pathSamplingPrecision))
+    numberOfWaypoints = int(ceil(distance / config.pathSamplingPrecision))
+    return numberOfWaypoints if (numberOfWaypoints > 0) else 1
 
 
 def getAlpha(effectiveLegLength, beta, base, platform):
