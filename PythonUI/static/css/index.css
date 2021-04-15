@@ -70,8 +70,10 @@
     -moz-box-shadow: 0 0 5px rgba(0,0,0,0.1) inset;
     box-shadow: 0 0 5px rgba(0,0,0,0.1) inset;
     width: auto;
-    margin-top: 1px;
+    margin-top: 2px;
     margin-bottom:0px;
+    margin-left: 10px;
+    margin-right: 7px;
 }
 
 .red {
