@@ -23,6 +23,10 @@
 
 ## Table of Contents
 - [Setup](#Setup)
+- [Installation Guide](#Installation Guide)
+  - [Cloning the Repository](#Cloning the Repository)
+  - [Installing the requirements](#Installing the requirements)
+  - [Running the server](#Running the server)
 - [Stewart Platforms](#Stewart)
 - [Supplies](#Supplies)
     - [Single-Board Computer](#Computer)
@@ -43,7 +47,9 @@
     - [Microcontroller holder](#Holder)
     - [Summary](#Summary)
 - [Documentation](#Documentation)  
-- [Platform Operation](#Operation)
+- [User Interface](#Operation)
+- [License](#License)  
+  
 
 
 
@@ -55,10 +61,37 @@
 2. Use the [CAD models](CADs) to 3D print the [base](CADs/Base.SLDPRT), the [platform](CADs/Platform.SLDPRT) and the [servo arms](CADs/Legs.SLDASM).
 3. Do the electrical connections using the [electrical schematics](Documentation/Electical%20schematics.pdf) in the documentation section.
 3. Set up the [Raspberry Pi](#Computer) by connecting it with the [Arduino](#Controller), your computer and to a power source.
-4. Download or clone the repository in the Raspberry Pi.
-5. Verify your Python version (3.5 and above) and the port series.
-6. Build and transfer all the code to the Arduino and Raspberry Pi.
-7. Open the interface and look at the [platform operation](#Operation) section.
+4. Go through the installation guide
+5. For more information see the User Interface section
+
+
+## <a id="Installation Guide"></a>Installation Guide
+The interface was build using the Python micro framework Flask. We built our webpage using html and handle our requests by using Javascript functions and route handling on the server side. The server is intended to be used on any machine having Python 3.7 and over. 
+Before you start the installation process make sure to have a Python version higher than 3.7 and that pip3 is installed on your machine.
+#### <a id="Cloning the Repository"></a>Cloning the Repository
+Let us start the installation by cloning the repository. You may choose to do this via the Github Desktop App or through some code versioning software such as Sourcetree or Square Desktop. We will proceed to using Git in a terminal. If you haven't already, download [Git](https://git-scm.com/downloads).
+Start by entering into the folder you want the project to be in and open up a terminal. Next use the following command to clone the repository.
+```shell
+git clone https://github.com/SPUdeS/SPUdeS.git
+```
+#### <a id="Installing the requirements"></a>Installing the requirements
+Now you will need to install the modules and packages needed to run the server. Go ahead and run this next command.
+```shell
+pip3 install -r requirements.txt
+```
+The requirements.txt file is what lets you download all the dependencies for the project.
+If you get an error where an import is missing, please install it manually. For example, to download OpenCV manually you will open back up that terminal window and write the following.
+```shell
+pip3 install opencv-python
+```
+If you are using a Raspberry Pi and are still having issues with OpenCV specifically this [link](https://stackoverflow.com/questions/53347759/importerror-libcblas-so-3-cannot-open-shared-object-file-no-such-file-or-dire) may be helpful.
+#### <a id="Running the server"></a>Running the server
+Now let's try running the server with this command.
+```shell
+python3 SPUdeS.py
+```
+To see the interface webpage visit on the same machine: http://127.0.0.1:5000
+
 ## <a id="Stewart"></a>Stewart Platforms
 
 A Stewart platform is a type of parallel robot built in such a way as to offer six degrees of freedom. This type of platform was created and publicised in the second half of the 20th century by three different engineers. Distributing the load on six legs allows for a strong manipulator while preserving high precision in movements. The combination of high strength and precision in six degrees of freedom makes this type of robot the ideal platform for various simulators (automobile, aviation). This type of robot as also been used for a telescope and tire testing machines.
@@ -153,7 +186,7 @@ Printing all the pieces required for the build takes about 560 grams of PLA whic
 
 Now it is only a question of uploading the codes to the Arduino and the raspberry pi and connecting both with the appropriate power adaptors. Launching the web server allows for a clean interface where the user can command the platform.
 
-## <a id="Operation"></a>Platform Operation
+## <a id="Operation"></a>User Interface
 
 The camera feed can show the Stewart platform instantly. The platform can be controlled using the following buttons on the interface:
 
