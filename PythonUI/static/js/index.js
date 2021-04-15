@@ -32,6 +32,12 @@ function requestInitPlatform() {
     request.send(JSON.stringify(data));
 }
 
+function requestShowoff() {
+    let request = new XMLHttpRequest()
+    request.open('POST', '/NewShowoffRequest', true)
+    request.setRequestHeader('content-type', 'application/json')
+}
+
 function updateCameraNumber() {
     let request = new XMLHttpRequest()
     let data = {cameraNumber: document.getElementById("cameraNumber").value}

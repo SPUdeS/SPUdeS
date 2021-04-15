@@ -51,6 +51,12 @@ class Server():
                 self.requestSP(data["type_"], data["data_"])
                 return render_template('index.html')
 
+        @app.route('/NewShowoffRequest', methods=["POST", "GET"])
+        def showoffRequest():
+            if request.method == "POST":
+                self.requestShowoffSP()
+                return render_template('index.html')
+
         @app.route('/UpdateCamera', methods=["POST", "GET"])
         def updateCameraRequest():
             data = json.loads(request.data)
@@ -87,6 +93,13 @@ class Server():
 
     def requestSP(self, type_, data):
         listOfServoAngles = self.sp.requestFromFlask(type_, data)
+        if self.arduinoCommunication is not None:
+            self.arduinoCommunication.setServoAngle(listOfServoAngles)
+        self.sp.display3D()
+        self.sp.displayView()
+
+    def requestShowoffSP(self):
+        listOfServoAngles = self.sp.requestShowoffFromFlask()
         if self.arduinoCommunication is not None:
             self.arduinoCommunication.setServoAngle(listOfServoAngles)
         self.sp.display3D()

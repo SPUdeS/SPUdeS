@@ -264,12 +264,18 @@ class stewartPlatform:
         self.servoAngles = listServoAngles[-1]
         return listServoAngles
 
+    def requestShowoffFromFlask(self):
+        listOfTargets = []
+        for DoF in config.DoFSet:
+            listOfTargets += self.targetListForSweep(DoF)
+        return self.getListServoAngles(listOfTargets)
+
+
     def requestFromFlask(self, type_, data_):
         requestType = self.confirmRequestValidity(type_, data_)
         if requestType == config.unsuccessfulRequest: return [self.servoAngles]
         listOfTargets = self.generateListOfTargets(requestType, data_)
-        listOfServoAngles = self.getListServoAngles(listOfTargets)
-        return listOfServoAngles
+        return self.getListServoAngles(listOfTargets)
 
     @staticmethod
     def confirmRequestValidity(type_, data_):
