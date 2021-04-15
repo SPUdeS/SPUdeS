@@ -9,12 +9,12 @@ class ard_communication:
         self.alpha0 = -2.7
         self.homingAngle = [[90+self.alpha0, 90+self.alpha0, 90+self.alpha0,
                             90+self.alpha0, 90+self.alpha0, 90+self.alpha0]]
-        self.pin1 = 7
-        self.pin2 = 9
-        self.pin3 = 11
-        self.pin4 = 12
-        self.pin5 = 5
-        self.pin6 = 3
+        self.motor1 = 7
+        self.motor2 = 9
+        self.motor3 = 11
+        self.motor4 = 12
+        self.motor5 = 5
+        self.motor6 = 3
         self.max_angle = 180
         self.min_angle = 0
         self.setUpMotors()
@@ -22,12 +22,12 @@ class ard_communication:
 
 
     def setUpMotors(self):
-        self.board.digital[self.pin1].mode = pyfirmata.SERVO
-        self.board.digital[self.pin2].mode = pyfirmata.SERVO
-        self.board.digital[self.pin3].mode = pyfirmata.SERVO
-        self.board.digital[self.pin4].mode = pyfirmata.SERVO
-        self.board.digital[self.pin5].mode = pyfirmata.SERVO
-        self.board.digital[self.pin6].mode = pyfirmata.SERVO
+        self.board.digital[self.motor1].mode = pyfirmata.SERVO
+        self.board.digital[self.motor2].mode = pyfirmata.SERVO
+        self.board.digital[self.motor3].mode = pyfirmata.SERVO
+        self.board.digital[self.motor4].mode = pyfirmata.SERVO
+        self.board.digital[self.motor5].mode = pyfirmata.SERVO
+        self.board.digital[self.motor6].mode = pyfirmata.SERVO
 
     # Custom angle to set Servo motor angle
     def setServoAngle(self, angle, isRad=1):
@@ -40,12 +40,12 @@ class ard_communication:
             alpha = 0
 
         for i in range(len(angle)):
-            self.board.digital[self.pin1].write(int(alpha + angle[i][0]*rad_to_deg))
-            self.board.digital[self.pin2].write(int(180.0-(alpha + angle[i][1]*rad_to_deg)))
-            self.board.digital[self.pin3].write(int(alpha + angle[i][2]*rad_to_deg))
-            self.board.digital[self.pin4].write(int(180.0-(alpha + angle[i][3]*rad_to_deg)))
-            self.board.digital[self.pin5].write(int(alpha + angle[i][4]*rad_to_deg))
-            self.board.digital[self.pin6].write(int(180.0-(alpha + angle[i][5]*rad_to_deg)))
+            self.board.digital[self.motor1].write(int(alpha + angle[i][0] * rad_to_deg))
+            self.board.digital[self.motor2].write(int(180.0 - (alpha + angle[i][1] * rad_to_deg)))
+            self.board.digital[self.motor3].write(int(alpha + angle[i][2] * rad_to_deg))
+            self.board.digital[self.motor4].write(int(180.0 - (alpha + angle[i][3] * rad_to_deg)))
+            self.board.digital[self.motor5].write(int(alpha + angle[i][4] * rad_to_deg))
+            self.board.digital[self.motor6].write(int(180.0 - (alpha + angle[i][5] * rad_to_deg)))
             sleep(0.01)
 
     def goToHomePosition(self):
@@ -87,12 +87,12 @@ class ard_communication:
             sleep(0.5)
 
     def getServoAngle(self):
-        servo1 = (self.board.digital[self.pin1].read())
-        servo2 = (self.board.digital[self.pin2].read())
-        servo3 = (self.board.digital[self.pin3].read())
-        servo4 = (self.board.digital[self.pin4].read())
-        servo5 = (self.board.digital[self.pin5].read())
-        servo6 = (self.board.digital[self.pin6].read())
+        servo1 = (self.board.digital[self.motor1].read())
+        servo2 = (self.board.digital[self.motor2].read())
+        servo3 = (self.board.digital[self.motor3].read())
+        servo4 = (self.board.digital[self.motor4].read())
+        servo5 = (self.board.digital[self.motor5].read())
+        servo6 = (self.board.digital[self.motor6].read())
 
         servoAngles = [servo1, servo2, servo3, servo4, servo5, servo6]
         return servoAngles
