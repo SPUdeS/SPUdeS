@@ -45,7 +45,7 @@ class stewartPlatform:
         plt.plot([ax, px], [ay, py], 'y')
         plt.xlabel("X")
         plt.ylabel("Y")
-        plt.title("UpView")
+        plt.title("Top View")
         plt.axis('equal')
         upView.savefig(config.plotUpViewPath, bbox_inches='tight')
 
@@ -57,7 +57,7 @@ class stewartPlatform:
         plt.plot([ax, px], [az, pz], 'y')
         plt.xlabel("x")
         plt.ylabel("z")
-        plt.title("FrontView")
+        plt.title("Front View")
         plt.axis('equal')
         frontView.savefig(config.plotFrontViewPath, bbox_inches='tight')
 
@@ -69,7 +69,7 @@ class stewartPlatform:
         plt.plot([ay, py], [az, pz], 'y')
         plt.xlabel("Y")
         plt.ylabel('Z')
-        plt.title("RightView")
+        plt.title("Right View")
         plt.axis('equal')
         rightView.savefig(config.plotRightViewPath, bbox_inches='tight')
 
