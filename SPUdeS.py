@@ -1,4 +1,4 @@
-from PythonUI.Server import Server
+from SPUdeS.PythonUI.Server import Server
 
 if __name__ == "__main__":
     serv = Server()
