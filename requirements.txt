@@ -1,4 +1,4 @@
-opencv-contrib-python==4.5.1.48
+opencv-python==4.5.1.48
 matplotlib==3.4.1
 Flask==1.1.2
 numpy==1.20.2

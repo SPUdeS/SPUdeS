@@ -17,13 +17,15 @@
 
 **SPUdeS is a six degrees of freedom Stewart Platform. This is an academic project by robotics engineering undergraduates at l'Université de Sherbrooke.**
 
+<!-- TODO: Change image to be smaller and add a real image of platform -->
 <div id="platform" align="center">
-    <img src="./Documentation/img/Platform.png" alt="Platform Assembly" width="703"/>
+    <img src="./Documentation/img/Platform.png" alt="Platform Assembly" width="70"/>
 </div>
 
 ## Table of Contents
-- [Setup](#Setup)
 - [Stewart Platforms](#Stewart)
+- [Setup](#Setup)
+
 - [Supplies](#Supplies)
     - [Single-Board Computer](#Computer)
     - [Microcontroller](#Controller)
@@ -42,28 +44,39 @@
     - [Legs](#Legs)
     - [Microcontroller holder](#Holder)
     - [Summary](#Summary)
-- [Documentation](#Documentation)  
-- [Platform Operation](#Operation)
-
-
-
-    
+- [Electrical Connection Guide](#Electrical)  
+  - [Protoboard Soldering](#Proto)
+  - [Soldering Recommendations](#Soldering)
+- [Software Installation Guide](#Installation Guide)
+  - [Machine requirements](#Machine requirements)
+  - [Cloning the Repository](#Cloning the Repository)
+  - [Installing the requirements](#Installing the requirements)
+  - [Running the server](#Running the server)
+- [Arduino Setup Guide](#Motor control)
+  - [Arduino Communication Protocol](#Coms)
+  - [PWM Precision](#PWM)
+- [User Interface](#Operation)
+- [License](#License)  
+ 
 [//]: # (------------------------------------------------)
 
-## <a id="Setup"></a>Setup
-1. Buy the components in the [Supplies](#Supplies) section.
-2. Use the [CAD models](CADs) to 3D print the [base](CADs/Base.SLDPRT), the [platform](CADs/Platform.SLDPRT) and the [servo arms](CADs/Legs.SLDASM).
-3. Do the electrical connections using the [electrical schematics](Documentation/Electical%20schematics.pdf) in the documentation section.
-3. Set up the [Raspberry Pi](#Computer) by connecting it with the [Arduino](#Controller), your computer and to a power source.
-4. Download or clone the repository in the Raspberry Pi.
-5. Verify your Python version (3.5 and above) and the port series.
-6. Build and transfer all the code to the Arduino and Raspberry Pi.
-7. Open the interface and look at the [platform operation](#Operation) section.
 ## <a id="Stewart"></a>Stewart Platforms
 
 A Stewart platform is a type of parallel robot built in such a way as to offer six degrees of freedom. This type of platform was created and publicised in the second half of the 20th century by three different engineers. Distributing the load on six legs allows for a strong manipulator while preserving high precision in movements. The combination of high strength and precision in six degrees of freedom makes this type of robot the ideal platform for various simulators (automobile, aviation). This type of robot as also been used for a telescope and tire testing machines.
 
 Fundamentally, the platform is built from six linear actuators in parallel. Each ends of the linear actuators are linked to the fixed base and the manipulator via Heim joints. It is also possible to assemble the platform with rotary actuators. The rotation of an arm connecting to the base of the leg allows for some variation of the effective length of the legs emulating a linear actuator. It is the way we have decided to build our prototype platform since servo motors are cheaper and easier to get our hands on then linear actuators.
+
+## <a id="Setup"></a>Setup
+1. Acquire the components in the [Supplies](#Supplies) section.
+2. If needed, adapt the [CAD models](CADs) of the [base](CADs/Base.SLDPRT), the [platform](CADs/Platform.SLDPRT) and the [servo arms](CADs/Legs.SLDASM) to your specific dimensions.   
+2.1. If you modified the [CAD models](CADs) regenerate the [3D printing files](CADs/V2%-%HS422/3D%printing%files).
+3. 3D print the platform using the [3D printing files](CADs/V2%-%HS422/3D%printing%files). This may take several days.
+4. Follow the [Platform Assembly Guide](#Assembly) to assemble the 3D printed parts. This requires the [Supplies](#Supplies).
+5. Follow the [Electrical Connection Guide](#Electrical) to solder the protoboard.
+6. Follow the [Software Installation Guide](#Installation Guide) to set up the server and the user interface.
+7. Follow the [Arduino Setup Guide](#Motor control) guide to upload the [StandardFirmata.ino](SPUdeS/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino.
+8. Set up the [Raspberry Pi](#Computer) or a computer by connecting it with the [Arduino](#Controller), your computer and to a power source.
+9. Commands can be sent to the platform using the user interface. Refer to the [User Interface](#Operation) section for more information.
 
 ## <a id="Supplies"></a>Supplies
 #### <a id="Computer"></a>Single-Board Computer
@@ -99,9 +112,11 @@ Fundamentally, the platform is built from six linear actuators in parallel. Each
 -	Nylock nuts M3 (6x)
 -	Round head self-tapping screws No3 (6x)
 
-#### <a id="Parts_solder"></a> Parts to solder
-Materials needed:  proto-board, headers, wires and soldering kit
--	PCB to power the 6 motors
+#### <a id="Parts_solder"></a> Electrical Parts
+- Proto-board (1x)
+- Pin / Female headers (6x)
+- Wires 
+- Soldering iron and solder
      
 #### <a id="Parts_print"></a> Parts to print
 Materials needed: a spool of PLA and access to a 3D printer.
@@ -109,6 +124,8 @@ Materials needed: a spool of PLA and access to a 3D printer.
 -   [Base](CADs/V2%20-%20HS422/Base%20V3.SLDPRT) 
 -   [Microcontroller holder](CADs/V2%20-%20HS422/MicroController%20Holder.SLDPRT)
 -   [Servo arms](CADs/V2%20-%20HS422/ServoArm.SLDPRT)
+
+
 
 ## <a id="Assembly"></a>Platform Assembly Guide
 #### <a id="Design"></a>Design
@@ -153,7 +170,89 @@ Printing all the pieces required for the build takes about 560 grams of PLA whic
 
 Now it is only a question of uploading the codes to the Arduino and the raspberry pi and connecting both with the appropriate power adaptors. Launching the web server allows for a clean interface where the user can command the platform.
 
-## <a id="Operation"></a>Platform Operation
+## <a id="Electrical"></a>Electrical Connection Guide
+#### <a id="Proto"></a>Protoboard Soldering
+This section makes reference to the [electrical schematics](Documentation/Electical%20schematics.pdf).The electrical part of the assembly requires you to solder a protoboard. 
+-	Solder two female pin headers to the protoboard. This will be used for the power supply by connecting two male connectors; one for the ground and one for the VCC.
+-	Solder 6 short wires to the protoboard’s positive (VCC) side. These will be used on the positive side of each motor.
+-	Solder 7 short wires to the protoboard’s ground side. These will ground each motor and the Arduino.
+-	Each of the motors will need an additional wire to plug into the digital pin of the Arduino. 
+
+<div style="text-align: center;">
+  <table style="margin: 0px auto">
+    <tr>
+      <td> Motor 1 </td>
+      <td> Motor 2 </td>
+      <td> Motor 3 </td>
+      <td> Motor 4 </td>
+      <td> Motor 5 </td>
+      <td> Motor 6 </td>
+    </tr>
+    <tr>
+      <td> Pin 7 </td>
+      <td> Pin 9 </td>
+      <td> Pin 11 </td>
+      <td> Pin 12</td>
+      <td> Pin 5 </td>
+      <td> Pin 3 </td>
+    </tr>
+  </table>
+</div>
+
+#### <a id="Soldering"></a>Soldering Recommendations	
+The motor positioning is important so be careful when plugging them. Here are some tips you can use:
+-	Soldering will be simpler if you minimise the distance between the components.
+-	Be careful to not touch the protoboard.
+-	It can be useful to use more solder than usual.
+
+## <a id="Installation Guide"></a>Software Installation Guide
+The interface was build using the Python micro framework Flask. We built our webpage using html and handle our requests by using Javascript functions and route handling on the server side.
+#### <a id="Machine requirements"></a> Machine Requirements
+Our project runs on specific versions of Python:
+- [Python 3.7](https://www.python.org/downloads/release/python-3710/)
+- [Python 3.8](https://www.python.org/downloads/release/python-389/)
+- [Python 3.9](https://www.python.org/downloads/release/python-394/)
+
+[pip3](https://pip.pypa.io/en/stable/) is also required to install the project's various packages.
+#### <a id="Cloning the Repository"></a>Cloning the Repository
+Let us start the installation by cloning the repository. You may choose to do this via the Github Desktop App or through some code versioning software such as Sourcetree or Square Desktop. We will use Git in a terminal. If you haven't already, download [Git](https://git-scm.com/downloads).
+Start by entering into the folder you want the project to be in and open up a terminal. Next use the following command to clone the repository.
+```shell
+git clone https://github.com/SPUdeS/SPUdeS.git
+```
+#### <a id="Installing the requirements"></a>Installing the requirements
+Now you will need to install the modules and packages needed to run the server. Go ahead and run this next command.
+```shell
+pip3 install -r requirements.txt
+```
+The [requirements.txt](requirements.txt) file is what lets you download all the dependencies for the project.
+If you get an error where an import is missing, please install it manually. For example, to download OpenCV manually you will open back up that terminal window and write the following.
+```shell
+pip3 install opencv-python
+```
+If you are using a Raspberry Pi and are still having issues with OpenCV, [this link](https://stackoverflow.com/questions/53347759/importerror-libcblas-so-3-cannot-open-shared-object-file-no-such-file-or-dire) may be helpful.
+#### <a id="Running the server"></a>Running the server
+Starting from the root of the repository, run the server with this command.
+```shell
+python3 SPUdeS.py
+```
+To see the interface webpage visit [this address](http://127.0.0.1:5000) on the same machine: http://127.0.0.1:5000 
+
+## <a id="Motor control"></a>Arduino Setup Guide
+
+#### <a id="Coms"></a>Arduino Communication Protocol
+To control the servo motors, we use a microcontroller, the [Arduino Mega 2560](#Controller). Since the angles we need to send to the servos are calculated in our inverse kinematics python code, we chose to communicate directly from a python program to the Arduino. This is done using the open source [pyFirmata library](https://github.com/tino/pyFirmata), which applies the [Firmata protocol](https://github.com/firmata/protocol) for communication with microcontrollers. To use this protocol, we simply need to send the [StandardFirmata.ino](SPUdeS/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino and import the pyFirmata library into our program.
+
+We created a class, [ard_communication](SPUdeS/Arduino/ard_communication.py) that applies this concept. There are two ways to use it, the first being to simply run it and use its functions in the main, a way that was mostly used to test the motor movements with preprogrammed trajectories and manual inputs. The second way is to initialize an instance of the class in our server, and then use its functions there, as we did with our end to end project. Its main function is setServoAngle, which receives an array of n arrays of 6 angles, one for each motor. It can take angles in degrees and radians, depending on the parameter isRad, which will make sure to correct the angles so they are sent in degrees to the Arduino.
+
+For now, the class uses the digital pins of the Arduino in their pyFirmata.SERVO mode, which makes it so we can send angles in degrees to the Arduino, and it will convert it to a corresponding voltage in PWM to the servos. This has some drawbacks, such as a loss in precision of the angles since the digital.write function requires integer values. Also, the discretization of the trajectory can look somewhat choppy because the program needs to sleep for a certain amount of time before sending a new angle, otherwise it will miss some waypoints.
+
+#### <a id="PWM"></a>PWM Precision
+This brings us to the next step for the motor control aspect of the project. There is a possibility to change the digital pins' mode to pyFirmata.PWM and change the file uploaded to the Arduino with a modified version of example file [simpleAnalogFirmata](https://github.com/grappendorf/arduino-framework/blob/master/Firmata/examples/SimpleAnalogFirmata/SimpleAnalogFirmata.ino). [Our implementation of this file](/SPUdeS/Arduino/PWMFirmataBeta/PWMFirmataBeta.ino) was still in beta and not ready for use with our [ard_communcation](SPUdeS/Arduino/ard_communication.py) module. The goal of these changes is to change from an 8 bit resolution PWM to a 16 bit resolution PWM and get rid of the integer restriction of the digital.write function. With a few changes, this could allow much more precision in the platform's movements, but might reduce the refresh rate of the PWM, which could cause other issues. It is still the next step for motor control since precision is crucial for a Stewart's platform. Though it was not needed yet for our implementation of the platform since it currently has no real function and the standard Firmata file with the SERVO mode for the Arduino's pins are enough for our proof of concept.
+
+
+
+## <a id="Operation"></a>User Interface
 
 The camera feed can show the Stewart platform instantly. The platform can be controlled using the following buttons on the interface:
 
@@ -167,15 +266,6 @@ The camera feed can show the Stewart platform instantly. The platform can be con
 
 - The Move Up Button brings the stewart platform a bit over its actual position
 
-### <a id="Motor control"></a>Motor control
-
-To control the servo motors, we use a microcontroller, the Arduino Mega 2560. Since the angles we need to send to the servos are calculated in our inverse kinematics python code, we chose to communicate directly from a python program to the Arduino. This is done using the open source [pyFirmata library](https://github.com/tino/pyFirmata), which applies the [Firmata protocol](https://github.com/firmata/protocol) for communication with microcontrollers. To use this protocol, we simply need to send the [StandardFirmata.ino](/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino and import the pyFirmata library into our program.
-
-We created a class, [ard_communication](/Arduino/ard_communication.py) that applies this concept. There are two ways to use it, the first being to simply run it and use its functions in the main, a way that was mostly used to test the motor movements with preprogrammed trajectories and manual inputs. The second way is to initialize an instance of the class in our server, and then use its functions there, as we did with our end to end project. Its main function is setServoAngle, which receives an array of n arrays of 6 angles, one for each motor. It can take angles in degrees and radians, depending on the parameter isRad, which will make sure to correct the angles so they are sent in degrees to the Arduino.
-
-For now, the class uses the digital pins of the Arduino in their pyFirmata.SERVO mode, which makes it so we can send angles in degrees to the Arduino, and it will convert it to a corresponding voltage in PWM to the servos. This has some drawbacks, such as a loss in precision of the angles since the digital.write function requires integer values. Also, the discretization of the trajectory can look somewhat choppy because the program needs to sleep for a certain amount of time before sending a new angle, otherwise it will miss some waypoints.
-
-This brings us to the next step for the motor control aspect of the project. There is a possibility to change the digital pins' mode to pyFirmata.PWM and change the file uploaded to the Arduino with a modified version of example file [simpleAnalogFirmata](https://github.com/grappendorf/arduino-framework/blob/master/Firmata/examples/SimpleAnalogFirmata/SimpleAnalogFirmata.ino). [Our implementation of this file](/Arduino/PWMFirmataBeta/PWMFirmataBeta.ino) was still in beta and not ready for use with our [ard_communcation](/Arduino/ard_communication.py) module. The goal of these changes is to change from an 8bit resolution PWM to a 16bit resolution PWM and get rid of the integer restriction of the digital.write function. With a few changes, this could allow much more precision in the platform's movements, but might reduce the refresh rate of the PWM, which could cause other issues. It is still the next step for motor control since precision is crucial for a Stewart's platform. Though it was not needed yet for our implementation of the platform since it currently has no real function and the standard Firmata file with the SERVO mode for the Arduino's pins are enough for our proof of concept.
-
 ## <a id="License"></a>License
 This project is licenced under a  [![GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](LICENSE) license.
+This license ensures the community can use, modify and share our project.
