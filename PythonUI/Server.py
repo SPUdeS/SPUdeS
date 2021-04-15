@@ -53,9 +53,8 @@ class Server():
 
         @app.route('/NewShowoffRequest', methods=["POST", "GET"])
         def showoffRequest():
-            if request.method == "POST":
-                self.requestShowoffSP()
-                return render_template('index.html')
+            self.requestShowoffSP()
+            return render_template('index.html')
 
         @app.route('/UpdateCamera', methods=["POST", "GET"])
         def updateCameraRequest():

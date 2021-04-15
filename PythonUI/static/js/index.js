@@ -36,6 +36,7 @@ function requestShowoff() {
     let request = new XMLHttpRequest()
     request.open('POST', '/NewShowoffRequest', true)
     request.setRequestHeader('content-type', 'application/json')
+    request.send(JSON.stringify({}))
 }
 
 function updateCameraNumber() {
