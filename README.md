@@ -1,5 +1,10 @@
 <div id="SPUdeS">
-    <h1>SPUdeS</h1>
+    <h1>
+         <span>
+            <img src="Documentation/img/usherbrooke.png" alt="usherbrooke" width="75">
+         </span>
+         SPUdeS
+    </h1>
     <h3>Stewart Platform Université de Sherbrooke</h3>
     <h3>UdeS-GRO | 65<sup>th</sup> Promotion | 2021</h3>
 </div>
@@ -19,7 +24,7 @@
 
 <!-- TODO: Change image to be smaller and add a real image of platform -->
 <div id="platform" align="center">
-    <img src="./Documentation/img/Platform.png" alt="Platform Assembly" width="70"/>
+    <img src="./Documentation/img/Platform.png" alt="Platform Assembly" width="350"/>
 </div>
 
 ## Table of Contents
@@ -47,12 +52,12 @@
 - [Electrical Connection Guide](#Electrical)  
   - [Protoboard Soldering](#Proto)
   - [Soldering Recommendations](#Soldering)
-- [Software Installation Guide](#Installation Guide)
-  - [Machine requirements](#Machine requirements)
-  - [Cloning the Repository](#Cloning the Repository)
-  - [Installing the requirements](#Installing the requirements)
-  - [Running the server](#Running the server)
-- [Arduino Setup Guide](#Motor control)
+- [Software Installation Guide](#Software)
+  - [Machine requirements](#Machine_requirements)
+  - [Cloning the Repository](#Cloning_the_Repository)
+  - [Installing the requirements](#Installing_the_requirements)
+  - [Running the server](#Running_the_server)
+- [Arduino Setup Guide](#Motor_control)
   - [Arduino Communication Protocol](#Coms)
   - [PWM Precision](#PWM)
 - [User Interface](#Operation)
@@ -61,7 +66,6 @@
 [//]: # (------------------------------------------------)
 
 ## <a id="Stewart"></a>Stewart Platforms
-
 A Stewart platform is a type of parallel robot built in such a way as to offer six degrees of freedom. This type of platform was created and publicised in the second half of the 20th century by three different engineers. Distributing the load on six legs allows for a strong manipulator while preserving high precision in movements. The combination of high strength and precision in six degrees of freedom makes this type of robot the ideal platform for various simulators (automobile, aviation). This type of robot as also been used for a telescope and tire testing machines.
 
 Fundamentally, the platform is built from six linear actuators in parallel. Each ends of the linear actuators are linked to the fixed base and the manipulator via Heim joints. It is also possible to assemble the platform with rotary actuators. The rotation of an arm connecting to the base of the leg allows for some variation of the effective length of the legs emulating a linear actuator. It is the way we have decided to build our prototype platform since servo motors are cheaper and easier to get our hands on then linear actuators.
@@ -119,11 +123,13 @@ Fundamentally, the platform is built from six linear actuators in parallel. Each
 - Soldering iron and solder
      
 #### <a id="Parts_print"></a> Parts to print
-Materials needed: a spool of PLA and access to a 3D printer.
--	[Platform](CADs/V2%20-%20HS422/Platform.SLDPRT)
--   [Base](CADs/V2%20-%20HS422/Base%20V3.SLDPRT) 
--   [Microcontroller holder](CADs/V2%20-%20HS422/MicroController%20Holder.SLDPRT)
--   [Servo arms](CADs/V2%20-%20HS422/ServoArm.SLDPRT)
+There are four parts to print: the [platform](CADs/V2%20-%20HS422/Platform.SLDPRT), 
+the [base](CADs/V2%20-%20HS422/Base%20V3.SLDPRT), 
+the [microcontroller holder](CADs/V2%20-%20HS422/MicroController%20Holder.SLDPRT) 
+and the [servo arms](CADs/V2%20-%20HS422/ServoArm.SLDPRT). 
+Materials needed:
+- A spool of PLA
+- Access to a 3D printer
 
 
 
@@ -205,22 +211,22 @@ The motor positioning is important so be careful when plugging them. Here are so
 -	Be careful to not touch the protoboard.
 -	It can be useful to use more solder than usual.
 
-## <a id="Installation Guide"></a>Software Installation Guide
+## <a id="Software"></a>Software Installation Guide
 The interface was build using the Python micro framework Flask. We built our webpage using html and handle our requests by using Javascript functions and route handling on the server side.
-#### <a id="Machine requirements"></a> Machine Requirements
+#### <a id="Machine_requirements"></a> Machine Requirements
 Our project runs on specific versions of Python:
 - [Python 3.7](https://www.python.org/downloads/release/python-3710/)
 - [Python 3.8](https://www.python.org/downloads/release/python-389/)
 - [Python 3.9](https://www.python.org/downloads/release/python-394/)
 
 [pip3](https://pip.pypa.io/en/stable/) is also required to install the project's various packages.
-#### <a id="Cloning the Repository"></a>Cloning the Repository
+#### <a id="Cloning_the_Repository"></a>Cloning the Repository
 Let us start the installation by cloning the repository. You may choose to do this via the Github Desktop App or through some code versioning software such as Sourcetree or Square Desktop. We will use Git in a terminal. If you haven't already, download [Git](https://git-scm.com/downloads).
 Start by entering into the folder you want the project to be in and open up a terminal. Next use the following command to clone the repository.
 ```shell
 git clone https://github.com/SPUdeS/SPUdeS.git
 ```
-#### <a id="Installing the requirements"></a>Installing the requirements
+#### <a id="Installing_the_requirements"></a>Installing the requirements
 Now you will need to install the modules and packages needed to run the server. Go ahead and run this next command.
 ```shell
 pip3 install -r requirements.txt
@@ -231,14 +237,14 @@ If you get an error where an import is missing, please install it manually. For 
 pip3 install opencv-python
 ```
 If you are using a Raspberry Pi and are still having issues with OpenCV, [this link](https://stackoverflow.com/questions/53347759/importerror-libcblas-so-3-cannot-open-shared-object-file-no-such-file-or-dire) may be helpful.
-#### <a id="Running the server"></a>Running the server
+#### <a id="Running_the_server"></a>Running the server
 Starting from the root of the repository, run the server with this command.
 ```shell
 python3 SPUdeS.py
 ```
 To see the interface webpage visit [this address](http://127.0.0.1:5000) on the same machine: http://127.0.0.1:5000 
 
-## <a id="Motor control"></a>Arduino Setup Guide
+## <a id="Motor_control"></a>Arduino Setup Guide
 
 #### <a id="Coms"></a>Arduino Communication Protocol
 To control the servo motors, we use a microcontroller, the [Arduino Mega 2560](#Controller). Since the angles we need to send to the servos are calculated in our inverse kinematics python code, we chose to communicate directly from a python program to the Arduino. This is done using the open source [pyFirmata library](https://github.com/tino/pyFirmata), which applies the [Firmata protocol](https://github.com/firmata/protocol) for communication with microcontrollers. To use this protocol, we simply need to send the [StandardFirmata.ino](SPUdeS/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino and import the pyFirmata library into our program.
