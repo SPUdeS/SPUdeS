@@ -11,7 +11,7 @@
 
 * [SPUdeS.Arduino.ard_communication](#SPUdeS.Arduino.ard_communication)
 
-# Module [`SPUdeS.Arduino.ard_communication`](#SPUdeS.Arduino.ard_communication)
+# Module `SPUdeS.Arduino.ard_communication` {#SPUdeS.Arduino.ard_communication}
 
 ## Classes
 
@@ -821,7 +821,7 @@ Variable updateArmPoints defaults to true and specifies if the arms are to be re
 
 
 
-# Module [`SPUdeS.PythonUI`](#SPUdeS.PythonUI)
+# Module `SPUdeS.PythonUI` {#SPUdeS.PythonUI}
 
 
 
