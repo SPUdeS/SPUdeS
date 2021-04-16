@@ -1,22 +1,21 @@
-# Module `SPUdeS` {#SPUdeS}
+# <a id="SPUdeS"></a> Module `SPUdeS`
 ## Sub-modules
 
 * [SPUdeS.Arduino](#SPUdeS.Arduino)
 * [SPUdeS.Platform](#SPUdeS.Platform)
 * [SPUdeS.PythonUI](#SPUdeS.PythonUI)
 
-# Module `SPUdeS.Arduino` {#SPUdeS.Arduino}
+# <a id="SPUdeS.Arduino"></a> Module `SPUdeS.Arduino`
 
 ## Sub-modules
 
 * [SPUdeS.Arduino.ard_communication](#SPUdeS.Arduino.ard_communication)
 
-<!--# Module `SPUdeS.Arduino.ard_communication` {#SPUdeS.Arduino.ard_communication}-->
 # <a id="SPUdeS.Arduino.ard_communication"></a> Module `SPUdeS.Arduino.ard_communication`
 
 ## Classes
 
-### Class `ard_communication` {#SPUdeS.Arduino.ard_communication.ard_communication}
+### <a id="SPUdeS.Arduino.ard_communication.ard_communication"></a> Class `ard_communication`
 
 >     class ard_communication
 
@@ -35,7 +34,7 @@ gotoHomePosition() function which sends the homing angles command to the motors.
 
 
 
-##### Method `goToHomePosition` {#SPUdeS.Arduino.ard_communication.ard_communication.goToHomePosition}
+##### <a id="SPUdeS.Arduino.ard_communication.ard_communication.goToHomePosition"></a> Method `goToHomePosition`
 
 
 
@@ -49,7 +48,7 @@ The goToHomePosition() function calls the setServoAngle() function with the argu
 initialized in the __init__().
 
 
-##### Method `setServoAngle` {#SPUdeS.Arduino.ard_communication.ard_communication.setServoAngle}
+##### <a id="SPUdeS.Arduino.ard_communication.ard_communication.setServoAngle"></a> Method `setServoAngle`
 
 
 
@@ -67,7 +66,7 @@ motors. There is also an option for sending the list of angle arrays in radian o
 we assume that the angles are in radians.
 
 
-##### Method `setUpMotors` {#SPUdeS.Arduino.ard_communication.ard_communication.setUpMotors}
+##### <a id="SPUdeS.Arduino.ard_communication.ard_communication.setUpMotors"></a> Method `setUpMotors`
 
 
 
@@ -82,7 +81,7 @@ The setUpMotors() function initializes the pin connections to the servo motors.
 
 
 
-# Module `SPUdeS.Platform` {#SPUdeS.Platform}
+# <a id="SPUdeS.Platform"></a> Module `SPUdeS.Platform`
 
 
 
@@ -101,7 +100,7 @@ The setUpMotors() function initializes the pin connections to the servo motors.
 
 
 
-# Module `SPUdeS.Platform.config` {#SPUdeS.Platform.config}
+# <a id="SPUdeS.Platform.config"></a> Module `SPUdeS.Platform.config`
 
 Configuration file to define the geometry of the platform.
 This file contain the relevant information to perform the inverse kinematics computations.
@@ -115,7 +114,7 @@ should stay the same in the stewartPlatform file.
 
 
 
-# Module `SPUdeS.Platform.kinematicFunctions` {#SPUdeS.Platform.kinematicFunctions}
+# <a id="SPUdeS.Platform.kinematicFunctions"></a> Module `SPUdeS.Platform.kinematicFunctions`
 
 This module defines various kinematic functions used in the stewartClasses and the stewartPlatform.
 
@@ -127,7 +126,7 @@ This module defines various kinematic functions used in the stewartClasses and t
 
 
 
-### Function `getAlpha` {#SPUdeS.Platform.kinematicFunctions.getAlpha}
+### <a id="SPUdeS.Platform.kinematicFunctions.getAlpha"></a> Function `getAlpha`
 
 
 
@@ -144,7 +143,7 @@ Computes servo angle as a function of the platform orientation and position,
 the leg's effective length and it's angle beta (angle between servo arm and base x-axis).
 
 
-### Function `getAnglesFromRotationMatrix` {#SPUdeS.Platform.kinematicFunctions.getAnglesFromRotationMatrix}
+### <a id="SPUdeS.Platform.kinematicFunctions.getAnglesFromRotationMatrix"></a> Function `getAnglesFromRotationMatrix`
 
 
 
@@ -158,7 +157,7 @@ Computes Yaw, pitch, roll from rotation matrix b_R_p.
 Convention: Euler ZYX (α,β,γ).
 
 
-### Function `getNumberOfWaypoints` {#SPUdeS.Platform.kinematicFunctions.getNumberOfWaypoints}
+### <a id="SPUdeS.Platform.kinematicFunctions.getNumberOfWaypoints"></a> Function `getNumberOfWaypoints`
 
 
 
@@ -175,7 +174,7 @@ Returns the number of samples.
 Distance to travel sampled at a rate defined by config variable pathSamplingPrecision.
 
 
-### Function `getRotationMatrix` {#SPUdeS.Platform.kinematicFunctions.getRotationMatrix}
+### <a id="SPUdeS.Platform.kinematicFunctions.getRotationMatrix"></a> Function `getRotationMatrix`
 
 
 
@@ -190,7 +189,7 @@ Computes the rotation matrix between two vector bases.
 Convention: Euler ZYX (α,β,γ).
 
 
-### Function `getRotationMatrixFromAngles` {#SPUdeS.Platform.kinematicFunctions.getRotationMatrixFromAngles}
+### <a id="SPUdeS.Platform.kinematicFunctions.getRotationMatrixFromAngles"></a> Function `getRotationMatrixFromAngles`
 
 
 
@@ -213,7 +212,7 @@ gamma = angle around x
 
 
 
-# Module `SPUdeS.Platform.stewartClasses` {#SPUdeS.Platform.stewartClasses}
+# <a id="SPUdeS.Platform.stewartClasses"></a> Module `SPUdeS.Platform.stewartClasses`
 
 This file contains the building blocks of the stewartPlatform class.
 Contains the frame, _piece, base and platform classes.
@@ -227,7 +226,7 @@ Contains the frame, _piece, base and platform classes.
 
 
 
-### Class `base` {#SPUdeS.Platform.stewartClasses.base}
+### <a id="SPUdeS.Platform.stewartClasses.base"></a> Class `base`
 
 
 
@@ -256,7 +255,7 @@ This class is instantiated in the stewartPlatform class.
 
 
 
-### Class `frame` {#SPUdeS.Platform.stewartClasses.frame}
+### <a id="SPUdeS.Platform.stewartClasses.frame"></a> Class `frame`
 
 
 
@@ -287,7 +286,7 @@ representing unitvectors of the frame in the Base reference frame
 
 
 
-##### Method `getOrigin` {#SPUdeS.Platform.stewartClasses.frame.getOrigin}
+##### <a id="SPUdeS.Platform.stewartClasses.frame.getOrigin"></a> Method `getOrigin`
 
 
 
@@ -300,7 +299,7 @@ representing unitvectors of the frame in the Base reference frame
 
 
 
-##### Method `getVectorBase` {#SPUdeS.Platform.stewartClasses.frame.getVectorBase}
+##### <a id="SPUdeS.Platform.stewartClasses.frame.getVectorBase"></a> Method `getVectorBase`
 
 
 
@@ -313,7 +312,7 @@ representing unitvectors of the frame in the Base reference frame
 
 
 
-##### Method `setOrigin` {#SPUdeS.Platform.stewartClasses.frame.setOrigin}
+##### <a id="SPUdeS.Platform.stewartClasses.frame.setOrigin"></a> Method `setOrigin`
 
 
 
@@ -327,7 +326,7 @@ representing unitvectors of the frame in the Base reference frame
 
 
 
-##### Method `setVectorBase` {#SPUdeS.Platform.stewartClasses.frame.setVectorBase}
+##### <a id="SPUdeS.Platform.stewartClasses.frame.setVectorBase"></a> Method `setVectorBase`
 
 
 
@@ -341,7 +340,7 @@ representing unitvectors of the frame in the Base reference frame
 
 
 
-##### Method `updateFrame` {#SPUdeS.Platform.stewartClasses.frame.updateFrame}
+##### <a id="SPUdeS.Platform.stewartClasses.frame.updateFrame"></a> Method `updateFrame`
 
 
 
@@ -355,7 +354,7 @@ representing unitvectors of the frame in the Base reference frame
 
 
 
-### Class `platform` {#SPUdeS.Platform.stewartClasses.platform}
+### <a id="SPUdeS.Platform.stewartClasses.platform"></a> Class `platform`
 
 
 
@@ -389,7 +388,7 @@ This class is instantiated in the stewartPlatform class.
 
 
 
-##### Method `getAngles` {#SPUdeS.Platform.stewartClasses.platform.getAngles}
+##### <a id="SPUdeS.Platform.stewartClasses.platform.getAngles"></a> Method `getAngles`
 
 
 
@@ -402,7 +401,7 @@ This class is instantiated in the stewartPlatform class.
 Returns the angles of the platform based on its rotation matrix / vector base.
 
 
-##### Method `getHomeOrigin` {#SPUdeS.Platform.stewartClasses.platform.getHomeOrigin}
+##### <a id="SPUdeS.Platform.stewartClasses.platform.getHomeOrigin"></a> Method `getHomeOrigin`
 
 
 
@@ -418,7 +417,7 @@ Returns home position of platform - computed from base/platform anchors #1 but a
 
 
 
-# Module `SPUdeS.Platform.stewartPlatform` {#SPUdeS.Platform.stewartPlatform}
+# <a id="SPUdeS.Platform.stewartPlatform"></a> Module `SPUdeS.Platform.stewartPlatform`
 
 This file contains the stewartPlatform class. This defines the geometry of the stewart platform.
 
@@ -431,7 +430,7 @@ This file contains the stewartPlatform class. This defines the geometry of the s
 
 
 
-### Class `stewartPlatform` {#SPUdeS.Platform.stewartPlatform.stewartPlatform}
+### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform"></a> Class `stewartPlatform`
 
 
 
@@ -451,7 +450,7 @@ Contains inner classes base and platform. This defines the geometry of the stewa
 
 
 
-##### `Method confirmRequestValidity` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.confirmRequestValidity}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.confirmRequestValidity"></a> Method `confirmRequestValidity`
 
 
 
@@ -466,7 +465,7 @@ Confirms whether or not the request is valid.
 Returns 0 if type is target, 1 if type is sweep, and -1 if there is a problem with the request.
 
 
-##### `Method drawLinesBetweenPoints` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.drawLinesBetweenPoints}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.drawLinesBetweenPoints"></a> Method `drawLinesBetweenPoints`
 
 
 
@@ -482,7 +481,7 @@ This function takes a plot and a list of points to join as parameters.
 The colour parameter specifies the colour of the line to draw.
 
 
-##### `Method getTargetFrameFromPoint` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getTargetFrameFromPoint}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getTargetFrameFromPoint"></a> Method `getTargetFrameFromPoint`
 
 
 
@@ -500,7 +499,7 @@ Returns a frame for a target point.
 
 
 
-##### Method `UpdateArmPoints` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.UpdateArmPoints}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.UpdateArmPoints"></a> Method `UpdateArmPoints`
 
 
 
@@ -513,7 +512,7 @@ Returns a frame for a target point.
 Initiates useful variables to plot the stewart platform.
 
 
-##### Method `display3D` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.display3D}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.display3D"></a> Method `display3D`
 
 
 
@@ -529,7 +528,7 @@ Redefines the 3D png plot found in the PythonUI module.
 Variable updateArmPoints defaults to false and specifies if the arms are to be recalculated.
 
 
-##### Method `displayView` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.displayView}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.displayView"></a> Method `displayView`
 
 
 
@@ -545,7 +544,7 @@ Redefines the three 2D png plots found in the PythonUI module.
 Variable updateArmPoints defaults to false and specifies if the arms are to be recalculated.
 
 
-##### Method `generateListOfTargets` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.generateListOfTargets}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.generateListOfTargets"></a> Method `generateListOfTargets`
 
 
 
@@ -560,7 +559,7 @@ Variable updateArmPoints defaults to false and specifies if the arms are to be r
 Redirects request depending on its type.
 
 
-##### Method `getArmPoints` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getArmPoints}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getArmPoints"></a> Method `getArmPoints`
 
 
 
@@ -573,7 +572,7 @@ Redirects request depending on its type.
 
 
 
-##### Method `getArmPointsToJoin` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getArmPointsToJoin}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getArmPointsToJoin"></a> Method `getArmPointsToJoin`
 
 
 
@@ -586,7 +585,7 @@ Redirects request depending on its type.
 Helper function for the plot that defines the points that are to join for the servo arms.
 
 
-##### Method `getBasePlatformRotationMatrix` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getBasePlatformRotationMatrix}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getBasePlatformRotationMatrix"></a> Method `getBasePlatformRotationMatrix`
 
 
 
@@ -599,7 +598,7 @@ Helper function for the plot that defines the points that are to join for the se
 Returns the rotation matrix between the base and the platform.
 
 
-##### Method `getEffectiveLegLengths` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getEffectiveLegLengths}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getEffectiveLegLengths"></a> Method `getEffectiveLegLengths`
 
 
 
@@ -613,7 +612,7 @@ Returns the rotation matrix between the base and the platform.
 Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi.
 
 
-##### Method `getLegPointsToJoin` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getLegPointsToJoin}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getLegPointsToJoin"></a> Method `getLegPointsToJoin`
 
 
 
@@ -626,7 +625,7 @@ Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi.
 Helper function for the plot that defines the points that are to join to the platform.
 
 
-##### Method `getListServoAngles` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getListServoAngles}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getListServoAngles"></a> Method `getListServoAngles`
 
 
 
@@ -641,7 +640,7 @@ Return a list of six-tuples servo angles to move through the trajectory.
 Returns the last waypoint to later update the platform's origin.
 
 
-##### Method `getRotationAnglesToFrame` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getRotationAnglesToFrame}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getRotationAnglesToFrame"></a> Method `getRotationAnglesToFrame`
 
 
 
@@ -655,7 +654,7 @@ Returns the last waypoint to later update the platform's origin.
 Returns the rotation angle between the platform and a target frame.
 
 
-##### Method `getRotationMatrixToTarget` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getRotationMatrixToTarget}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getRotationMatrixToTarget"></a> Method `getRotationMatrixToTarget`
 
 
 
@@ -669,7 +668,7 @@ Returns the rotation angle between the platform and a target frame.
 Returns the rotation matrix between the base and a target frame.
 
 
-##### Method `getServoAngles` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.getServoAngles}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.getServoAngles"></a> Method `getServoAngles`
 
 
 
@@ -682,7 +681,7 @@ Returns the rotation matrix between the base and a target frame.
 
 
 
-##### Method `initHomeServoAngle` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.initHomeServoAngle}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.initHomeServoAngle"></a> Method `initHomeServoAngle`
 
 
 
@@ -695,7 +694,7 @@ Returns the rotation matrix between the base and a target frame.
 This function defines the servo six servo angles at the home position.
 
 
-##### Method `inverseKinematics` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.inverseKinematics}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.inverseKinematics"></a> Method `inverseKinematics`
 
 
 
@@ -712,7 +711,7 @@ Returns servo angles necessary to accomplish the movement.
 target = [x, y, z, ψ, θ, φ ] (angles d'Euler)
 
 
-##### Method `pathSampling` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.pathSampling}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.pathSampling"></a> Method `pathSampling`
 
 
 
@@ -728,7 +727,7 @@ Each waypoint is a new frame coinciding with the new platform location
 Uses precision from config file
 
 
-##### Method `requestFromFlask` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.requestFromFlask}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.requestFromFlask"></a> Method `requestFromFlask`
 
 
 
@@ -744,7 +743,7 @@ This function handles an initialization, displacement or sweep request from flas
 Returns a list of servo angles.
 
 
-##### Method `requestShowoffFromFlask` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.requestShowoffFromFlask}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.requestShowoffFromFlask"></a> Method `requestShowoffFromFlask`
 
 
 
@@ -758,7 +757,7 @@ This function handles a showoff request from flask. Defines a complex trajectory
 Returns a list of servo angles.
 
 
-##### Method `targetListForInitialize` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.targetListForInitialize}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.targetListForInitialize"></a> Method `targetListForInitialize`
 
 
 
@@ -771,7 +770,7 @@ Returns a list of servo angles.
 Defines the list of targets in an initialization request.
 
 
-##### Method `targetListForSweep` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.targetListForSweep}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.targetListForSweep"></a> Method `targetListForSweep`
 
 
 
@@ -785,7 +784,7 @@ Defines the list of targets in an initialization request.
 Defines the list of targets in a sweep request.
 
 
-##### Method `targetListForTarget` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.targetListForTarget}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.targetListForTarget"></a> Method `targetListForTarget`
 
 
 
@@ -799,7 +798,7 @@ Defines the list of targets in a sweep request.
 Defines the list of targets in a simple displacement request.
 
 
-##### Method `updateAllPlots` {#SPUdeS.Platform.stewartPlatform.stewartPlatform.updateAllPlots}
+##### <a id="SPUdeS.Platform.stewartPlatform.stewartPlatform.updateAllPlots"></a> Method `updateAllPlots`
 
 
 
@@ -821,7 +820,7 @@ Variable updateArmPoints defaults to true and specifies if the arms are to be re
 * [SPUdeS.PythonUI.Server](#SPUdeS.PythonUI.Server)
 * [SPUdeS.PythonUI.config](#SPUdeS.PythonUI.config)
 
-# Module `SPUdeS.PythonUI.Server` {#SPUdeS.PythonUI.Server}
+# <a id="SPUdeS.PythonUI.Server"></a> Module `SPUdeS.PythonUI.Server`
 
 This Server.py file is a class called Server() that sets up the server and runs it. This is the link between the client side inputs and the cinematic
 functions to send commands and new graphs.
@@ -835,7 +834,7 @@ functions to send commands and new graphs.
 
 
 
-### Class `Server` {#SPUdeS.PythonUI.Server.Server}
+### <a id="SPUdeS.PythonUI.Server.Server"></a> Class `Server`
 
 
 
@@ -859,7 +858,7 @@ the routes for the Flask server and runs the server.
 
 
 
-##### `Method initPlot` {#SPUdeS.PythonUI.Server.Server.initPlot}
+##### <a id="SPUdeS.PythonUI.Server.Server.initPlot"></a> Method `initPlot`
 
 
 
@@ -876,7 +875,7 @@ to the default ones. The plots are in SPUdeS/PythonUI/static/img.
 
 
 
-##### Method `generate_frames` {#SPUdeS.PythonUI.Server.Server.generate_frames}
+##### <a id="SPUdeS.PythonUI.Server.Server.generate_frames"></a> Method `generate_frames`
 
 
 
@@ -889,7 +888,7 @@ to the default ones. The plots are in SPUdeS/PythonUI/static/img.
 generate_frame() function generates the frame by frame of the camera to create the live feed on the web page.
 
 
-##### Method `initiateFlaskApp` {#SPUdeS.PythonUI.Server.Server.initiateFlaskApp}
+##### <a id="SPUdeS.PythonUI.Server.Server.initiateFlaskApp"></a> Method `initiateFlaskApp`
 
 
 
@@ -902,7 +901,7 @@ generate_frame() function generates the frame by frame of the camera to create t
 The initiateFlaskApp() function calls an instance of the Flask object.
 
 
-##### Method `requestSP` {#SPUdeS.PythonUI.Server.Server.requestSP}
+##### <a id="SPUdeS.PythonUI.Server.Server.requestSP"></a> Method `requestSP`
 
 
 
@@ -918,7 +917,7 @@ requestSP() is called through the /NewDisplacementRequest route. It uses the jso
 and to update the 3D plots.
 
 
-##### Method `requestShowoffSP` {#SPUdeS.PythonUI.Server.Server.requestShowoffSP}
+##### <a id="SPUdeS.PythonUI.Server.Server.requestShowoffSP"></a> Method `requestShowoffSP`
 
 
 
@@ -932,7 +931,7 @@ requestShowoffSP() is called through the /NewShowoffRequest route. It calls a fu
 and to update the 3D plots.
 
 
-##### Method `run` {#SPUdeS.PythonUI.Server.Server.run}
+##### <a id="SPUdeS.PythonUI.Server.Server.run"></a> Method `run`
 
 
 
@@ -945,7 +944,7 @@ and to update the 3D plots.
 The run() function runs an instance of the Flask server called app.
 
 
-##### Method `updateCamera` {#SPUdeS.PythonUI.Server.Server.updateCamera}
+##### <a id="SPUdeS.PythonUI.Server.Server.updateCamera"></a> Method `updateCamera`
 
 
 
@@ -962,7 +961,7 @@ change to the number requested. cv2 is the imported library for OpenCV which all
 
 
 
-# Module `SPUdeS.PythonUI.config` {#SPUdeS.PythonUI.config}
+# <a id="SPUdeS.PythonUI.config"></a> Module `SPUdeS.PythonUI.config`
 
 Configuration File for the PythonUI folder. This file shares the path of PythonUI to be able to store the images
 created in the kinematic functions
