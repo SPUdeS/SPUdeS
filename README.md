@@ -90,13 +90,13 @@ It is the way we have decided to build our prototype platform since servo motors
 4. Follow the **[Platform Assembly Guide](#Assembly)** to assemble the 3D printed parts. This requires the **[Supplies](#Supplies)**.
 5. Follow the **[Electrical Connection Guide](#Electrical)** to solder the protoboard.
 6. Follow the **[Software Installation Guide](#Software)** to set up the server and the user interface.
-7. Follow the **[Arduino Setup Guide](#Motor_control)** guide to upload the [StandardFirmata.ino](SPUdeS/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino.
-8. Set up the **[Raspberry Pi](#Computer)** or a computer by connecting it with the **[Arduino](#Controller)**, your computer and to a power source.
+7. Follow the **[Arduino Setup Guide](#Motor_control)** guide to upload the [``StandardFirmata.ino``](SPUdeS/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino.
+8. Set up the *[Raspberry Pi](#Computer)* or a computer by connecting it with the *[Arduino](#Controller)*, your computer and to a power source.
 9. Commands can be sent to the platform using the user interface. Refer to the **[User Interface](#Operation)** section for more information.
 
 ## <a id="Supplies"></a>Supplies
 ### <a id="Computer"></a>Single-Board Computer
-- Brand: **[Raspberry Pi](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/)**
+- Brand: *[Raspberry Pi](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/)*
 - Model: Raspberry Pi 4 Model B
 - Quantity: 1
 
@@ -168,7 +168,7 @@ We’ve moved on from that design to upgrade to [better motors (HS-422 model)](C
 Those motors are more powerful limiting the impact of friction in the Heim joints at both ends of the legs. 
 Note that the [CAD files of the first version](CADs/V1%20-%20SG90%20-%20Deprecated) aren’t based on variables lengths and dimensions aren’t defined the same way as the second version. 
 This is important since the values in the configuration file of the main program are based on the second version’s way of dimensioning the platform. 
-A reader that would want to build the first platform would have to manually measure (in the CAD software) some of the variables to update the [configuration files](Platform/config.py) variables. 
+A reader that would want to build the first platform would have to manually measure (in the CAD software) some of the variables to update the [``configuration files``](SPUdeS/Platform/config.py) variables. 
 As stated earlier, the brass inserts are optional. But if not using them, don’t forget to adjust the size of the holes where bolts will be threaded. 
 Using M3 bolts, we’d recommend holes about a quarter to half a millimeter less in diameter to allow the thread to grip well on the plastic. 
 The exact size depends on the precision of the printer used and orientation of the print; this I just a recommendation and testing should be done before hand.
@@ -292,15 +292,15 @@ The motor positioning is important so be careful when plugging them. Here are so
 The interface was build using the Python micro framework Flask. We built our webpage using html and handle our requests by using Javascript functions and route handling on the server side.
 ### <a id="Machine_requirements"></a> Machine Requirements
 Our project runs on specific versions of Python:
-- [Python 3.7](https://www.python.org/downloads/release/python-3710/)
-- [Python 3.8](https://www.python.org/downloads/release/python-389/)
-- [Python 3.9](https://www.python.org/downloads/release/python-394/)
+- [``Python 3.7``](https://www.python.org/downloads/release/python-3710/)
+- [``Python 3.8``](https://www.python.org/downloads/release/python-389/)
+- [``Python 3.9``](https://www.python.org/downloads/release/python-394/)
 
-*[pip3](https://pip.pypa.io/en/stable/)* is also required to install the project's various packages.
+[``pip3``](https://pip.pypa.io/en/stable/) is also required to install the project's various packages.
 ### <a id="Cloning_the_Repository"></a>Cloning the Repository
 Let us start the installation by cloning the repository. 
 You may choose to do this via the Github Desktop App or through some code versioning software such as Sourcetree or Square Desktop. We will use Git in a terminal. 
-If you haven't already, download *[Git](https://git-scm.com/downloads)*.
+If you haven't already, download [``Git``](https://git-scm.com/downloads).
 Start by entering into the folder you want the project to be in and open up a terminal. Next use the following command to clone the repository.
 ```shell
 git clone https://github.com/SPUdeS/SPUdeS.git
@@ -310,7 +310,7 @@ Now you will need to install the modules and packages needed to run the server. 
 ```shell
 pip3 install -r requirements.txt
 ```
-The [requirements.txt](requirements.txt) file is what lets you download all the dependencies for the project.
+The [``requirements.txt``](requirements.txt) file is what lets you download all the dependencies for the project.
 If you get an error where an import is missing, please install it manually. For example, to download OpenCV manually you will open back up that terminal window and write the following.
 ```shell
 pip3 install opencv-python
@@ -321,17 +321,17 @@ Starting from the root of the repository, run the server with this command.
 ```shell
 python3 SPUdeS.py
 ```
-To see the interface webpage visit *[this address](http://127.0.0.1:5000)* on the same machine: http://127.0.0.1:5000 
+To see the interface webpage visit *[this address](http://127.0.0.1:5000)* on the same machine: ``http://127.0.0.1:5000`` 
 
 ## <a id="Motor_control"></a>Arduino Setup Guide
 
 ### <a id="Coms"></a>Arduino Communication Protocol
-To control the servo motors, we use a microcontroller, the **[Arduino Mega 2560](#Controller)**. 
+To control the servo motors, we use a microcontroller, the *[Arduino Mega 2560](#Controller)*. 
 Since the angles we need to send to the servos are calculated in our inverse kinematics python code, we chose to communicate directly from a python program to the Arduino. 
 This is done using the open source *[pyFirmata library](https://github.com/tino/pyFirmata)*, which applies the *[Firmata protocol](https://github.com/firmata/protocol)* for communication with microcontrollers. 
-To use this protocol, we simply need to send the [StandardFirmata.ino](SPUdeS/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino and import the pyFirmata library into our program.
+To use this protocol, we simply need to send the [``StandardFirmata.ino``](SPUdeS/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino and import the pyFirmata library into our program.
 
-We created a class, [ard_communication](SPUdeS/Arduino/ard_communication.py) that applies this concept. 
+We created a class, [``ard_communication``](SPUdeS/Arduino/ard_communication.py) that applies this concept. 
 There are two ways to use it, the first being to simply run it and use its functions in the main, a way that was mostly used to test the motor movements with preprogrammed trajectories and manual inputs. 
 The second way is to initialize an instance of the class in our server, and then use its functions there, as we did with our end to end project. 
 Its main function is setServoAngle, which receives an array of n arrays of 6 angles, one for each motor. 
@@ -396,7 +396,7 @@ We then send a response to motors and an update of the graph.
 
 
 ### <a id="Graph"></a>Graphical Representation of the Platform
-The graphical representation is updated using the [stewartPlatform.py](SPUdeS/Platform/stewartPlatform.py) which uses *[matplotlib](https://matplotlib.org)* to represent the platform graphically. 
+The graphical representation is updated using the [``stewartPlatform.py``](SPUdeS/Platform/stewartPlatform.py) which uses *[matplotlib](https://matplotlib.org)* to represent the platform graphically. 
 The same input used to send the movement command to the motors is used to created an updated graph. 
 However the graph does not update automatically on the interface. The user needs to use F5 or CTRL+F5 to update the graphs on the UI.
 
