@@ -2,13 +2,19 @@ import pyfirmata
 from time import sleep
 
 class ard_communication:
-    """ Class that lets us control the motors with Communication to an Arduino with pyfirmata"""
+    """The ard_communication class handles all the communication protocol between the Arduino and the Python
+    functions using the library pyfirmata. """
 
     def __init__(self):
+        """ The __init__() function sets up the connection to the Arduino via USB, it initializes the Motor to Pin
+        connections and some basic set up angles (min, max, homing angles). This function also calls the
+        setUpMotors() function to initialize the motor connections with the Arduino. It finally calls the
+        gotoHomePosition() function which sends the homing angles command to the motors. """
         self.board = pyfirmata.Arduino('COM3')  # RPI: '/dev/ttyACM0'
         self.alpha0 = -2.7
         self.homingAngle = [[90+self.alpha0, 90+self.alpha0, 90+self.alpha0,
                             90+self.alpha0, 90+self.alpha0, 90+self.alpha0]]
+        # Assign a pin number to each motor
         self.motor1 = 7
         self.motor2 = 9
         self.motor3 = 11
@@ -20,8 +26,8 @@ class ard_communication:
         self.setUpMotors()
         self.goToHomePosition()
 
-
     def setUpMotors(self):
+        """The setUpMotors() function initializes the pin connections to the servo motors."""
         self.board.digital[self.motor1].mode = pyfirmata.SERVO
         self.board.digital[self.motor2].mode = pyfirmata.SERVO
         self.board.digital[self.motor3].mode = pyfirmata.SERVO
@@ -29,9 +35,11 @@ class ard_communication:
         self.board.digital[self.motor5].mode = pyfirmata.SERVO
         self.board.digital[self.motor6].mode = pyfirmata.SERVO
 
-    # Custom angle to set Servo motor angle
     def setServoAngle(self, angle, isRad=1):
-        #angle_int = int(angle)
+        """The setServoAngle() function receives a set of arrays with each 6 elements. The sets of angles are for
+        sending small movements to the motors and the 6 elements in each array are the angles for each one of the
+        motors. There is also an option for sending the list of angle arrays in radian or not. By default,
+        we assume that the angles are in radians. """
         if isRad:
             rad_to_deg = 180.0/3.1416
             alpha = 90
@@ -49,73 +57,12 @@ class ard_communication:
             sleep(0.01)
 
     def goToHomePosition(self):
+        """The goToHomePosition() function calls the setServoAngle() function with the arguments of the homing angles
+        initialized in the __init__(). """
         self.setServoAngle(self.homingAngle, 0)
         print("HOMING NOW")
 
-    def goToUpDownPosition(self):
-        up = []
-        down = []
-        for i in range(90, 140, 10):
-            up.append([i, i, i, i, i, i])
-        self.setServoAngle(up,0)
-        for i in range(140, 60, 10):
-            down.append([i, i, i, i, i, i])
-        self.setServoAngle(down, 0)
-
-        self.goToHomePosition()
-
-    def goToTiltsPosition(self):
-        tilt = []
-        for i in range(90, 170, 10):
-            tilt.append([i, i, 90, 90, 90, 90])
-        self.setServoAngle(tilt,0)
-        self.goToHomePosition()
-        for i in range(90, 170, 10):
-            tilt.append([90, 90, i, i, 90, 90])
-        self.setServoAngle(tilt,0)
-        self.goToHomePosition()
-        for i in range(90, 170, 10):
-            tilt.append([90, 90, 90, 90, i, i])
-        self.setServoAngle(tilt,0)
-        self.goToHomePosition()
-
-
-    def goUpPosition(self):
-        self.setServoAngle(self.homingAngle)
-        for i in range(self.homingAngle, 140):
-            self.setServoAngle(i, 0)
-            sleep(0.5)
-
-    def getServoAngle(self):
-        servo1 = (self.board.digital[self.motor1].read())
-        servo2 = (self.board.digital[self.motor2].read())
-        servo3 = (self.board.digital[self.motor3].read())
-        servo4 = (self.board.digital[self.motor4].read())
-        servo5 = (self.board.digital[self.motor5].read())
-        servo6 = (self.board.digital[self.motor6].read())
-
-        servoAngles = [servo1, servo2, servo3, servo4, servo5, servo6]
-        return servoAngles
-
-    ### FOR TESTING ONLY ###
-    #while True:
-        #angle = input("Type angle")
-        #goToUpDownPosition()
-
-        #goUP(angle)
-        #setServoAngle(angle)
-        # goToHomePosition()
 if __name__ == "__main__":
-     # Initialize ard_communication class#
-
     arduino_coms = ard_communication()
-    #arduino_coms.goToHomePosition()
-    #print(arduino_coms.getServoAngle())
-    #arduino_coms.goToUpDownPosition()
-    #arduino_coms.goToTiltsPosition()
-    #angle_rad = [[1, 1, 1, 1, 1, 1], [0.4123, 0.4123, 0.4123, 0.4123, 0.4123, 0.4123]]
-    #arduino_coms.setServoAngle(angle_rad, 1)
-    #angle_deg = [[-190, 190, -190, 190, -190, 190], [90, 90, 90, 90, 90, 90], [45, 45, 45, 45, 45, 45], [0, 0, 0, 0, 0, 0]]
-    #arduino_coms.setServoAngle(angle_deg,0)
-    #print(arduino_coms.getServoAngle())
+
 

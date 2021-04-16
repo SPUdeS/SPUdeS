@@ -4,7 +4,7 @@
     should stay the same in the stewartPlatform file."""
 from numpy import array, column_stack, pi
 import os
-from PythonUI import config as pythonUIConfig
+from SPUdeS.PythonUI import config as pythonUIConfig
 
 # Constants - Distances are in mm, angles are in radians
 numberOfAnchors = 6
