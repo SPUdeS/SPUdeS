@@ -36,7 +36,8 @@ This is an academic project by robotics engineering undergraduates at l'Universi
     - **[Microcontroller](#Controller)**
     - **[Servomotors](#Servo)**
     - **[Power Adaptor](#Power)**
-    - **[Servo Rods](#Rods)**
+    - **[Threaded Rods](#Rods)**
+    - **[Heim Joints](#Joints)
     - **[Hardware](#Hardware)**
     - **[Parts to solder](#Parts_solder)**
     - **[Parts to print](#Parts_print)**
@@ -114,13 +115,17 @@ It is the way we have decided to build our prototype platform since servo motors
 - Model: SWI10-5-N
 - Quantity: 1
 
-### <a id="Rods"></a> Servo Rods
-- Brand: *[Amaus](https://www.amazon.ca/-/fr/tirage-r%C3%A9glables-voiture-Tourning-accessoires/dp/B082WCQ4ZR/ref=pd_sbs_5?language=en_CA&pd_rd_i=B082WDXRKH&pd_rd_r=41f4cc38-4f04-4061-ae31-0daa716f90dd&pd_rd_w=uNdGH&pd_rd_wg=BPvl7&pf_rd_p=ba284f11-925a-4926-8142-0043fa482b41&pf_rd_r=2Z5RF9PZ91H1NW58AZP6&th=1)*
-- ASIN: B082WCQ4ZR
+### <a id="Rods"></a> Threaded Rods
+- Brand: *[uxcellM3](https://www.amazon.ca/gp/product/B01M9D4ASU/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1)*
+- Model: a16071500ux0035
 - Quantity: 6
 
+### <a id="Joints"></a> Heim Joints
+- Brand: *[Que-T](https://www.amazon.ca/gp/product/B08217LDWH/ref=ppx_yo_dt_b_asin_title_o07_s00?ie=UTF8&psc=1)*
+- ASIN: B08217LDWH
+- Quantity: 12
+
 ### <a id="Hardware"></a> Hardware
--	Female Heim joints M3 (12x)
 -	Threaded inserts M3 x 6mm (42x; optional)
 -	Countersunk bolts M3x6 (6x; optional)
 -	Countersunk bolts M3x12 (42x)
