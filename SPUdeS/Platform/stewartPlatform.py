@@ -1,9 +1,10 @@
 """ This file contains the stewartPlatform class. This defines the geometry of the stewart platform. """
-from numpy import sqrt, arcsin, ones, cos, sin, arctan2, isnan, add, subtract, matmul, column_stack, linalg, array, pi
+from numpy import sqrt, arcsin, ones, cos, sin, arctan2, isnan, add, subtract, matmul, linalg, array, pi
 from SPUdeS.Platform import config
 import matplotlib.pyplot as plt
 from SPUdeS.Platform import stewartClasses as sc
 from SPUdeS.Platform import kinematicFunctions as kf
+# This import allow the server to run on Raspberry Pi
 from mpl_toolkits import mplot3d
 
 class stewartPlatform:

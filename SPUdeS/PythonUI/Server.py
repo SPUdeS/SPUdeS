@@ -9,7 +9,7 @@ from SPUdeS.Platform.stewartPlatform import stewartPlatform
 from SPUdeS.Platform import config as spConfig
 from SPUdeS.Arduino.ard_communication import ard_communication
 
-class Server():
+class Server:
     """ Web server class. """
 
     def __init__(self):
