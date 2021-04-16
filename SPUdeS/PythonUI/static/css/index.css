@@ -1,0 +1,111 @@
+#title-wrapper{
+    color: darkblue;
+    background-color: lightgreen;
+}
+#ui-wrapper {
+
+}
+#page-icon {
+    align-content: center;
+}
+#intro-wrapper {
+
+}
+#HUD {
+    border: 10px solid black;
+}
+#cam-feed {
+    height:100%;
+    width:100%;
+}
+#angle-input-wrapper {
+
+}
+#intro-wrapper {
+    color: darkblue;
+    background-color: lightgreen;
+}
+#angle-input-wrapper {
+    text-align: left;
+}
+#btn-angle {
+    text-align: left;
+    color: blueviolet;
+}
+/* Three image containers (use 25% for four, and 50% for two, etc) */
+.column {
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+/* SHAPES */
+.triangle-up {
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 50px solid #555;
+}
+
+.triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 50px solid #555;
+}
+
+.button-wrapper .btn {
+    display: inline-block;
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.1) inset;
+    -moz-box-shadow: 0 0 5px rgba(0,0,0,0.1) inset;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1) inset;
+    width: auto;
+    margin-top: 2px;
+    margin-bottom:0px;
+    margin-left: 10px;
+    margin-right: 7px;
+}
+
+.red {
+    background-color: rgba(255,0,0,1);
+}
+.orange {
+    background-color: rgba(255,127,0,1);
+}
+.yellow {
+    background-color: rgba(255,255,0,1);
+}
+.green {
+    background-color: rgba(0,255,0,1);
+}
+.blue {
+    background-color: rgba(65,105,255,1);
+}
+.indigo {
+    background-color: rgba(75,0,130,1);
+}
+.violet {
+    background-color: rgba(143,0,255,1);
+}
+.grey {
+    background-color: rgba(169,169,169,1);
+}
+
+.positionInput {
+    width: 50px;
+}
+
+.inline-image {
+   position: relative;
+   top: -3px;
+}

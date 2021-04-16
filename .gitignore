@@ -130,3 +130,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+PythonUI/static/img/plot3D.png
+PythonUI/static/img/plotUpView.png
+PythonUI/static/img/plotFrontView.png
+PythonUI/static/img/plotRightView.png
