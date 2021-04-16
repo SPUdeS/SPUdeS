@@ -37,7 +37,7 @@ This is an academic project by robotics engineering undergraduates at l'Universi
     - **[Servomotors](#Servo)**
     - **[Power Adaptor](#Power)**
     - **[Threaded Rods](#Rods)**
-    - **[Heim Joints](#Joints)
+    - **[Heim Joints](#Joints)**
     - **[Hardware](#Hardware)**
     - **[Parts to solder](#Parts_solder)**
     - **[Parts to print](#Parts_print)**
