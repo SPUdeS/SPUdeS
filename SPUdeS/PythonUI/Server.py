@@ -13,7 +13,7 @@ class Server():
     """ Web server class. """
 
     def __init__(self):
-        """ The __init__ function instantiates a stewertPlatform(), an ard_communication() and
+        """ The __init__ function instantiates a stewartPlatform(), an ard_communication() and
         a Flask object. This function also sets up the home plot for the 3D graphs and sets up a camera. It then initializes
         the routes for the Flask server and runs the server."""
 
@@ -50,7 +50,7 @@ class Server():
 
         @app.route('/NewDisplacementRequest', methods=["POST", "GET"])
         def displacement_request():
-            """New Displacement Request Route: Handles the json payload from Javacript function to send to requestSP() function. The payload
+            """New Displacement Request Route: Handles the json payload from JavaScript function to send to requestSP() function. The payload
             will be used to sent a command to the Arduino for the motors and to regenerate a new 3D graph."""
             if request.method == "POST":
                 data = json.loads(request.data)
@@ -59,7 +59,7 @@ class Server():
 
         @app.route('/NewShowoffRequest', methods=["POST", "GET"])
         def showoffRequest():
-            """New Showoff Request Route: This route sends a sequence of preprogrammed motions to the Arduino and regenerates the 3D plots of the platform"""
+            """New Showoff Request Route: This route sends a sequence of pre-programmed motions to the Arduino and regenerates the 3D plots of the platform"""
             self.requestShowoffSP()
             return render_template('index.html')
 
@@ -74,7 +74,7 @@ class Server():
 
     @staticmethod
     def initPlot():
-        """initPlot() refactors the 3D plots created to give us a clean slate to work with. It reinitializes the plots
+        """initPlot() refactors the 3D plots created to give us a clean slate to work with. It re-initializes the plots
         to the default ones. The plots are in SPUdeS/PythonUI/static/img."""
         try:
             os.remove(spConfig.plot3DPath)
@@ -103,7 +103,7 @@ class Server():
         self.camera = cv2.VideoCapture(cameraNumber)
 
     def requestSP(self, type_, data):
-        """requestSP() is called through the /NewDisplacementRequest route. It uses the json payload sent from the Javacript function to send a command in angles to the Arduino
+        """requestSP() is called through the /NewDisplacementRequest route. It uses the json payload sent from the JavaScript function to send a command in angles to the Arduino
         and to update the 3D plots."""
         listOfServoAngles = self.sp.requestFromFlask(type_, data)
         if self.arduinoCommunication is not None:
@@ -119,7 +119,7 @@ class Server():
         self.sp.updateAllPlots()
 
     def generate_frames(self):
-        """ generate_frame() funciton generates the frame by frame of the camera to create the live feed on the web page. """
+        """ generate_frame() function generates the frame by frame of the camera to create the live feed on the web page. """
 
         while True:
             # read() returns the retval(successful or not) and the image
@@ -135,6 +135,4 @@ class Server():
 
 
 if __name__ == '__main__':
-    print('start')
     serv = Server()
-    print('end')

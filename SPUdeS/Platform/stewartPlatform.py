@@ -309,7 +309,6 @@ class stewartPlatform:
         if type_ == "initialization":
             requestType = config.initializationRequest
         elif type_ == "target" and len(data_) == 6 and all(isinstance(n, (int, float)) for n in data_):
-            # TODO: make sure their types: int, float ?
             requestType = config.targetRequest
         elif type_ == "sweep" and data_ in config.DoFSet:
             requestType = config.sweepRequest
@@ -349,8 +348,4 @@ class stewartPlatform:
             self.platform.initialPosition
         ]
 
-
-
-if __name__ == "__main__":
-    stewart = stewartPlatform()
 
