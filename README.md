@@ -80,8 +80,8 @@ Fundamentally, the platform is built from six linear actuators in parallel. Each
 3. 3D print the platform using the [3D printing files](CADs/V2%-%HS422/3D%printing%files). This may take several days.
 4. Follow the [Platform Assembly Guide](#Assembly) to assemble the 3D printed parts. This requires the [Supplies](#Supplies).
 5. Follow the [Electrical Connection Guide](#Electrical) to solder the protoboard.
-6. Follow the [Software Installation Guide](#Installation Guide) to set up the server and the user interface.
-7. Follow the [Arduino Setup Guide](#Motor control) guide to upload the [StandardFirmata.ino](SPUdeS/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino.
+6. Follow the [Software Installation Guide](#Software) to set up the server and the user interface.
+7. Follow the [Arduino Setup Guide](#Motor_control) guide to upload the [StandardFirmata.ino](SPUdeS/Arduino/StandardFirmata/StandardFirmata.ino) file to the Arduino.
 8. Set up the [Raspberry Pi](#Computer) or a computer by connecting it with the [Arduino](#Controller), your computer and to a power source.
 9. Commands can be sent to the platform using the user interface. Refer to the [User Interface](#Operation) section for more information.
 
@@ -293,7 +293,7 @@ there is a button for homing the platform at a predetermined angle specified in
 Path that performs a combination of all the sweep movements.
 
 <div align="center">
-  <img src="Documentation/img/interface_input_buttons.PNG" alt="InputButtons">
+    <img src="Documentation/img/interface_input_buttons.PNG" alt="InputButtons">
 </div>
 
 The push of a button calls a Javascript function that creates a new XML HTTP Request.Some Javascript functions create a json payload of the type of displacement called and the position that is sent. The function then POSTs and calls the route used in the Flask server. From the server side we are able to handle the request by using payload in a cinematic function. We then send a response to motors and an update of the graph.
