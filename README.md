@@ -386,7 +386,7 @@ To use these enter a value in as many of the boxes and hit the button Submit.
 This sends the request to the server to sent to the platform and the update of the graphs. 
 Secondly we have the sweep buttons for each axis. These are preprogrammed paths to show the range of motion on that specific axis. 
 Clicking the corresponding axis button submits the request. 
-Thirdly there is a button for homing the platform at a predetermined angle specified in[ard_communication](SPUdeS/Arduino/ard_communication.py). Lastly there is a button called Path that performs a combination of all the sweep movements.
+Thirdly there is a button for homing the platform at a predetermined angle specified in [ard_communication](SPUdeS/Arduino/ard_communication.py). Lastly there is a button called Path that performs a combination of all the sweep movements.
 
 <div align="center">
     <img src="Documentation/img/interface_input_buttons.PNG" alt="InputButtons">
