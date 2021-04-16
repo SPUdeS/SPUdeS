@@ -1,6 +1,8 @@
+""" This module defines various kinematic functions used in the stewartClasses and the stewartPlatform. """
+
 import numpy as np
 from numpy import dot, sqrt, cos, sin, arcsin, arctan2, array, matmul, ceil
-from Platform import config
+from SPUdeS.Platform import config
 
 np.seterr(invalid='ignore')
 
