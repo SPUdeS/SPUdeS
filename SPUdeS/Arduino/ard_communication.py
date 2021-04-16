@@ -1,3 +1,5 @@
+"""This file handles the motor functions to send to Arduino. It uses a library called pyfirmata to communicate with the Arduino and implements ino language.
+The functions declared here are used in the Server.py file."""
 import pyfirmata
 from time import sleep
 
