@@ -1,7 +1,7 @@
 <div id="SPUdeS">
     <h1>
          <span>
-            <img src="Documentation/img/usherbrooke.png" alt="usherbrooke" width="75">
+            <img src="Documentation/img/usherbrooke.png" alt="usherbrooke" width="35">
          </span>
          SPUdeS
     </h1>
