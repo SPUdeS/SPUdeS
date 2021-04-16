@@ -279,7 +279,7 @@ successfully. There is a button and input that allow you to change the port of t
 camera being used. 
 
 <div align="center">
-  <img src="Documentation/img/camera-button.png" alt="CameraButton">
+  <img src="Documentation/img/camera_button.PNG" alt="CameraButton">
 </div>
 
 ### <a id="Input"></a>User Input
@@ -303,7 +303,7 @@ The push of a button calls a Javascript function that creates a new XML HTTP Req
 The graphical representation is updated using the [stewartPlatform.py](SPUdeS/Platform/stewartPlatform.py) which uses [matplotlib](https://matplotlib.org) to represent the platform graphically. The same input used to send the movement command to the motors is used to created an updated graph. However the graph does not update automatically on the interface. The user needs to use F5 or CTRL+F5 to update the graphs on the UI.
 
 <div align="center">
-  <img src="Documentation/img/interface-graph.PNG" alt="Graph">
+  <img src="Documentation/img/Interface_graph.PNG" alt="Graph">
 </div>
 
 There are other views of the platform included at the bottom of the interface for a better visual of the movement sequence.
