@@ -1,6 +1,8 @@
+""" This file contains the building blocks of the stewartPlatform class.
+    Contains the frame, _piece, base and platform classes. """
 from numpy import sqrt, cos, sin, pi, floor, matmul, array
-from Platform import config
-from Platform import kinematicFunctions as kf
+from SPUdeS.Platform import config
+from SPUdeS.Platform import kinematicFunctions as kf
 
 
 class frame:
@@ -45,6 +47,7 @@ class _piece(frame):
         return self.anchors
 
     def initAnchors(self):
+        """ Returns the anchor positions for a piece. """
         hexagonAnchors = []
         for i in range(config.numberOfAnchors):
             idx = i + 1 if isinstance(self, base) else i
@@ -62,6 +65,8 @@ class _piece(frame):
         return [x, y, 0]
 
     def getPlotAnchors(self):
+        """ Redefines anchors to be column vectors.
+        Returns a separate list of the x, y and z position of the anchors. """
         anchorX = []
         anchorY = []
         anchorZ = []
@@ -76,6 +81,7 @@ class _piece(frame):
         return [anchorX, anchorY, anchorZ]
 
     def getPointsToJoin(self):
+        """ Helper function for the plot function. Returns points to join on a piece. """
         [bx, by, bz] = self.getPlotAnchors()
         pointsToJoin = []
         for i in range(config.numberOfAnchors):
@@ -84,6 +90,8 @@ class _piece(frame):
 
 
 class base(_piece):
+    """ This class defines the properties of a base piece. Extends _piece class.
+        This class is instantiated in the stewartPlatform class. """
     def __init__(self, origin=config.stewartHomePosition, vectorBase=config.stewartVectorBase):
         super().__init__(origin, vectorBase)
         self.offsetAngle = config.baseOffsetAngle
@@ -93,6 +101,8 @@ class base(_piece):
 
 
 class platform(_piece):
+    """ This class defines the properties of a platform piece. Extends _piece class.
+            This class is instantiated in the stewartPlatform class. """
     def __init__(self, linkedBase, origin=config.stewartHomePosition, vectorBase=config.stewartVectorBase):
         super().__init__(origin, vectorBase)
         self.offsetAngle = config.platformOffsetAngle
@@ -110,4 +120,5 @@ class platform(_piece):
         return [0, 0, platformHomeZPosition]
 
     def getAngles(self):
+        """ Returns the angles of the platform based on its rotation matrix / vector base. """
         return kf.getAnglesFromRotationMatrix(self.getVectorBase())

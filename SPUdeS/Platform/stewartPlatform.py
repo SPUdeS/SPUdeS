@@ -1,12 +1,13 @@
+""" This file contains the stewartPlatform class. This defines the geometry of the stewart platform. """
 from numpy import sqrt, arcsin, ones, cos, sin, arctan2, isnan, add, subtract, matmul, column_stack, linalg, array, pi
-from Platform import config
+from SPUdeS.Platform import config
 import matplotlib.pyplot as plt
-from Platform import stewartClasses as sc
-from Platform import kinematicFunctions as kf
+from SPUdeS.Platform import stewartClasses as sc
+from SPUdeS.Platform import kinematicFunctions as kf
 from mpl_toolkits import mplot3d
 
 class stewartPlatform:
-    """ Contains inner classes base and platform"""
+    """ Contains inner classes base and platform. This defines the geometry of the stewart platform. """
 
     def __init__(self):
         self.base = sc.base()
@@ -16,21 +17,31 @@ class stewartPlatform:
         self.armPoints = []
 
     def initHomeServoAngle(self):
+        """ This function defines the servo six servo angles at the home position. """
         # Angle of servos at home position
         L0 = 2 * config.armLength ** 2
         M0 = 2 * config.armLength * self.platform.getOrigin()[2]
         N0 = 2 * config.armLength * (self.base.anchors[0][0] - self.platform.anchors[0][0])
         return arcsin(L0 / sqrt(M0 ** 2 + N0 ** 2)) - arctan2(N0, M0)
 
-    def getHomeServoAngle(self):
-        return self.homeServoAngles
 
     def getServoAngles(self):
         return self.servoAngles
 
-    def displayView(self):
-        # Update arm points
-        self.UpdateArmPoints()
+    def updateAllPlots(self, updateArmPoints = True):
+        """ This functions runs both plot generating function.
+        This has the advantage of only updating the arm points once.
+        Variable updateArmPoints defaults to true and specifies if the arms are to be recalculated."""
+        if updateArmPoints: self.UpdateArmPoints()
+        self.displayView()
+        self.display3D()
+
+    def displayView(self, updateArmPoints = False):
+        """ This function plots three views of the current position of the stewart platform.
+            Redefines the three 2D png plots found in the PythonUI module.
+            Variable updateArmPoints defaults to false and specifies if the arms are to be recalculated. """
+
+        if updateArmPoints: self.UpdateArmPoints()
 
         # Get useful point
         [bx, by, bz] = self.base.getPlotAnchors()
@@ -74,11 +85,14 @@ class stewartPlatform:
         rightView.savefig(config.plotRightViewPath, bbox_inches='tight')
 
 
-    def display3D(self):
-        # Update arm points
-        self.UpdateArmPoints()
+    def display3D(self , updateArmPoints = False):
+        """ This function plots the main 3D plot of the stewartPlatform
+            Redefines the 3D png plot found in the PythonUI module.
+            Variable updateArmPoints defaults to false and specifies if the arms are to be recalculated. """
 
-        # Get usefull point
+        if updateArmPoints: self.UpdateArmPoints()
+
+        # Get useful point
         baseOrigin = self.base.getOrigin()
         platformOrigin = self.platform.getOrigin()
         [bx, by, bz] = self.base.getPlotAnchors()
@@ -110,7 +124,7 @@ class stewartPlatform:
         #plt.savefig(config.plot3DHomePath, bbox_inches='tight')
 
     def UpdateArmPoints(self):
-        # get or init usefull variable
+        """ Initiates useful variables to plot the stewart platform. """
         X = []
         Y = []
         Z = []
@@ -149,6 +163,7 @@ class stewartPlatform:
         return self.armPoints
 
     def getArmPointsToJoin(self):
+        """ Helper function for the plot that defines the points that are to join for the servo arms. """
         armPointsToJoin = []
         [bx, by, bz] = self.base.getPlotAnchors()
         [ax, ay, az] = self.armPoints
@@ -156,18 +171,22 @@ class stewartPlatform:
             armPointsToJoin.append([(bx[i], by[i], bz[i]), (ax[i], ay[i], az[i])])
         return armPointsToJoin
 
-    @staticmethod
-    def drawLinesBetweenPoints(axis, listOfPointsToJoin, color):
-        for points in listOfPointsToJoin:
-            axis.plot([points[0][0], points[1][0]], [points[0][1], points[1][1]], [points[0][2], points[1][2]], color)
-
     def getLegPointsToJoin(self):
+        """ Helper function for the plot that defines the points that are to join to the platform. """
         legPointsToJoin = []
         [ax, ay, az] = self.armPoints
         [px, py, pz] = self.platform.getPlotAnchors()
         for i in range(config.numberOfAnchors):
             legPointsToJoin.append([(ax[i], ay[i], az[i]), (px[i], py[i], pz[i])])
         return legPointsToJoin
+
+    @staticmethod
+    def drawLinesBetweenPoints(axis, listOfPointsToJoin, colour):
+        """ This function takes a plot and a list of points to join as parameters.
+            The colour parameter specifies the colour of the line to draw. """
+        for points in listOfPointsToJoin:
+            axis.plot([points[0][0], points[1][0]], [points[0][1], points[1][1]], [points[0][2], points[1][2]], colour)
+
 
     def pathSampling(self, targetFrame):
         """ Return a list of waypoints to get to the target.
@@ -214,13 +233,14 @@ class stewartPlatform:
 
     @staticmethod
     def getTargetFrameFromPoint(targetPoint):
+        """ Returns a frame for a target point. """
         origin = [targetPoint[0], targetPoint[1], targetPoint[2]]
         vectorBase = kf.getRotationMatrixFromAngles(targetPoint[3], targetPoint[4], targetPoint[5])
         return sc.frame(origin, vectorBase)
 
 
     def getEffectiveLegLengths(self, targetFrame):
-        """ Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi . """
+        """ Compute effective leg lengths : Effective length = T + b_R_p * Pi - Bi. """
         legLengths = []
         for i in range(config.numberOfAnchors):
             legCoord = add(targetFrame.getOrigin(),
@@ -265,6 +285,8 @@ class stewartPlatform:
         return listServoAngles
 
     def requestShowoffFromFlask(self):
+        """ This function handles a showoff request from flask. Defines a complex trajectory.
+            Returns a list of servo angles. """
         listOfTargets = []
         for DoF in config.DoFSet:
             listOfTargets += self.targetListForSweep(DoF)
@@ -272,6 +294,8 @@ class stewartPlatform:
 
 
     def requestFromFlask(self, type_, data_):
+        """ This function handles an initialization, displacement or sweep request from flask.
+            Returns a list of servo angles. """
         requestType = self.confirmRequestValidity(type_, data_)
         if requestType == config.unsuccessfulRequest: return [self.servoAngles]
         listOfTargets = self.generateListOfTargets(requestType, data_)
@@ -307,14 +331,16 @@ class stewartPlatform:
             return self.targetListForInitialize()
 
     def targetListForInitialize(self):
-        # TODO: initalize platform before using! Cannot sample position because the current position is unknown.
+        """ Defines the list of targets in an initialization request. """
         return [self.platform.initialPosition]
 
     def targetListForTarget(self, displacements):
+        """ Defines the list of targets in a simple displacement request. """
         currentPosition = array(self.platform.getOrigin() + self.platform.getAngles())
         return [(array(currentPosition) + array(displacements)).tolist()]
 
     def targetListForSweep(self, DoF):
+        """ Defines the list of targets in a sweep request. """
         return [
             self.platform.initialPosition,
             add(self.platform.initialPosition, config.displacementDictionary[DoF]).tolist(),
@@ -326,8 +352,5 @@ class stewartPlatform:
 
 
 if __name__ == "__main__":
-    # Initialize platform
     stewart = stewartPlatform()
-    stewart.display3D()
-    stewart.displayView()
 

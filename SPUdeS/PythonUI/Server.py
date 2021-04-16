@@ -94,16 +94,13 @@ class Server():
         listOfServoAngles = self.sp.requestFromFlask(type_, data)
         if self.arduinoCommunication is not None:
             self.arduinoCommunication.setServoAngle(listOfServoAngles)
-        self.sp.display3D()
-        self.sp.displayView()
+        self.sp.updateAllPlots()
 
     def requestShowoffSP(self):
         listOfServoAngles = self.sp.requestShowoffFromFlask()
         if self.arduinoCommunication is not None:
             self.arduinoCommunication.setServoAngle(listOfServoAngles)
-        self.sp.display3D()
-        self.sp.displayView()
-
+        self.sp.updateAllPlots()
         # TODO: confirm update of photo before posting
 
     def generate_frames(self):
