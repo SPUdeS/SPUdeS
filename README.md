@@ -267,6 +267,7 @@ The user interface can be split into three main parts:
 - The Camera
 - The User Input
 - The Graphical Representations of the Platform
+
 <div align="center">
     <img src="./Documentation/img/Interface.png" alt="Interface" width="500"/>
 </div>
@@ -276,8 +277,9 @@ The camera was implemented to show the platforms movements live through the UI. 
 We have tested the use of a laptop webcam and a Raspberry Pi camera. Both have worked 
 successfully. There is a button and input that allow you to change the port of the 
 camera being used. 
+
 <div align="center">
-  <img src="Documentation/img/camera-button.png" alt="Camera Button">
+  <img src="Documentation/img/camera-button.png" alt="CameraButton">
 </div>
 
 ### <a id="Input"></a>User Input
@@ -289,17 +291,21 @@ on that specific axis. Clicking the corresponding axis button submits the reques
 there is a button for homing the platform at a predetermined angle specified in 
 [ard_communication](SPUdeS/Arduino/ard_communication.py). Lastly there is a button called
 Path that performs a combination of all the sweep movements.
+
 <div align="center">
-  <img src="Documentation/img/interface_input_buttons.PNG" alt="Input Buttons">
+  <img src="Documentation/img/interface_input_buttons.PNG" alt="InputButtons">
 </div>
+
 The push of a button calls a Javascript function that creates a new XML HTTP Request.Some Javascript functions create a json payload of the type of displacement called and the position that is sent. The function then POSTs and calls the route used in the Flask server. From the server side we are able to handle the request by using payload in a cinematic function. We then send a response to motors and an update of the graph.
 
 
 ### <a id="Graph"></a>Graphical Representation of the Platform
 The graphical representation is updated using the [stewartPlatform.py](SPUdeS/Platform/stewartPlatform.py) which uses [matplotlib](https://matplotlib.org) to represent the platform graphically. The same input used to send the movement command to the motors is used to created an updated graph. However the graph does not update automatically on the interface. The user needs to use F5 or CTRL+F5 to update the graphs on the UI.
+
 <div align="center">
   <img src="Documentation/img/interface-graph.PNG" alt="Graph">
 </div>
+
 There are other views of the platform included at the bottom of the interface for a better visual of the movement sequence.
 
 ## <a id="License"></a>License
