@@ -821,7 +821,7 @@ Variable updateArmPoints defaults to true and specifies if the arms are to be re
 
 
 
-# Module `SPUdeS.PythonUI` {#SPUdeS.PythonUI}
+# Module [`SPUdeS.PythonUI`](#SPUdeS.PythonUI)
 
 
 
