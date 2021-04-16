@@ -11,7 +11,7 @@
 
 * [SPUdeS.Arduino.ard_communication](#SPUdeS.Arduino.ard_communication)
 
-# Module `SPUdeS.Arduino.ard_communication` {#SPUdeS.Arduino.ard_communication}
+# Module [`SPUdeS.Arduino.ard_communication`](#SPUdeS.Arduino.ard_communication)
 
 ## Classes
 
