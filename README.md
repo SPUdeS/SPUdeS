@@ -25,7 +25,7 @@ This is an academic project by robotics engineering undergraduates at l'Universi
 
 <!-- TODO: Change image to be smaller and add a real image of platform -->
 <div id="platform" align="center">
-    <img src="./Documentation/img/Assembled%20platform.png" alt="Platform Assembly" width="350"/>
+    <img src="./Documentation/img/Assembled%20platform.png" alt="Platform Assembly" width="410"/>
     <img src="./Documentation/img/Platform.png" alt="Platform Assembly" width="350"/>
 </div>
 
