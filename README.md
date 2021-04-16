@@ -31,7 +31,6 @@ This is an academic project by robotics engineering undergraduates at l'Universi
 ## Table of Contents
 - **[Stewart Platforms](#Stewart)**
 - **[Setup](#Setup)**
-
 - **[Supplies](#Supplies)**
     - **[Single-Board Computer](#Computer)**
     - **[Microcontroller](#Controller)**
